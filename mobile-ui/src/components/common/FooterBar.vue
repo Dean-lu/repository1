@@ -5,7 +5,7 @@
     <!-- <van-icon class-prefix="my-icon" name="liebiao" /> -->
     <!-- <van-icon class-prefix="my-icon" name="myfill" /> -->
     <van-tabbar-item icon="wap-home">首页</van-tabbar-item>
-    <van-tabbar-item icon="manager">我的</van-tabbar-item>
+    <van-tabbar-item icon="friends">我的</van-tabbar-item>
     <!-- <van-tabbar-item>
       <van-icon class-prefix="my-icon" name="myfill" />
       <div>我的</div>

@@ -44,20 +44,20 @@
         this.$toast('登陆成功');
         this.$store.state.global.loginStatus = true;
         this.$router.push({path : '/home'});
-//         this.$http.post(this.$store.state.global.baseUrl + 'user/login_post',this.user).then(res => {
-//           if(res.status == 200) {
-//             if(res.data.code == 200){
-//               that.$toast('登陆成功');
-//               that.$store.state.global.api_token = res.data.api_token;
-//               that.$store.state.global.loginStatus = true;
-//               that.$router.push({path : '/home'});
-//             }else{
-//               that.$toast(res.data.msg);
-//             }
-//           }else{
-//             that.$toast('系统异常！');
-//           }
-//         });
+        this.$http.post(this.$store.state.global.baseUrl + 'user/login_post',this.user).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.$toast('登陆成功');
+              that.$store.state.global.api_token = res.data.api_token;
+              that.$store.state.global.loginStatus = true;
+              that.$router.push({path : '/home'});
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('系统异常！');
+          }
+        });
       },
       findPwd(){
         this.$router.push({path : '/resetPassword'});
