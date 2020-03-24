@@ -37,25 +37,26 @@
         <div class="title">证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
         <div class="id-front">
-          <van-field name="houseInfo.cardimg1">
+          <van-field name="houseInfo.idcardFront">
             <template #input>
-              <van-uploader v-model="houseInfo.cardimg1" :max-count="1" />
+              <van-uploader v-model="houseInfo.idcardFront" :after-read="uploadCardFront" :max-count="1" />
             </template>
           </van-field>
         </div>
         <div class="label">身份证反面照片(与产权人一致)：</div>
         <div class="id-back">
-          <van-field name="houseInfo.cardimg2">
+          <van-field name="houseInfo.idcardBack">
             <template #input>
-              <van-uploader v-model="houseInfo.cardimg2" :max-count="1" />
+              <van-uploader v-model="houseInfo.idcardBack" :after-read="uploadCardBack" :max-count="1" />
             </template>
           </van-field>
         </div>
         <div class="label">房产证或产权合同照片：</div>
+        <div><input id="test" type="file"></div>
         <div class="house-cer">
-          <van-field name="houseInfo.certifi_info">
+          <van-field name="houseInfo.certifiInfo">
             <template #input>
-              <van-uploader v-model="houseInfo.certifi_info" :max-count="1" />
+              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" accept=".jpg, .jpeg, .png" :max-count="1" />
             </template>
           </van-field>
         </div>
@@ -126,9 +127,18 @@
           payStyleDesc: '',
           house_desc: '',
           house_img: [],
+          // 带水印的房产证/合同照片url
           certifi_info: null,
+          // 房产证file
+          certifiInfo: null,
+          // 带水印的身份证正面照url
           cardimg1: null,
+          // 身份证正面file
+          idcardFront: null,
+          // 带水印的身份证反面照url
           cardimg2: null,
+          // 身份证反面file
+          idcardBack: null,
           added_service_id: [],
           //产权编号
           house_number:''
@@ -203,6 +213,97 @@
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },
+      // 上传身份证正面照
+      uploadCardFront(file){
+        var that = this;
+        debugger
+        let param = new FormData();
+        param.append('api_token', this.$store.state.global.api_token);
+        param.append('file', file.file);
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, {
+            headers: { 'Content-Type':'multipart/form-data' }
+          }).then(res => {
+          debugger
+          console.log(res.data)
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              // 记录上传后返回的URL
+              console.log(res.data.data)
+              this.houseInfo.cardimg1 = res.data.data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('上传图片失败，请重新选择图片！');
+            return;
+          }
+        });
+      },
+      // 上传身份证反面照
+      uploadCardBack(file){
+        debugger
+        var that = this;
+        let param = new FormData();
+        param.append('api_token', this.$store.state.global.api_token);
+        param.append('file', file.file);
+        //设置请求头
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+        }; 
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+          debugger
+          console.log(res)
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              console.log(res.data.data)
+              // 记录上传后返回的URL
+              this.houseInfo.cardimg2 = res.data.data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('上传图片失败，请重新选择图片！');
+            return;
+          }
+        });
+      },
+      // 上传房产证/合同
+      uploadCertificate(file){
+        debugger
+        var that = this;
+        let param = new FormData();
+        param.append('api_token', this.$store.state.global.api_token);
+        // var dile = $("#test").val();
+        param.append('file', file.file);
+        //设置请求头
+        let config = {
+             headers:{
+                 'Content-Type':'multipart/form-data'
+             }
+        };  
+        //this.axios 是因为在main.js写在vue实例里
+        const axiosAjax = this.$http.create({
+             timeout: 1000 * 60, //时间
+             withCredentials: true //跨域携带cookie
+        });
+        // axiosAjax.post('http://localhost:9001/basic/user/upload', param, config).then(res => {
+        axiosAjax.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+          debugger
+          console.log(res)
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              console.log(res.data.data)
+              // 记录上传后返回的URL
+              this.houseInfo.certifi_info = res.data.data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('上传图片失败，请重新选择图片！');
+            return;
+          }
+        });
+      },
       // 检查增值服务互斥项
       checkExclusion(item,clickIndex){
         // debugger
@@ -252,19 +353,19 @@
           // 互斥
         }
         
-        this.addedService
-        if(this.addedService && this.addedService.length > 0){
-          
-        }
-        if(item.mutex_ids && item.mutex_ids.length > 0){
-          for(let i = 0; i < exclusionIds.length; i++){
-            for(let j = 0; j < checkboxs.length; j++){
-              if(checkboxs[j].value == exclusionIds[i]){
-                checkboxs[j].disabled = true;
-              }
-            }
-          }
-        }
+//         this.addedService
+//         if(this.addedService && this.addedService.length > 0){
+//           
+//         }
+//         if(item.mutex_ids && item.mutex_ids.length > 0){
+//           for(let i = 0; i < exclusionIds.length; i++){
+//             for(let j = 0; j < checkboxs.length; j++){
+//               if(checkboxs[j].value == exclusionIds[i]){
+//                 checkboxs[j].disabled = true;
+//               }
+//             }
+//           }
+//         }
       },
       // 去到提交确认页面
       toConfirm(){
@@ -317,7 +418,7 @@
     background-repeat: no-repeat;
     background-size: cover; 
   }
-  /deep/.id-front .van-icon{
+  /deep/.id-front .van-uploader__upload-icon{
     display: none;
   }
   /deep/.id-back .van-uploader__upload{
@@ -327,7 +428,7 @@
     background-repeat: no-repeat;
     background-size: cover; 
   }
-  /deep/.id-back .van-icon{
+  /deep/.id-back .van-uploader__upload-icon{
     display: none;
   }
   /deep/.house-cer .van-uploader__upload{
@@ -337,7 +438,7 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  /deep/.house-cer .van-icon{
+  /deep/.house-cer .van-uploader__upload-icon{
     display: none;
   }
   /deep/.id-front .van-uploader__preview-image{

@@ -41,9 +41,9 @@
       },
       onSubmit() {
         var that = this;
-        this.$toast('登陆成功');
-        this.$store.state.global.loginStatus = true;
-        this.$router.push({path : '/home'});
+//         this.$toast('登陆成功');
+//         this.$store.state.global.loginStatus = true;
+//         this.$router.push({path : '/home'});
         this.$http.post(this.$store.state.global.baseUrl + 'user/login_post',this.user).then(res => {
           if(res.status == 200) {
             if(res.data.code == 200){
