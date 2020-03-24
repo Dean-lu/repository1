@@ -51,7 +51,7 @@
           </div>
         </li>
         <li>
-          <div class="float-left">
+          <div class="float-left" @click="jump('Bank')">
            <van-icon name="card" />
            <span>银行卡</span>
           </div>
@@ -69,7 +69,7 @@
           </div>
         </li>
         <li>
-          <div class="float-left">
+          <div class="float-left" @click="jump('Advice')">
             <van-icon name="chat" />
             <span>投诉建议</span>
           </div>
@@ -114,6 +114,9 @@
           this.$router.push({path : '/login'})
         }
       },
+      jump(type){
+        this.$router.push({path:'/'+type})
+      }
     }
   }
 </script>
