@@ -2,14 +2,12 @@
   <div class="confirm-rent">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
      <div>
-      <!-- 没有银行卡信息 -->
-      <div v-if="is_show==='none'">
-
-      </div>
-      <!-- 有银行卡信息 -->
-      <div v-if="is_show=='has'">
-
-      </div>
+       <p class="bindcard">请绑定本人的银行卡</p>
+       <input type="text" placeholder="卡号" v-model="cardno" />
+       <input type="text" placeholder="手机号" v-model="telphone">
+        <div class="btn" @click="save">
+              保 存
+          </div>
     </div>
   </div>
 </template>
@@ -20,9 +18,10 @@ export default {
   data() {
     return {
       is_show: "none",
-      title: "编辑银行卡",
+      title: "绑定银行卡",
       form:{
-          
+          cardno:'',
+          telphone:''
       }
     };
   },
@@ -51,17 +50,17 @@ export default {
       },
     save(){
       var that = this;
-      if (that.advice == "" || that.advice == undefined) {
-        that.$toast("填写投诉建议后才能提交");
+      if (that.bankno == "" || that.telphone == undefined) {
+        that.$toast("填写银行卡号和手机号后才能提交");
       }
       this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
+        .post(this.$store.state.global.baseUrl + "user/bank", this.user)
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
               that.$toast("提交成功");
               setTimeout(() => {
-                that.$router.push({ path: "/mine" });
+                that.$router.back(-1);
               }, 3000);
             } else {
               that.$toast(res.data.msg);
@@ -175,26 +174,30 @@ a:active {
   bottom: 49px;
 }
 .btn {
-  width: 124px;
-  height: 33.5px;
-  line-height: 33.5px;
+  width: 6.763285024rem;
+  height: 0.857487923rem;
+  line-height: 0.857487923rem;
   color: white;
   background: #ffb640;
-  font-size: 18px;
-  border-radius: 4px;
-  bottom: 49px;
+  font-size: 0.217391304rem;
+  border-radius: 0.048309179rem;
+  /* bottom: 49px; */
   display: block;
   margin: 0 auto;
+  margin-top: 1.195652174rem;
 }
-textarea {
-  width: 90%;
-  min-height: 200px;
-  background: #e3e3e3;
-  margin-top: 100px;
-  padding: 6px;
-  border-radius: 6px;
-  color: black;
-  font-size: 18px;
-  border: none;
+.bindcard{
+  width:100%;color:black;font-size: 0.217391304rem;margin-top: 1.93236715rem;
+  text-align: left;padding-left: 0.169082126rem;
+}
+input{
+  width:7.971014493rem;
+  height:0.857487923rem;
+  font-size: 0.193236715rem;
+  padding-left: 0.120772947rem;
+  color:black;
+  background:rgb(220, 221, 221);
+  border-radius: 0.048309179rem;
+  margin-top: 0.120772947rem;
 }
 </style>

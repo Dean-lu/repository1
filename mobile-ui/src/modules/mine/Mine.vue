@@ -50,8 +50,8 @@
            <van-icon name="arrow" />
           </div>
         </li>
-        <li>
-          <div class="float-left" @click="jump('Bank')">
+        <li @click="jump('Bank')">
+          <div class="float-left">
            <van-icon name="card" />
            <span>银行卡</span>
           </div>
@@ -59,7 +59,7 @@
            <van-icon name="arrow" />
           </div>
         </li>
-        <li>
+        <li @click="jump('Draw')">
           <div class="float-left">
             <van-icon name="bill" />
             <span>我要提现</span>
@@ -68,8 +68,8 @@
             <van-icon name="arrow" />
           </div>
         </li>
-        <li>
-          <div class="float-left" @click="jump('Advice')">
+        <li @click="jump('Advice')">
+          <div class="float-left">
             <van-icon name="chat" />
             <span>投诉建议</span>
           </div>

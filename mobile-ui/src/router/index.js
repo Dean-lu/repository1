@@ -19,7 +19,7 @@ import EditHouseInfo from '@/modules/locale/EditHouseInfo'
 import Advice from '@/modules/user/Advice'
 import Bank from '@/modules/user/Bank'
 import EditBank from '@/modules/user/EditBank'
-
+import Draw from '@/modules/user/Draw'
 
 Vue.use(Router)
 
@@ -201,6 +201,15 @@ export default new Router({
             component: EditBank,
             meta: {
                 title: '编辑银行卡',
+                showHeader: true
+            }
+        },
+        {
+            path: '/Draw',
+            name: 'Draw',
+            component: Draw,
+            meta: {
+                title: '提现',
                 showHeader: true
             }
         }

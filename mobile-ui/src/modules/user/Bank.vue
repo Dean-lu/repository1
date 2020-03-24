@@ -181,67 +181,67 @@ a:active {
 .cont {
   text-align: center;
   width: 100%;
-  height: 34px;
+  height: 0.821256039rem;
   position: fixed;
-  bottom: 49px;
+  bottom: 1.183574879rem;
 }
 .btn {
-  width: 124px;
-  height: 33.5px;
-  line-height: 33.5px;
+  width: 2.995169082rem;
+  height: 0.809178744rem;
+  line-height: 0.809178744rem;
   color: white;
   background: #ffb640;
-  font-size: 18px;
-  border-radius: 4px;
-  bottom: 49px;
+  font-size: 0.434782609rem;
+  border-radius: 0.096618357rem;
+  bottom: 1.183574879rem;
   display: block;
   margin: 0 auto;
 }
 textarea {
   width: 90%;
-  min-height: 200px;
+  min-height: 4.830917874rem;
   background: #e3e3e3;
-  margin-top: 100px;
-  padding: 6px;
-  border-radius: 6px;
+  margin-top: 2.415458937rem;
+  padding: 0.144927536rem;
+  border-radius: 0.144927536rem;
   color: black;
-  font-size: 18px;
+  font-size: 0.434782609rem;
   border: none;
 }
 .addimg{
   width:120px;height:120px;margin-top:100px;
 }
 .btn {
-  width: 280px;
-  height: 35.5px;
-  line-height: 35.5px;
+  width: 6.763285024rem;
+  height: 0.857487923rem;
+  line-height: 0.857487923rem;
   color: white;
   background: #ffb640;
-  font-size: 18px;
-  border-radius: 4px;
-  bottom: 49px;
+  font-size: 0.434782609rem;
+  border-radius: 0.096618357rem;
+  bottom: 1.183574879rem;
   display: block;
   margin: 0 auto;
-  margin-top: 93px;
+  margin-top: 2.246376812rem;
 }
 .card{
   box-sizing: border-box;
   color:white;
   background:rgb(114, 113, 113);
-  width:335px;
-  height:123px;
-  margin-left:20px;margin-top: 90px;
+  width:9.034rem;
+  height:2.971014493rem;
+  margin-left:0.483091787rem;margin-top: 2.173913043rem;
   text-align:left;
-  padding:20px;
-  font-size:20px;
+  padding:0.483091787rem;
+  font-size:0.483091787rem;
   position:relative;
-  border-radius:4px;
+  border-radius:0.096618357rem;
 }
 .card .bank{
   position:absolute;
   width:100%;
-  left:20px;
-  bottom:20px;
+  left:0.483091787rem;
+  bottom:0.483091787rem;
 }
 
 </style>

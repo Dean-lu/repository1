@@ -139,9 +139,9 @@ a:active {
 .cont {
   text-align: center;
   width: 100%;
-  height: 34px;
+  height:2.09375rem;
   position: fixed;
-  bottom: 49px;
+  bottom: 3.0625rem;
 }
 .btn {
   width: 124px;
@@ -154,26 +154,36 @@ a:active {
   bottom: 49px;
   display: block;
   margin: 0 auto;
+  /* width: 7.75rem;
+  height: 2.09375rem;
+  line-height: 2.09375rem;
+  color: white;
+  background: #ffb640;
+  font-size: 18px;
+  border-radius: 4px;
+  bottom: 3.0625rem;
+  display: block;
+  margin: 0 auto;   */
 }
 textarea {
   width: 90%;
-  min-height: 200px;
+  height: 6.5rem;
   background: #e3e3e3;
-  margin-top: 100px;
-  padding: 6px;
-  border-radius: 6px;
+  margin-top: 2.25rem;
+  padding: 0.375rem;
+  border-radius:0.375rem;
   color: black;
-  font-size: 18px;
+  font-size: 0.75rem;
   border: none;
 }
 .tips{
   position: fixed;
-  left:100.15px;top:280px;
-  width:174px;height:40px;
+  left:2.419082126rem;top:8.404589372rem;
+  width:5.199275362rem;height:1.35rem;
 }
 .face{
   position: fixed;
-  left:138.5PX;top:116px;
-  width:98px;height:98px;margin-top:40px;
+  left:3.3454rem;top:2.25rem;
+  width:3.125rem;height:3.125rem;margin-top:2.5rem;
 }
 </style>
