@@ -19,9 +19,15 @@ import EditHouseInfo from '@/modules/locale/EditHouseInfo'
 import Advice from '@/modules/user/Advice'
 import Bank from '@/modules/user/Bank'
 import EditBank from '@/modules/user/EditBank'
+import Spread from '@/modules/user/Spread'
+import Qrcode from '@/modules/user/Qrcode'
+import Enstuctlist from '@/modules/user/Enstuctlist'
+import Rentlist from '@/modules/user/Rentlist'
+import RentDetail from '@/modules/user/RentDetail'
 import Draw from '@/modules/user/Draw'
 import MyEntrust from '@/modules/user/MyEntrust'
 import EditEntrust from '@/modules/user/EditEntrust'
+
 
 Vue.use(Router)
 
@@ -226,11 +232,56 @@ export default new Router({
             }
         },
         {
-            path: '/Draw',
+            path: '/spread',
+            name: 'Spread',
+            component: Spread,
+            meta: {
+                title: '推广赚钱',
+                showHeader: true
+            }
+        },
+        {
+            path: '/qrcode',
+            name: 'Qrcode',
+            component: Qrcode,
+            meta: {
+                title: '我的二维码',
+                showHeader: true
+            }
+        },
+        {
+            path: '/enstuctlist',
+            name: 'Enstuctlist',
+            component: Enstuctlist,
+            meta: {
+                title: '委托推荐',
+                showHeader: true
+            }
+        },
+        {
+            path: '/rentlist',
+            name: 'Rentlist',
+            component: Rentlist,
+            meta: {
+                title: '出租推荐',
+                showHeader: true
+            }
+        },
+        {
+            path: '/rentDetail',
+            name: 'RentDetail',
+            component: RentDetail,
+            meta: {
+                title: '出租详情',
+                showHeader: true
+            }
+        },
+        {
+            path: '/draw',
             name: 'Draw',
             component: Draw,
             meta: {
-                title: '提现',
+                title: '我要提现',
                 showHeader: true
             }
         }

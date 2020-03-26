@@ -78,7 +78,7 @@
           </div>
         </li>
         <li>
-          <div class="float-left">
+          <div class="float-left" @click="jump('Spread')">
             <van-icon name="volume" />
             <span>推广赚钱</span>
           </div>
