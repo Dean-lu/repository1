@@ -32,10 +32,10 @@
     </van-row>
     <van-row class="mine-list">
       <ul>
-        <li>
+        <li @click="jump('MyEntrust')">
           <div class="float-left">
             <van-icon name="wap-home" />
-            <span>我的房源</span>
+            <span>我的委托</span>
           </div>
           <div class="float-right">
             <van-icon name="arrow" />

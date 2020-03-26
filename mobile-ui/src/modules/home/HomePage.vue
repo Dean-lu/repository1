@@ -90,7 +90,7 @@ export default {
     init(){
       // debugger
       if(!this.$store.state.global.loginStatus){
-        this.$router.push({path : '/login'})
+         this.$router.push({path : '/login'})
       }
     },
     // 获取首页公告数组

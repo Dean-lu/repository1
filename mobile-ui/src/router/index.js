@@ -20,6 +20,8 @@ import Advice from '@/modules/user/Advice'
 import Bank from '@/modules/user/Bank'
 import EditBank from '@/modules/user/EditBank'
 import Draw from '@/modules/user/Draw'
+import MyEntrust from '@/modules/user/MyEntrust'
+import EditEntrust from '@/modules/user/EditEntrust'
 
 Vue.use(Router)
 
@@ -174,6 +176,25 @@ export default new Router({
             component: EditHouseInfo,
             meta: {
                 title: '房源信息编辑',
+                showHeader: true
+            }
+        },
+        {
+            
+            path: '/myentrust',
+            name: 'MyEntrust',
+            component: MyEntrust,
+            meta: {
+                title: '我的委托',
+                showHeader: true
+            }
+        },
+        {
+            path: '/editentrust',
+            name: 'EditEntrust',
+            component: EditEntrust,
+            meta: {
+                title: '我的委托编辑',
                 showHeader: true
             }
         },

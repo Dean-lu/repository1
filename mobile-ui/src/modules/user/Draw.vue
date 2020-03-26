@@ -81,7 +81,7 @@ export default {
   name: "Draw",
   data() {
     return {
-      status: "keyword",
+      status: "init",
       title: "提现",
       can: 0,
       bank: "长沙银行",

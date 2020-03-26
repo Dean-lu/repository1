@@ -46,11 +46,17 @@ export default {
         that.$toast("填写投诉建议后才能提交");
       }
       this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
+        .post(this.$store.state.global.baseUrl + "user/advice",
+        {
+          api_token:this.$store.state.global.api_token,
+          desc:this.advice,
+          code:'service_advice'
+        } )
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
-              that.$toast("提交成功");
+              //that.$toast("提交成功");
+              that.is_show=false;
               setTimeout(() => {
                 that.$router.push({ path: "/mine" });
               }, 3000);
@@ -67,66 +73,7 @@ export default {
 </script>
 
 <style scoped>
-.login {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../assets/img/user/login-b.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.button-container {
-  position: relative;
-  width: 83%;
-  height: 61.5%;
-  background-color: #ffffff;
-  top: 61.8%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 0.3125rem;
-  padding-top: 0.6125rem;
-  color: #959595;
-}
-.link {
-  color: #959595;
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 0.4125rem;
-}
-.link div {
-}
-a:link {
-  color: #959595;
-  text-decoration: underline;
-}
-.van-cell {
-  color: #959595;
-  background-color: #f5f5f5;
-  border-radius: 0.625rem;
-  width: 90%;
-  height: 0.8rem;
-  margin: 0.125rem auto;
-  line-height: 0.4rem;
-}
-.division {
-  position: absolute;
-  width: 25%;
-  height: 2rem;
-  left: 0.125rem;
-  z-index: 10;
-  border-right: 0.03125rem solid white;
-}
-a:visited {
-  color: #959595;
-  text-decoration: underline;
-}
-a:hover {
-  color: #959595;
-  text-decoration: underline;
-}
-a:active {
-  color: #959595;
-  text-decoration: underline;
-}
+
 .submit {
   width: 4.375rem;
   height: 0.9375rem;
@@ -168,12 +115,12 @@ a:active {
 textarea {
   width: 90%;
   height: 6.5rem;
-  background: #e3e3e3;
+  background: #f3f3f3;
   margin-top: 2.25rem;
   padding: 0.375rem;
   border-radius:0.375rem;
   color: black;
-  font-size: 0.75rem;
+  font-size: 0.28rem;
   border: none;
 }
 .tips{

@@ -8,12 +8,12 @@
       </div>
       <!-- 有银行卡信息 -->
       <div v-if="is_show=='has'">
-          <div class="card">
-              <div class="cardno">{{cardno}}</div>
-              <div class="bank">{{bank}}</div>
+          <div class="card" v-for="(item, index) in cardArr" :key="index">
+              <div class="cardno">{{item.cardno}}</div>
+              <div class="bank">{{item.bank}}</div>
           </div>
-          <div class="btn" @click="change">
-              更换银行卡
+          <div class="btn" @click="add">
+              添加银行卡
           </div>
       </div>
     </div>
@@ -27,12 +27,21 @@ export default {
     return {
       is_show: "has",
       title: "银行卡",
-      cardno:'234',
-      bank:'中国农业银行'
+      cardArr:[]
     };
   },
   mounted() {
-    this.init()
+    this.cardArr=[
+      {          
+          cardno:'234',
+          bank:'中国农业银行'
+        },
+        {          
+          cardno:'2345234523452345345',
+          bank:'中国建设银行'
+        }
+    ]
+    //this.init()
   },
   methods: {
      onClickLeft() {
@@ -45,57 +54,24 @@ export default {
           this.$router.push({path:'/EditBank'})
       },
     init(){
-        var that=this
-         this.$http.post(this.$store.state.global.baseUrl + "user/bank", this.user)
+        var that=this;
+        console.log(this.$store.state.global.api_token)
+        
+        let api_token=this.$store.state.global.api_token;
+         this.$http.post(this.$store.state.global.baseUrl + "user/my_bankcard",{
+           api_token:this.$store.state.global.api_token
+         })
+          //this.$http.post(this.$store.state.global.baseUrl + "user/my_bankcard?api_token=pZTgamT6LgVMCX4HDqtbDVRUwYvSsCfRaZmuTHXe8vqzO1SASMQ38oYCP6EFhTSrtC6KFu8qiB37RMHchlwk2W7mr7nEqR0v9a29")
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
+              let data=res.data.data;
               //todo 
-              this.is_show='none'
-            } else {
-              that.$toast(res.data.msg);
-            }
-          } else {
-            that.$toast("系统异常！");
-          }
-        });
-    },
-    save(){
-      var that = this;
-      if (that.advice == "" || that.advice == undefined) {
-        that.$toast("填写投诉建议后才能提交");
-      }
-      this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.code == 200) {
-              that.$toast("提交成功");
-              setTimeout(() => {
-                that.$router.push({ path: "/mine" });
-              }, 3000);
-            } else {
-              that.$toast(res.data.msg);
-            }
-          } else {
-            that.$toast("系统异常！");
-          }
-        });
-    },
-    onSubmit() {
-      var that = this;
-      if (that.advice == "" || that.advice == undefined) {
-        that.$toast("填写投诉建议后才能提交");
-      }
-      this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.code == 200) {
-              that.$toast("提交成功");
-              setTimeout(() => {
-                that.$router.push({ path: "/mine" });
-              }, 3000);
+              if(data.total==0){
+                that.is_show='none'
+              }else{
+                that.cardArr=data.data
+              }
             } else {
               that.$toast(res.data.msg);
             }
@@ -104,112 +80,20 @@ export default {
           }
         });
     }
+    
+    
   }
 };
 </script>
 
 <style scoped>
-.login {
+.confirm-rent {
   width: 100%;
-  height: 100%;
-  background-image: url("../../assets/img/user/login-b.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.button-container {
-  position: relative;
-  width: 83%;
-  height: 61.5%;
-  background-color: #ffffff;
-  top: 61.8%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 0.3125rem;
-  padding-top: 0.6125rem;
-  color: #959595;
-}
-.link {
-  color: #959595;
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 0.4125rem;
-}
-.link div {
-}
-a:link {
-  color: #959595;
-  text-decoration: underline;
-}
-.van-cell {
-  color: #959595;
-  background-color: #f5f5f5;
-  border-radius: 0.625rem;
-  width: 90%;
-  height: 0.8rem;
-  margin: 0.125rem auto;
-  line-height: 0.4rem;
-}
-.division {
-  position: absolute;
-  width: 25%;
-  height: 2rem;
-  left: 0.125rem;
-  z-index: 10;
-  border-right: 0.03125rem solid white;
-}
-a:visited {
-  color: #959595;
-  text-decoration: underline;
-}
-a:hover {
-  color: #959595;
-  text-decoration: underline;
-}
-a:active {
-  color: #959595;
-  text-decoration: underline;
-}
-.submit {
-  width: 4.375rem;
-  height: 0.9375rem;
-  margin: 0 auto;
-  margin-top: 6.25rem;
-}
-.van-button--small {
-  font-size: 0.5rem;
-}
-.cont {
-  text-align: center;
-  width: 100%;
-  height: 0.821256039rem;
-  position: fixed;
-  bottom: 1.183574879rem;
-}
-.btn {
-  width: 2.995169082rem;
-  height: 0.809178744rem;
-  line-height: 0.809178744rem;
-  color: white;
-  background: #ffb640;
-  font-size: 0.434782609rem;
-  border-radius: 0.096618357rem;
-  bottom: 1.183574879rem;
-  display: block;
-  margin: 0 auto;
-}
-textarea {
-  width: 90%;
-  min-height: 4.830917874rem;
-  background: #e3e3e3;
-  margin-top: 2.415458937rem;
-  padding: 0.144927536rem;
-  border-radius: 0.144927536rem;
-  color: black;
-  font-size: 0.434782609rem;
-  border: none;
+  height: 100%;  
 }
 .addimg{
-  width:120px;height:120px;margin-top:100px;
+  width:120px;height:120px;
+  margin:2.173913043rem auto 0 auto;
 }
 .btn {
   width: 6.763285024rem;
@@ -224,20 +108,24 @@ textarea {
   margin: 0 auto;
   margin-top: 2.246376812rem;
 }
+.card:first-child{
+ margin-top: 2.173913043rem;
+}
 .card{
   box-sizing: border-box;
   color:white;
   background:rgb(114, 113, 113);
   width:9.034rem;
   height:2.971014493rem;
-  margin-left:0.483091787rem;margin-top: 2.173913043rem;
+  margin-left:0.483091787rem;
+  margin-top:1rem;
   text-align:left;
   padding:0.483091787rem;
   font-size:0.483091787rem;
   position:relative;
   border-radius:0.096618357rem;
 }
-.card .bank{
+.bank{
   position:absolute;
   width:100%;
   left:0.483091787rem;

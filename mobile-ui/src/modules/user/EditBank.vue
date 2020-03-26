@@ -1,13 +1,15 @@
 <template>
   <div class="confirm-rent">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
-     <div>
-       <p class="bindcard">请绑定本人的银行卡</p>
-       <input type="text" placeholder="卡号" v-model="cardno" />
-       <input type="text" placeholder="手机号" v-model="telphone">
+     <div class="bindConter" >
+        <p class="bindcard">请绑定本人的银行卡</p>  
+       <van-form>           
+        <van-field type="text"  label="卡号" label-align="right"  v-model="form.bank_card_no" />
+        <van-field type="text" label="电话号码" label-align="right" v-model="form.bind_tel" />
         <div class="btn" @click="save">
               保 存
           </div>
+       </van-form>
     </div>
   </div>
 </template>
@@ -20,18 +22,21 @@ export default {
       is_show: "none",
       title: "绑定银行卡",
       form:{
-          cardno:'',
-          telphone:''
+          bank_card_no:'',
+          bind_tel:'',
+          api_token:this.$store.state.global.api_token
       }
     };
   },
   mounted() {
-    this.init()
+   // this.init()
   },
   methods: {
     init(){
         var that=this
-         this.$http.post(this.$store.state.global.baseUrl + "user/bank", this.user)
+         this.$http.post(this.$store.state.global.baseUrl + "user/bind_card",{
+           api_token:this.$store.state.global.api_token
+         })
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
@@ -50,39 +55,23 @@ export default {
       },
     save(){
       var that = this;
-      if (that.bankno == "" || that.telphone == undefined) {
+      console.log(that.form.bank_card_no)
+      if (!that.form.bank_card_no || !that.form.bind_tel) {
         that.$toast("填写银行卡号和手机号后才能提交");
+        return false; 
+      }
+      if(!(/^1[3456789]\d{9}$/.test(that.form.bind_tel))){ 
+        that.$toast('填写的手机号格式不正确');
+        return false; 
       }
       this.$http
-        .post(this.$store.state.global.baseUrl + "user/bank", this.user)
+        .post(this.$store.state.global.baseUrl + "user/bind_card", this.form)
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
               that.$toast("提交成功");
               setTimeout(() => {
                 that.$router.back(-1);
-              }, 3000);
-            } else {
-              that.$toast(res.data.msg);
-            }
-          } else {
-            that.$toast("系统异常！");
-          }
-        });
-    },
-    onSubmit() {
-      var that = this;
-      if (that.advice == "" || that.advice == undefined) {
-        that.$toast("填写投诉建议后才能提交");
-      }
-      this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.code == 200) {
-              that.$toast("提交成功");
-              setTimeout(() => {
-                that.$router.push({ path: "/mine" });
               }, 3000);
             } else {
               that.$toast(res.data.msg);
@@ -122,20 +111,21 @@ export default {
   margin: 0 auto;
   margin-top: 0.4125rem;
 }
-.link div {
-}
 a:link {
-  color: #959595;
+  color: #df9d9d;
   text-decoration: underline;
 }
+/* .bindConter{
+  margin-top:1rem;
+} */
 .van-cell {
   color: #959595;
   background-color: #f5f5f5;
-  border-radius: 0.625rem;
+  border-radius: 0.225rem;
   width: 90%;
-  height: 0.8rem;
-  margin: 0.125rem auto;
-  line-height: 0.4rem;
+  height: 1.2rem;
+  margin: 0.15rem auto;
+  line-height: 0.8rem;
 }
 .division {
   position: absolute;
@@ -187,8 +177,9 @@ a:active {
   margin-top: 1.195652174rem;
 }
 .bindcard{
-  width:100%;color:black;font-size: 0.217391304rem;margin-top: 1.93236715rem;
+  width:100%;color:black;font-size: 0.217391304rem;margin-top: 1.63236715rem;
   text-align: left;padding-left: 0.169082126rem;
+  margin-left:0.15rem;
 }
 input{
   width:7.971014493rem;
