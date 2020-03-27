@@ -28,7 +28,10 @@ import Draw from '@/modules/user/Draw'
 import MyEntrust from '@/modules/user/MyEntrust'
 import EditEntrust from '@/modules/user/EditEntrust'
 import LookEntrust from '@/modules/user/LookEntrust'
-
+import MyContract from '@/modules/user/MyContract'
+import HouseBag from '@/modules/user/contract/HouseBagList'
+import HouseContact from '@/modules/user/contract/HouseContact'
+import HouseUseContact from '@/modules/user/contract/HouseUseContact'
 
 Vue.use(Router)
 
@@ -211,6 +214,42 @@ export default new Router({
             component: LookEntrust,
             meta: {
                 title: '我的委托编辑',
+                showHeader: true
+            }
+        },
+        {
+            path: '/mycontract',
+            name: 'MyContract',
+            component: MyContract,
+            meta: {
+                title: '我的合同',
+                showHeader: true
+            }
+        },        
+        {
+            path: '/housecontact',
+            name: 'HouseContact',
+            component: HouseContact,
+            meta: {
+                title: '房屋出租服务合同',
+                showHeader: true
+            }
+        },
+        {
+            path: '/houseusecontact',
+            name: 'HouseUseContact',
+            component: HouseUseContact,
+            meta: {
+                title: '房屋使用合同',
+                showHeader: true
+            }
+        },
+        {
+            path: '/housebag',
+            name: 'HouseBag',
+            component: HouseBag,
+            meta: {
+                title: '房屋清单',
                 showHeader: true
             }
         },

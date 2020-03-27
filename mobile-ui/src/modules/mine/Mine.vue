@@ -41,10 +41,10 @@
             <van-icon name="arrow" />
           </div>
         </li>
-        <li>
+        <li @click="jump('MyContract')">
           <div class="float-left">
             <van-icon name="printer" />
-            <span>我的租房</span>
+            <span>我的合同</span>
           </div>
           <div class="float-right">
            <van-icon name="arrow" />
