@@ -86,6 +86,24 @@
             <van-icon name="arrow" />
           </div>
         </li>
+        <li>
+          <div class="float-left" @click="jump('updateloginPass')">
+            <van-icon name="volume" />
+            <span>修改登录密码</span>
+          </div>
+          <div class="float-right">
+            <van-icon name="arrow" />
+          </div>
+        </li>
+        <li>
+          <div class="float-left" @click="jump('updatepayPass')">
+            <van-icon name="volume" />
+            <span>修改支付密码</span>
+          </div>
+          <div class="float-right">
+            <van-icon name="arrow" />
+          </div>
+        </li>
       </ul>
     </van-row>
     <FooterBar></FooterBar>

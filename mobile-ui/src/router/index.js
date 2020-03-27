@@ -32,6 +32,8 @@ import MyContract from '@/modules/user/MyContract'
 import HouseBag from '@/modules/user/contract/HouseBagList'
 import HouseContact from '@/modules/user/contract/HouseContact'
 import HouseUseContact from '@/modules/user/contract/HouseUseContact'
+import updateLoginPass from '@/modules/user/updateLoginPass'
+import updatePayPass from '@/modules/user/updatePayPass'
 
 Vue.use(Router)
 
@@ -331,6 +333,24 @@ export default new Router({
             component: Draw,
             meta: {
                 title: '我要提现',
+                showHeader: true
+            }
+        },
+        {
+            path: '/updateloginPass',
+            name: 'updateLoginPass',
+            component: updateLoginPass,
+            meta: {
+                title: '修改登录密码',
+                showHeader: true
+            }
+        },
+        {
+            path: '/updatepayPass',
+            name: 'updatePayPass',
+            component: updatePayPass,
+            meta: {
+                title: '修改支付密码',
                 showHeader: true
             }
         }
