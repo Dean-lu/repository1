@@ -32,6 +32,15 @@
     </van-row>
     <van-row class="mine-list">
       <ul>
+        <li @click="jump('myInfo')">
+          <div class="float-left">
+            <van-icon name="wap-home" />
+            <span>完善个人信息</span>
+          </div>
+          <div class="float-right">
+            <van-icon name="arrow" />
+          </div>
+        </li>
         <li @click="jump('MyEntrust')">
           <div class="float-left">
             <van-icon name="wap-home" />

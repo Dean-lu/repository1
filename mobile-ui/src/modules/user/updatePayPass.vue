@@ -64,7 +64,7 @@
         this.$router.back(-1);
       },
       delTip(){
-        this.is_show='false';
+        this.is_show=false;
       },
       init(){
         var that = this;
@@ -127,6 +127,10 @@
       },
       doUpdateLoginPwd(){
         var that = this;
+        // 校验
+        if(!this.checkValid()){
+          return;
+        }
         let param = {};
         param.api_token = this.$store.state.global.api_token;
         param.pay_password = this.pay_password;
@@ -135,7 +139,7 @@
           if(res.status == 200){
             if(res.data.code == 200){
               that.$toast('修改密码成功');
-              that.is_show='true';
+              that.is_show=true;
               that.$store.state.global.api_token = res.data.api_token;
               that.$store.state.global.loginStatus = true;
               //that.$router.push({path : '/home'});
