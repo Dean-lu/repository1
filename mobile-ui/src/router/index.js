@@ -32,6 +32,7 @@ import MyContract from '@/modules/user/MyContract'
 import HouseBag from '@/modules/user/contract/HouseBagList'
 import HouseContact from '@/modules/user/contract/HouseContact'
 import HouseUseContact from '@/modules/user/contract/HouseUseContact'
+import EditContract from '@/modules/user/contract/EditContract'
 
 Vue.use(Router)
 
@@ -225,7 +226,16 @@ export default new Router({
                 title: '我的合同',
                 showHeader: true
             }
-        },        
+        }, 
+        {
+            path: '/editcontract',
+            name: 'EditContract',
+            component: EditContract,
+            meta: {
+                title: '我的合同编辑',
+                showHeader: true
+            }
+        },       
         {
             path: '/housecontact',
             name: 'HouseContact',

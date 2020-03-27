@@ -37,14 +37,17 @@
         <div class="title">证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
         <div class="id-front">
-          <van-cell>
+          <!-- <van-cell>
             <van-image :src="houseInfo.cardimg1"></van-image>
-          </van-cell>
-          <van-field name="houseInfo.cardimg1">
+          </van-cell> -->
+          <!-- <van-field name="houseInfo.cardimg1">
             <template #input>
               <van-uploader v-model="houseInfo.cardimg1" :max-count="1" />
             </template>
-          </van-field>
+          </van-field> -->
+          <van-uploader :max-count="1" :after-read="onread">
+              <img :src="houseInfo.cardimg1" style="width:200px; height:200px;" ref="goodsImg" />
+          </van-uploader>
         </div>
         <div class="label">身份证反面照片(与产权人一致)：</div>
         <div class="id-back">
@@ -73,12 +76,19 @@
           <div class="test2"></div>
         </div>
         <div class="label">房屋照片（*限8张)</div>
-        <div>
+        <!-- <div>
           <van-field name="houseInfo.house_img">
             <template #input>
               <van-uploader v-model="houseInfo.house_img" :max-count="8" />
             </template>
           </van-field>
+        </div> -->
+        <div class="ver-code-bottom-one-right-code">
+          <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
+            <img :src="item"  alt="图片" class="imgPreview">
+            <van-icon name="close" @click="delImg(index)" class="delte"/>
+          </div>
+          <van-uploader  :after-read="afterZRead" :accept="'image/*'" v-show="houseInfo.house_img.length<1" />
         </div>
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
@@ -141,7 +151,7 @@
           pay_style: 3,
           pay_style_name: "季付",
           house_desc: "临近地铁口，周边配套齐全",
-          house_img: ['\"storage\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"'],
+          house_img: ["http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg"],
           cardimg1: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
           cardimg2: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
           certifi_info: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
@@ -210,6 +220,23 @@
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },     
+      onread(file){
+        this.$refs.goodsImg.src=file.content;
+        this.houseInfo.cardimg1=file.content;
+      },
+      delImg(index){
+        console.log(index);
+        if(isNaN(index) || index>=this.houseInfo.house_img.length){
+          return false;
+        }
+        let tmp = [];
+        for(let i=0,len = this.houseInfo.house_img.length;i<len;i++){
+          if (this.houseInfo.house_img[i] !== this.houseInfo.house_img[index]) {
+            tmp.push(this.houseInfo.house_img[i])
+          }
+        }
+        this.houseInfo.house_img = tmp
+      },
       // 提交信息
       toConfirm(){
        // debugger
