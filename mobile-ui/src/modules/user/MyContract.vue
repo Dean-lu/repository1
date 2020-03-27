@@ -111,7 +111,7 @@ import Vue from "vue"
       },      
       // 去编辑
       edit(contractId){
-       this.$store.state.locale.contractId = contractId;
+        this.$store.state.locale.contractId = contractId;
         this.$router.push({path : '/HouseContact'});
       },
       //去查看
