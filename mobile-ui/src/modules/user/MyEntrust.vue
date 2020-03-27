@@ -12,7 +12,7 @@
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
                 <div class="house-item-info">位置：{{item.house_position}}</div>
-                <button v-if="item.status==1" class="house-item-edit" @click="edit(item.id)">修改</button>
+                <button v-if="item.rent_status==1" class="house-item-edit" @click="edit(item.id)">修改</button>
                 <button v-else class="house-item-edit" @click="look(item.id)">查看</button>               
                 </div>
                
@@ -46,8 +46,8 @@
             house_position: "发发大二",
             rent_price: "",
             // house_img: "[\"storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"]",
-            mutet_ids: "http://house.growingsale.cn/storage/house/FHsKJDGBre1HFOcdYPAJH5AUuzrwwxzKYf0lA7sl.jpeg",
-            status:2
+            house_img: "http://house.growingsale.cn/storage/house/FHsKJDGBre1HFOcdYPAJH5AUuzrwwxzKYf0lA7sl.jpeg",
+            rent_status:2
           }
         ]
       }
@@ -56,7 +56,7 @@
       //this.queryHouseSource('all');
     },
     methods: {
-    onClickLeft() {
+      onClickLeft() {
         this.$router.back(-1);
       },
       onLoad(){
@@ -100,7 +100,7 @@
       look(houseId){
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
-        this.$router.push({path : '/EditEntrust'});
+        this.$router.push({path : '/LookEntrust'});
       }
     }
   }
@@ -134,6 +134,7 @@
     position: relative;
     left: 0.8rem;
     top: 0.125rem;
+    
   }
   .list{
     width: 90%;

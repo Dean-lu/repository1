@@ -27,6 +27,7 @@ import RentDetail from '@/modules/user/RentDetail'
 import Draw from '@/modules/user/Draw'
 import MyEntrust from '@/modules/user/MyEntrust'
 import EditEntrust from '@/modules/user/EditEntrust'
+import LookEntrust from '@/modules/user/LookEntrust'
 
 
 Vue.use(Router)
@@ -199,6 +200,15 @@ export default new Router({
             path: '/editentrust',
             name: 'EditEntrust',
             component: EditEntrust,
+            meta: {
+                title: '我的委托编辑',
+                showHeader: true
+            }
+        },
+        {
+            path: '/lookentrust',
+            name: 'LookEntrust',
+            component: LookEntrust,
             meta: {
                 title: '我的委托编辑',
                 showHeader: true
