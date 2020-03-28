@@ -7,7 +7,7 @@ export default {
   isShowFooter: false,
   // 激活的tabBar id
   footerActive: 0,
-  api_token: 'pZTgamT6LgVMCX4HDqtbDVRUwYvSsCfRaZmuTHXe8vqzO1SASMQ38oYCP6EFhTSrtC6KFu8qiB37RMHchlwk2W7mr7nEqR0v9a29',
+  api_token: 'lKSyjcUcZmYfLtXJiryaJUhMBqjJ4Th955rK8bLx6nNiMQ7J8cnD6ADpjMPlPRBFPJOoXMG2zxDhSk0Ra6dyfDREwECZWlw1zbkg',
   user: {},
   openid: '2o8AIEv3Q6owuO0qmH8Z91VbYblkY',
   pid: '',
