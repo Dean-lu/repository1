@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
     <div class="division"></div>
     <div class="remind">*温馨提示：请认真核对房源信息</div>
@@ -7,7 +7,7 @@
       <van-cell>
         <van-col span="8" class="text-align-right">所属区域：</van-col>
         <van-col span="16">
-          <van-field v-model="houseInfo.house_position"/>
+          {{houseInfo.house_position}}          
         </van-col>
       </van-cell>
       <van-cell>
@@ -44,31 +44,30 @@
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">房源描述：</van-col>
-        <van-col span="16"></van-col>
+        <van-col span="16">{{houseInfo.house_desc}}</van-col>
       </van-cell>
       <van-cell>
 
         <!-- <van-field v-model="houseInfo.house_desc" rows="5" autosize label=" " type="textarea" placeholder="请输入留言"></van-field> -->
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">身份证正面照</van-col>
+        <van-col span="8" class="text-align-right">身份证正面照:</van-col>
         <van-col span="16"></van-col>
       </van-cell>
       <van-cell>
         <van-image :src="houseInfo.cardimg1"></van-image>
-      </van-cell>
+      </van-cell>      
       <van-cell>
-        <van-col span="8" class="text-align-right">房源照片：</van-col>
-        <van-col span="16"></van-col>
-      </van-cell>
-      <van-cell>
-        <van-col span="8" class="text-align-right">身份证反面照</van-col>
+        <van-col span="8" class="text-align-right">身份证反面照:</van-col>
         <van-col span="16"></van-col>
       </van-cell>
       <van-cell>
         <van-image :src="houseInfo.cardimg2"></van-image>
+      </van-cell>     
+      <van-cell>
+        <van-col span="2"></van-col>
+        <van-col span="18" class="text-align-left">房产证或产权合同照片：</van-col>
       </van-cell>
-      <div class="label">房产证或产权合同照片：</div>
       <van-cell>
         <van-image :src="houseInfo.certifi_info"></van-image>
       </van-cell>
@@ -91,33 +90,7 @@
     data () {
       return {
         title:"查看委托房屋详情",
-        houseInfo: {
-          id: 1,
-          house_position: "长沙市岳麓区大学城",
-          garden_name: "麓谷明珠",
-          building_number: "2",
-          room_number: "1201",
-          area: "60.00",
-          house_layout: "两室一厅",
-          rent_price: "1500.00",
-          deposit: "1500.00",
-          pay_style: 3,
-          pay_style_name: "季付",
-          house_desc: "临近地铁口，周边配套齐全",
-          house_img: [ "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg", "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg"],
-          cardimg1: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          cardimg2: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          certifi_info: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          added_service:[
-            {
-            id: 1,
-            service_name: "服务1",
-            price: "10.33"
-            }
-          ],
-          expire_year: 3,
-          house_number: null
-        }
+        houseInfo: {}
       }
     },
     mounted(){
@@ -160,6 +133,21 @@
 </script>
 
 <style scoped lang="less">
+.main .van-nav-bar .van-icon,
+  .main .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .main .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
+  .remind{
+    line-height:1rem;
+    font-size:0.4rem;
+    color:#b5b5b6;
+    text-align: left;
+    padding-left:0.6rem; 
+    box-sizing: border-box;
+  }
   .division{
     width: 100%;
     height: 1.4rem;
@@ -167,8 +155,17 @@
   }
   /deep/.van-cell{
     padding: 0;
+    line-height:0.8rem;
   }
-  .van-cell:not(:last-child)::after{
+  /deep/.van-image{
+    width:85%;
+    margin:0 auto 0.5rem auto;
+    display:block;
+  }
+  /deep/.van-cell:not(:last-child)::after{
     border-bottom: none;
+  }
+  /deep/.van-col--16{
+    color:#aaa;
   }
 </style>

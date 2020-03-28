@@ -6,7 +6,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" >
-              <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
+              <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
               <div class="house-item float-left">
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
@@ -38,22 +38,11 @@
         loading:false,
         finished:true,
         checkType: 'all',
-        houseSource: [
-          {
-            id: 0,
-            garden_name: "ces1",
-            house_layout: "三室一厅",
-            house_position: "发发大二",
-            rent_price: "",
-            // house_img: "[\"storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"]",
-            house_img: "http://house.growingsale.cn/storage/house/FHsKJDGBre1HFOcdYPAJH5AUuzrwwxzKYf0lA7sl.jpeg",
-            rent_status:2
-          }
-        ]
+        houseSource: []
       }
     },
     mounted(){
-      //this.queryHouseSource('all');
+      this.queryHouseSource('all');
     },
     methods: {
       onClickLeft() {
@@ -107,27 +96,39 @@
 </script>
 
 <style scoped lang="less">
+.main .van-nav-bar .van-icon,
+  .main .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .main .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .main{
     padding-top:1.226667rem;
     box-sizing: border-box;
+}
+/deep/.van-tabs__nav{
+  background:#f5f5f5
 }
   .division{
     width: 100%;
     height: 1.4rem;
     background-color: #F5F5F5;
   }
-  .van-cell{
-    padding: 0.125rem auto 0.2rem auto;   
-  }
-  .van-cell > div{
+ 
+  /deep/.van-cell > div{
     position:relative;
   }
   .search{
     width: 100%;
     height: 1.25rem
   }
-.van-field__control{
+  .van-field__control{
     background-color: #E4E4E4
+  }
+  /deep/.van-cell:not(:last-child)::after{
+    left:0;
+    border-bottom: 0.11rem  solid #f5f5f5;
   }
   .search button{
     width: 70%;
@@ -137,9 +138,9 @@
     
   }
   .list{
-    width: 90%;
+    width: 100%;
     min-height: 3rem;
-    margin: 0 auto;
+    // margin: 0 auto;
   }
   .list .title{
     text-align:  left;
@@ -151,9 +152,8 @@
     display: inline-block;
     width: 50%;
     min-height: 3.125rem;
-    margin-right: 0.3125rem;
-    border: 0.03125rem solid #e4e4e445;
-    border-radius: 0.625rem;
+    margin-right: 0.3125rem;    
+    border-radius: 0.425rem;
     overflow: hidden;
   }
   .list-item::after{
@@ -179,7 +179,7 @@
         display: block!important;
         line-height: 0.625rem;
         text-align: left;
-        color: lightgrey;
+        color: #9fa0a0;
         width: 100%!important;
     }
     &-edit{

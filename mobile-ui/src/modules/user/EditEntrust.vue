@@ -1,8 +1,7 @@
 <template>
   <div class="to-entrust">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
-    <div class="main" v-if="status=='edit'">
-      <div style="width: 100%;height: 1.2rem;"></div>
+    <div class="main" v-if="status=='edit'">      
       <div class="remind">*温馨提示：{{whyedit}}</div>
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
@@ -37,39 +36,29 @@
         <div class="title">证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
         <div class="id-front">
-          <!-- <van-cell>
-            <van-image :src="houseInfo.cardimg1"></van-image>
-          </van-cell> -->
-          <!-- <van-field name="houseInfo.cardimg1">
-            <template #input>
-              <van-uploader v-model="houseInfo.cardimg1" :max-count="1" />
-            </template>
-          </van-field> -->
-          <van-uploader :max-count="1" :after-read="onread">
-              <img :src="houseInfo.cardimg1" style="width:200px; height:200px;" ref="goodsImg" />
+          <van-uploader :max-count="1" :after-read="onread1">
+              <img :src="houseInfo.cardimg1" ref="goodsImg" />
           </van-uploader>
         </div>
         <div class="label">身份证反面照片(与产权人一致)：</div>
         <div class="id-back">
-          <van-cell>
-            <van-image :src="houseInfo.cardimg2"></van-image>
-          </van-cell>
-          <van-field name="houseInfo.cardimg2">
-            <template #input>
-              <van-uploader v-model="houseInfo.cardimg2" :max-count="1" />
-            </template>
-          </van-field>
+          <van-uploader :max-count="1" :after-read="onread2">
+              <img :src="houseInfo.cardimg2" ref="goodsImg_2" />
+          </van-uploader> 
         </div>
         <div class="label">房产证或产权合同照片：</div>
         <div class="house-cer">
-          <van-cell>
+          <van-uploader :max-count="1" :after-read="onread3">
+              <img :src="houseInfo.certifi_info" ref="goodsImg_3" />
+          </van-uploader>
+          <!-- <van-cell>
             <van-image :src="houseInfo.certifi_info"></van-image>
           </van-cell>
           <van-field name="houseInfo.certifi_info">
             <template #input>
               <van-uploader v-model="houseInfo.certifi_info" :max-count="1" />
             </template>
-          </van-field>
+          </van-field> -->
         </div>
         <div class="test">
           <div class="test1"></div>
@@ -88,7 +77,7 @@
             <img :src="item"  alt="图片" class="imgPreview">
             <van-icon name="close" @click="delImg(index)" class="delte"/>
           </div>
-          <van-uploader  :after-read="afterZRead" :accept="'image/*'" v-show="houseInfo.house_img.length<1" />
+          <van-uploader  :after-read="afterZRead" :accept="'image/*'" v-show="houseInfo.house_img.length<8" />
         </div>
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
@@ -188,15 +177,33 @@
       }
     },
     mounted(){
-      //this.init();
+      this.init();
     },
     methods: {
       init(){
         //debugger
-        if(this.$store.state.entrust.houseInfo){
-          this.houseInfo = this.$store.state.entrust.houseInfo;
-        }
-       
+        let that = this;
+        let param = {
+          api_token: this.$store.state.global.api_token,
+          house_id: this.$store.state.locale.houseId,
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'user/see_entrust', param).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.houseInfo = res.data.data;
+              //that.$store.state.locale.editHouseInfo = res.data.data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取房源详情失败，请刷新重试！');
+            // setTimeout(() => {
+            //     this.$router.back(-1);
+            // }, 1000);
+            return;
+          }
+        });
         
       },
       // 组件：确认区域选择
@@ -220,9 +227,21 @@
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },     
-      onread(file){
+      onread1(file){
+        console.log(file)
         this.$refs.goodsImg.src=file.content;
-        this.houseInfo.cardimg1=file.content;
+        this.houseInfo.imgcard1=file.content;
+      },
+      onread2(file){
+        this.$refs.goodsImg_2.src=file.content;
+        this.houseInfo.imgcard2=file.content;
+      },
+      onread3(file){
+       this.$refs.goodsImg_3.src=file.content;
+        this.houseInfo.certifi_info=file.content;
+      },
+      afterZRead(index){
+
       },
       delImg(index){
         console.log(index);
@@ -266,17 +285,42 @@
           }
         });
 
+      },
+      onClickLeft() {
+        this.$router.back(-1);
       }
-    },
-    updated: function () {
-      this.checkIds();
     }
+    
   }
 </script>
 
 <style scoped lang="less">
+.to-entrust .van-nav-bar .van-icon,
+  .to-entrust .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .to-entrust .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
   .to-entrust .main{
     width: 100%;
+  }
+  .label{
+    color:#000;
+    font-size: 0.373333rem;
+    line-height: 0.64rem;
+  }
+  .to-entrust {
+    padding-top:1.5rem;
+    box-sizing: border-box;
+  }
+   .remind{
+    line-height:0.6rem;
+    font-size:0.4rem;
+    color:#b5b5b6;
+    text-align: left;
+    padding:0 0.6rem; 
+    box-sizing: border-box;
   }
   .label{
     text-align: left;
@@ -294,12 +338,13 @@
     text-indent: 0.45rem;
     margin: 0.3rem 0;
   }
-  /deep/.van-field__label{
-    text-align: left;
+  /deep/.van-field__control{
+    color:#aaa;
   }
   /deep/textarea{
     background-color: #F5F5F5;
     border-radius: 0.3125rem;
+    padding:0.1rem;
   }
   .pic-area{
     width: 95%;
@@ -307,20 +352,14 @@
   }
   /deep/.id-front .van-uploader__upload{
     width: 8.75rem;
-    height: 5rem;
-    background-image: url("../../assets/img/entrust/id-front.png");
-    background-repeat: no-repeat;
-    background-size: cover; 
+    height: 5rem;    
   }
   /deep/.id-front .van-icon{
     display: none;
   }
   /deep/.id-back .van-uploader__upload{
     width: 8.75rem;
-    height: 5rem;
-    background-image: url("../../assets/img/entrust/id-back.png");
-    background-repeat: no-repeat;
-    background-size: cover; 
+    height: 5rem;    
   }
   /deep/.id-back .van-icon{
     display: none;
@@ -328,9 +367,7 @@
   /deep/.house-cer .van-uploader__upload{
     width: 8.75rem;
     height: 5rem;
-    background-image: url("../../assets/img/entrust/ceri.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+   
   }
   /deep/.house-cer .van-icon{
     display: none;
@@ -362,31 +399,12 @@
     width: 25%;
     height: 1rem;
   }
-  /* .add-service-cell input{
-    position: absolute;
-    visibility: hidden;
+  /deep/.van-cell{
+    padding:0.166667rem 0.426667rem
   }
-  .Checkbox+label {
-    position:absolute;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #A6A6A6;
-    border-radius: 50%;
-    background-color:#DEDEDE;
-  } 
-  .Checkbox:checked+label:after {
-      content: "";
-      position: absolute;
-      left: 2px;
-      top:2px;
-      width: 9px;
-      height: 4px;
-      border: 2px solid #424242;
-      border-top-color: transparent;
-      border-right-color: transparent; 
-      transform: rotate(-45deg);
-      -ms-transform: rotate(-60deg);
-      -moz-transform: rotate(-60deg);
-      -webkit-transform: rotate(-60deg);
-  } */
+  /deep/.van-cell:not(:last-child)::after{
+    border-bottom: none;
+  }
+  .pic-area img{width:85%; margin-bottom:0.5rem;}
+  
 </style>
