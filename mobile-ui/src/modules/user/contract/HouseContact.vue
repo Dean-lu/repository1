@@ -4,7 +4,7 @@
     <div id="contactMain">    
         <h1>委托出租服务协议</h1>
         <div>
-            <p>委托方（甲方）：<input type="text" v-model="contact.name" class="long" v-bind:disabled="diasabledInput"/></p>
+            <p>委托方（甲方）：<span>{{contact.name}}</span></p>
             <p>受托方（乙方）：湖南米花寓公寓管理有限公司</p>
         </div>        
         <div>
@@ -13,16 +13,16 @@
         <div class="housePosition">
             <h2>一、房屋位置与产权人</h2>
             <p>
-                1、房屋具体位置：<input class="long" v-model="contact.house_position" type="text" v-bind:disabled="diasabledInput"/><br/>
-                2、房号：<input type="text" v-model="contact.building_number"  class="small" v-bind:disabled="diasabledInput"/>栋<input type="text" v-model="contact.room_number" class="small" v-bind:disabled="diasabledInput"/>号<br/>
-                3、房屋面积:<input v-model="contact.area"  class="long" type="text" v-bind:disabled="diasabledInput"/> <br/>
-                4、房屋户型：<input class="long" v-model="contact.house_layout" type="text" v-bind:disabled="diasabledInput"/> <br/>
-                5、房屋产权人姓名：（甲方须与产权人一致）：<input v-model="contact.certifi_name" class="small" type="text" v-bind:disabled="diasabledInput"/> <br/>
-                6、产权人身份证号：<input v-model="contact.certifi_id"  class="card" type="text" v-bind:disabled="diasabledInput"/> <br/>             
-                7、房屋产权证号：<input v-model="contact.certifi_info"  class="long" type="text" v-bind:disabled="diasabledInput"/> 
+                1、房屋具体位置：<span>{{contact.house_position}}{{contact.garden_name}}</span><br/>
+                2、房号：<span>{{contact.building_number}}</span>栋<span>{{contact.room_number}}</span>号<br/>
+                3、房屋面积:<span>{{contact.area}}</span> <br/>
+                4、房屋户型：<span>{{contact.house_layout}}</span> <br/>
+                5、房屋产权人姓名：（甲方须与产权人一致）：<span>{{contact.name}}</span><br/>
+                6、产权人身份证号：<span>{{contact.idcardcode}}</span><br/>             
+                7、房屋产权证号：<span>{{contact.house_number}}</span>
             </p>            
         </div>
-        <h2>二、委托期<input  class="small" v-model="contact.contactYear" type="text" v-bind:disabled="diasabledInput"/>年，自本协议签署后开始计算。</h2>
+        <h2>二、委托期<span>{{contact.expire_year}}</span>年，自本协议签署后开始计算。</h2>
         <div class="houseNotice">
             <h2>三、委托事项：</h2>
             <p>
@@ -34,7 +34,7 @@
                 （四）房屋首次租出、签约《房屋使用合同》后，由甲方、乙方和租客3方签署《房屋交接单》，办理房屋交接；退租收房由甲方委托乙方办理、以后租出时由乙方直接办理房屋交接。
                 <br/>                
             </p>
-            <p>（五）甲方选择下列第<input v-model="contact.choiceServe" class="small" type="text" v-bind:disabled="diasabledInput"/>项由乙方提供的租后服务：</p>
+            <p>（五）甲方选择下列第1项由乙方提供的租后服务：</p>
             <p>
                 1、“1元/天·（间）套”（合租房按间计）维修巡查服务——提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损及提出解决方案，但维修的人工费和材料费由甲方承担（人为损坏的，协助甲方要求损坏人赔偿）。<br/>
                 2、“5元/天·（间）套”（合租房按间计）维修及租后服务——提供出租带看、交房和收房服务；退租后保洁服务；各项费用代缴服务；提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损、提出解决方案并承担维修人工费（但材料费和设施设备更换费用由甲方承担，人为损坏的，协助甲方要求损坏人赔偿）；购买该套房的房屋财产保险及租客人身意外伤害保险（受益人为甲方）；协调各方关系与问题处理；代为签署房屋使用过程中所有相关法律文件等。<br/>
@@ -58,17 +58,16 @@
         </div>
         <div class="housesign">
             <div>
-                委托方（甲方）:  <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                身份证号： <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                电话:  <input  type="text" v-bind:disabled="diasabledInput"/>  <br/>              
+                委托方（甲方）:  <span>{{contact.name}}</span><br/>
+                身份证号：  <span>{{contact.idcardcode}}</span><br/>
+                电话:   <span>{{contact.telphone}}</span> <br/>              
             </div>
             <div>
                 受托方（乙方）: 湖南米花寓公寓管理有限公司<br/>
-                签约代表： <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                电话:  <input  type="text" v-bind:disabled="diasabledInput"/>    <br/>            
+                签约代表：<br/>
+                电话: <br/>            
             </div>
-            <p>时间：<input type="text" class="small" /> 年<input type="text" class="small" /> 
-            月<input type="text" class="small" />  日</p>
+            <p>时间：<span>{{contact.date}}</span>日</p>
         </div>
         <button @click="submitList" class="btnOrange">提交房屋清单</button>
     </div>
@@ -78,7 +77,7 @@
 export default {
     data(){
         return {
-            title:'合同详情',
+            title:'委托房屋合同签约',
             diasabledInput:true,
             contact:{
                 name:"李房东",
@@ -97,7 +96,7 @@ export default {
         }
     },
     mounted(){
-
+        this.init()
     },
     methods:{
         submitList(){           
@@ -105,11 +104,49 @@ export default {
         },
         onClickLeft() {
             this.$router.back(-1);
-        }
+        },
+        init(){
+            console.log(this.$store.state.locale.houseId)
+            //debugger
+            // 获取房源详情
+            let that = this;
+            let param = {
+                api_token: this.$store.state.global.api_token,
+                house_id: this.$store.state.locale.houseId,
+            };
+            this.$http.post(this.$store.state.global.baseUrl + 'base/contract_details', param).then(res => {
+            //debugger
+            if(res.status == 200) {
+                if(res.data.code == 200){
+                that.contact = res.data.data;
+                //that.$store.state.locale.editHouseInfo = res.data.data;
+                }else{
+                that.$toast(res.data.msg);
+                }
+            }else{
+                that.$toast('获取房源详情失败，请刷新重试！');
+                // setTimeout(() => {
+                //     this.$router.back(-1);
+                // }, 1000);
+                return;
+            }
+            });
+            // locale.houseId
+        },
+
     }
 }
 </script>
 <style  scoped lang="less">
+.main .van-nav-bar .van-icon,
+  .main .van-nav-bar__title{
+    color:#FFB640;
+  }
+.main .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
+.pay_conter{padding-bottom:1rem;}
+
 #contactMain{
     text-align: left;
     width:90%;
@@ -118,6 +155,12 @@ export default {
     font-size:0.3rem;
     padding-top:1.25rem;
     box-sizing:border-box;
+    position:relative;
+    h1{
+        font-size:0.6rem;
+        text-align: center;
+        padding:0.2rem;
+    }
     .housesign::after{
         clear:both;
     }
@@ -130,14 +173,15 @@ export default {
         padding:0.2rem 0; 
         box-sizing: border-box;
     }
-    .housesign input{
+    .housesign input,.housesign span{
         border-bottom:0 none;
         text-align:left;        
     }
-    input{
+    span,input{
         border:0 none;
         border-bottom:1px solid #f00;
         text-align: center;
+        padding:0 0.2rem;
     }
     input[disabled],input:disabled,input.disabled{  
         background: #fff;
@@ -147,6 +191,9 @@ export default {
     }
     input.small{
         width: 1rem;
+    }
+    input.center{
+        width:2rem;
     }
     input.long{
         width: 3.5rem;
@@ -165,5 +212,4 @@ export default {
         display: block;
     }
 }
-
 </style>

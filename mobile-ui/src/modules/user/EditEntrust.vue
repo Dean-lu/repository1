@@ -29,7 +29,7 @@
         </van-popup>
         
         <div class="label">房源描述:</div>
-        <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
+        <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" 
          placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
       </div>
       <div class="pic-area">
@@ -77,7 +77,7 @@
             <img :src="item"  alt="图片" class="imgPreview">
             <van-icon name="close" @click="delImg(index)" class="delte"/>
           </div>
-          <van-uploader  :after-read="afterZRead" :accept="'image/*'" v-show="houseInfo.house_img.length<8" />
+          <van-uploader  :after-read="afterZRead" :accept="'image/*'"  />
         </div>
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
@@ -91,19 +91,10 @@
           </div> -->
 
           <!-- v-if="houseInfo.addedService.length==1"-->
-            <div class="add-service-cell"   v-for="(item, index) in houseInfo.addedService" :key="index">
-            <div>{{item.service_name}}</div>
-            <div>{{item.price}}</div>            
-          </div> 
+            <div class="add-service-cell"  v-for="(item,index) in houseInfo.added_service" :key="index">
+              <div>{{item.service_name}}:<span> ￥ {{item.price}} 元</span></div>                        
+            </div> 
         </div>
-        <!-- <van-checkbox-group v-model="houseInfo.result">
-          <van-cell-group>
-            <van-cell v-for="(item, index) in list" clickable :key="index" :title="`${item.serviceName}`" @click="toggle(index)" >
-              <van-col>{{item.servicePrice}}</van-col>
-              <van-checkbox slot="right-icon" :name="item" ref="checkboxes" shape="round" checked-color="#F8B729" />
-            </van-cell>
-          </van-cell-group>
-        </van-checkbox-group> -->
         <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
         <van-button style="margin: 0.625rem auto;width: 95%;border-radius: 0.3125rem;" type="primary" block color="#F8B729"
           size="small" @click="toConfirm">点击修改</van-button>
@@ -128,36 +119,36 @@
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),
         value: '',
         houseInfo: {
-          id: 1,
-          house_position: "长沙市岳麓区大学城",
-          garden_name: "麓谷明珠",
-          building_number: "2",
-          room_number: "1201",
-          area: "60.00",
-          house_layout: "两室一厅",
-          rent_price: "1500.00",
-          deposit: "1500.00",
-          pay_style: 3,
-          pay_style_name: "季付",
-          house_desc: "临近地铁口，周边配套齐全",
-          house_img: ["http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg"],
-          cardimg1: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          cardimg2: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          certifi_info: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          added_service:[
-            {
-            id: 1,
-            service_name: "服务1",
-            price: "10.33"
-            },
-            {
-            id: 1,
-            service_name: "服务1",
-            price: "10.33"
-            }
-          ],
-          expire_year: 3,
-          house_number: null
+          // id: 1,
+          // house_position: "长沙市岳麓区大学城",
+          // garden_name: "麓谷明珠",
+          // building_number: "2",
+          // room_number: "1201",
+          // area: "60.00",
+          // house_layout: "两室一厅",
+          // rent_price: "1500.00",
+          // deposit: "1500.00",
+          // pay_style: 3,
+          // pay_style_name: "季付",
+          // house_desc: "临近地铁口，周边配套齐全",
+          // house_img: ["http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg"],
+          // cardimg1: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
+          // cardimg2: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
+          // certifi_info: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
+          // added_service:[
+          //   {
+          //   id: 1,
+          //   service_name: "服务1",
+          //   price: "10.33"
+          //   },
+          //   {
+          //   id: 1,
+          //   service_name: "服务1",
+          //   price: "10.33"
+          //   }
+          // ],
+          // expire_year: 3,
+          // house_number: null
         },
         // areaList: require('../../assets/js/area.js'), // 数据格式见 Area 组件文档
         areaList: areaList,
@@ -237,15 +228,15 @@
         this.houseInfo.imgcard2=file.content;
       },
       onread3(file){
-       this.$refs.goodsImg_3.src=file.content;
+        this.$refs.goodsImg_3.src=file.content;
         this.houseInfo.certifi_info=file.content;
       },
-      afterZRead(index){
-
+      afterZRead(file){
+          this.houseInfo.house_img.push(file.content); 
       },
       delImg(index){
-        console.log(index);
-        if(isNaN(index) || index>=this.houseInfo.house_img.length){
+       console.log(this.houseInfo.house_img.length);
+        if(isNaN(index) || index >= this.houseInfo.house_img.length){
           return false;
         }
         let tmp = [];
@@ -346,6 +337,9 @@
     border-radius: 0.3125rem;
     padding:0.1rem;
   }
+/deep/.posting-uploader-item{
+  position:relative;
+}
   .pic-area{
     width: 95%;
     margin: 0 auto;
@@ -394,17 +388,32 @@
     position: relative;
     top: 0.05rem;
   }
-  .add-service-cell div{
-    display: inline-block;
-    width: 25%;
-    height: 1rem;
-  }
   /deep/.van-cell{
     padding:0.166667rem 0.426667rem
   }
   /deep/.van-cell:not(:last-child)::after{
     border-bottom: none;
   }
+  /deep/.delte{
+    position:absolute;
+    right:8%;
+    top: 2%;
+    font-size: 1.2rem;
+    color:#fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
   .pic-area img{width:85%; margin-bottom:0.5rem;}
-  
+  .add-service-cell{
+    text-align: left;
+    font-size:0.4rem;
+    color:#000;
+    padding:0 0.5rem;
+    box-sizing: border-box;
+    width:100%;
+    padding-bottom: 0.5rem;
+    span{
+      color:#aaa
+    }
+  }
 </style>

@@ -5,8 +5,9 @@
         <h1>房屋使用合同</h1>
         <div>
             <p>出租人（以下简称甲方）：湖南米花寓公寓经营管理有限公司</p>
-            <p>承租人（以下简称乙方）：<input type="text" v-model="contact.name" class="long" v-bind:disabled="diasabledInput"/><br/>
-            身份证号码：<input type="text" v-model="contact.name" class="long" v-bind:disabled="diasabledInput"/>
+            <p>承租人（以下简称乙方）：<span>{{contact.truename}}</span>
+            <br/>
+            身份证号码：<span>{{contact.idcardcode}}</span>
             </p>            
         </div>        
         <div>
@@ -15,12 +16,13 @@
         <div class="housePosition">
             <h2>一、房屋基本情况</h2>
             <p>
-                1、甲方将位于<input class="long" v-model="contact.house_position" type="text" v-bind:disabled="diasabledInput"/>小区
-                <input type="text" v-model="contact.building_number"  class="small" v-bind:disabled="diasabledInput"/>栋<input type="text" v-model="contact.room_number" class="small" v-bind:disabled="diasabledInput"/>号房住房（以下简称该房屋）代房东转租给乙方使用；<br/>
-                2、房屋使用期为<input v-model="contact.area"  class="small" type="text" v-bind:disabled="diasabledInput"/> 月，自<input v-model="contact.area"  class="long" type="text" v-bind:disabled="diasabledInput"/>起至<input v-model="contact.area"  class="long" type="text" v-bind:disabled="diasabledInput"/>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；
+                <!-- <input type="text" v-model="contact.name" class="long" v-bind:disabled="diasabledInput"/> -->
+                1、甲方将位于<span>{{contact.house_position}}{{contact.garden_name}}</span>
+                小区<span>{{contact.building_number}}</span>栋<span>{{contact.room_number}}</span>号房住房（以下简称该房屋）代房东转租给乙方使用；<br/>
+                2、房屋使用期为<span>{{contact.use_time}}</span>个月，自<span>{{contact.end_time}}</span>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；
                 <br/>
-                3、该房屋每月房屋使用费为人民币<input v-model="contact.area"  class="small" type="text" v-bind:disabled="diasabledInput"/> （大写）<input v-model="contact.area"  class="long" type="text" v-bind:disabled="diasabledInput"/>整（其中设备使用费占40%，房屋运营管理服务费占15-17%，剩余部分为房屋租金）；支付方式为：预付<input v-model="contact.area"  class="small" type="text" v-bind:disabled="diasabledInput"/> 押金为人民币<input v-model="contact.area"  class="small" type="text" v-bind:disabled="diasabledInput"/> （大写）<input v-model="contact.area"  class="long" type="text" v-bind:disabled="diasabledInput"/>整<br/>
-                4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每<input v-model="contact.area"  class="small" type="text" v-bind:disabled="diasabledInput"/>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。                 
+                3、该房屋每月房屋使用费为人民币<span>{{contact.price}}</span>（大写）<span>{{contact.price}}</span>整（其中<span>{{contact.other_price}}</span>，剩余部分为房屋租金）；支付方式为：预付押金为人民币<span>{{contact.first_pay}}</span>（大写）<span>{{contact.first_pay}}</span>整<br/>
+                4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每<span>{{contact.deposit}}</span>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。                 
             </p>            
         </div>
         <div>
@@ -118,23 +120,25 @@
         </div>
         <div class="housesign">
             <div>
-                委托方（甲方）:  <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                身份证号： <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                电话:  <input  type="text" v-bind:disabled="diasabledInput"/>  <br/>    
-                紧急联系人： <input  type="text" v-bind:disabled="diasabledInput"/>            
+                委托方（甲方）:  <span>{{contact.truename}}</span><br/>
+                身份证号： <span>{{contact.idcardcode}}</span><br/>
+                电话:  <span>{{contact.telphone}}</span>  <br/>    
+                紧急联系人：
             </div>
             <div>
                 受托方（乙方）: 湖南米花寓公寓管理有限公司<br/>
-                签约代表： <input  type="text" v-bind:disabled="diasabledInput"/><br/>
-                电话:  <input  type="text" v-bind:disabled="diasabledInput"/>    <br/>            
+                签约代表：<br/>
+                电话:  <br/>            
             </div>
-            <p>时间：<input type="text" class="small" /> 年<input type="text" class="small" /> 
-            月<input type="text" class="small" />  日</p>
+            <p>时间：<span>{{contact.date}}</span></p>
         </div>
-        <button v-if="contract==1" @click="editList" class="btnOrange">修改合同信息</button>
-        <button v-else-if="contract==2" @click="paypg=true" class="btnOrange">点击支付</button>
-        <button v-else-if="contract==3" @click="sign=true" class="btnOrange">打开签约字板</button>
-        <button v-else-if="contract==4" @click="submitList" class="btnOrange">提交房屋清单</button>
+        <!-- <button v-if="contract.order_status==1" @click="editList" class="btnOrange">修改合同信息</button> -->
+        <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>
+        <button v-else-if="contact.order_status==3" @click="sign=true" class="btnOrange">打开签约字板</button>
+        <button v-else-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
+        <button v-else-if="contact.order_status==0" @click="editList" class="btnOrange">
+            修改合同信息
+        </button>
     </div>
     <van-action-sheet v-model="paypg" :round="false" title="合同费用支付" height="200px">
       <van-divider dashed></van-divider>
@@ -156,28 +160,41 @@ export default {
             title:'合同详情',
             diasabledInput:true,
             contract:"1",
-            paypg:true,
+            paypg:false,
             sign:false,
-            contact:{
-                name:"李房东",
-                house_position: "长沙市岳麓区大学城",
-                garden_name: "麓谷明珠",
-                building_number: "2",
-                room_number: "1201",
-                area: "60.00",
-                house_layout: "两室一厅",
-                certifi_name:"李房东",
-                certifi_id:"123456789098765543",
-                certifi_info:"334556567",
-                contactYear:'4',
-                choiceServe:"1"
-            }
+            contact:{}
         }
     },
     mounted(){
-
+        this.init();
     },
     methods:{
+        init(){
+        //debugger
+        let that = this;
+        let param = {
+          api_token: this.$store.state.global.api_token,
+          order_id: this.$store.state.locale.contractId,
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'base/lease_contract', param).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.contact = res.data.data;
+              //that.$store.state.locale.editHouseInfo = res.data.data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取合同详情失败，请刷新重试！');
+            // setTimeout(() => {
+            //     this.$router.back(-1);
+            // }, 1000);
+            return;
+          }
+        });
+        
+      },
         submitList(){           
             this.$router.push({path : '/HouseBag'});
         },
@@ -194,7 +211,15 @@ export default {
 }
 </script>
 <style  scoped lang="less">
+.main .van-nav-bar .van-icon,
+  .main .van-nav-bar__title{
+    color:#FFB640;
+  }
+.main .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .pay_conter{padding-bottom:1rem;}
+
 #contactMain{
     text-align: left;
     width:90%;
@@ -204,7 +229,11 @@ export default {
     padding-top:1.25rem;
     box-sizing:border-box;
     position:relative;
-    
+    h1{
+        font-size:0.6rem;
+        text-align: center;
+        padding:0.2rem;
+    }
     .housesign::after{
         clear:both;
     }
@@ -217,14 +246,15 @@ export default {
         padding:0.2rem 0; 
         box-sizing: border-box;
     }
-    .housesign input{
+    .housesign input,.housesign span{
         border-bottom:0 none;
         text-align:left;        
     }
-    input{
+    span,input{
         border:0 none;
         border-bottom:1px solid #f00;
         text-align: center;
+        padding:0 0.2rem;
     }
     input[disabled],input:disabled,input.disabled{  
         background: #fff;
@@ -234,6 +264,9 @@ export default {
     }
     input.small{
         width: 1rem;
+    }
+    input.center{
+        width:2rem;
     }
     input.long{
         width: 3.5rem;

@@ -12,8 +12,9 @@
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
                 <div class="house-item-info">位置：{{item.house_position}}</div>
-                <button v-if="item.rent_status==1" class="house-item-edit" @click="edit(item.id)">修改</button>
-                <button v-else class="house-item-edit" @click="look(item.id)">查看</button>               
+                <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
+                <button v-if="item.current_status==0" class="house-item-edit" @click="sign(item.id)">签约</button>
+                <button v-else class="house-item-edit" @click="edit(item.id)">修改</button>               
                 </div>
                
             </van-cell>
@@ -52,7 +53,7 @@
         
       },
       onClick(name, title) {
-        //this.$toast(title + name + this.active);
+        //this.$toast(title +this.tabsCode[this.active]);
         this.queryHouseSource(this.tabsCode[this.active]);
       },
       query(){
@@ -90,6 +91,11 @@
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
         this.$router.push({path : '/LookEntrust'});
+      },
+      sign(houseId){
+        this.$store.state.locale.houseId = houseId;
+        console.log(this.$store.state.locale.houseId)
+        this.$router.push({path : '/HouseContact'});
       }
     }
   }
