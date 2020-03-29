@@ -11,15 +11,22 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+<<<<<<< HEAD
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
+=======
+    "html2canvas": "^1.0.0-rc.5",
+>>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
     "jquery": "^3.4.1",
+    "jspdf": "^1.5.3",
     "lib-flexible": "^0.3.2",
+    "mathjs": "^6.6.1",
     "sign-canvas": "^1.0.2",
     "vant": "^2.5.3",
     "vconsole": "^3.3.4",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.2",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

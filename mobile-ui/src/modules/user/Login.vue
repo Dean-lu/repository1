@@ -41,10 +41,16 @@
       },
       onSubmit() {
         var that = this;
+<<<<<<< HEAD
         this.$toast('登陆成功');
         this.$store.state.global.loginStatus = true;
         this.$router.push({path : '/home'});
         console.log(this.user)
+=======
+//         this.$toast('登陆成功');
+//         this.$store.state.global.loginStatus = true;
+//         this.$router.push({path : '/home'});
+>>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
         this.$http.post(this.$store.state.global.baseUrl + 'user/login_post',this.user).then(res => {
           if(res.status == 200) {
             if(res.data.code == 200){

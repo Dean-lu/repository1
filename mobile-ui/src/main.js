@@ -6,7 +6,17 @@ import router from './router'
 // vuex
 import store from './store'
 
+// jquery
 import $ from 'jquery'
+
+//微信sdk
+import wx from 'weixin-js-sdk';
+Vue.prototype.$wx = wx;
+
+// h5转pdf依赖
+import html2Canvas from 'html2canvas'
+
+Vue.prototype.$html2Canvas = html2Canvas
 
 // import SignCanvas from 'sign-canvas';
 // Vue.use(SignCanvas);
@@ -29,12 +39,15 @@ Vue.use(Button).use(Col).use(Row).use(Icon).use(Divider).use(Swipe).use(SwipeIte
 .use(Lazyload, {lazyComponent: true}).use(ImagePreview).use(ActionSheet).use(Radio).use(RadioGroup)
 .use(Calendar).use(Search).use(Tab).use(Tabs);
 
+import * as math from "mathjs";
+Vue.prototype.$math = math;
 // axios
 import axios from "axios";
 import qs from "qs";
 axios.defaults.baseURL = store.state.global.baseUrl;
 Vue.prototype.$http = axios;
 
+// 获取url参数
 let search = window.location.search.replace('?','')
 let urlParam = {}
 if(search != ''){

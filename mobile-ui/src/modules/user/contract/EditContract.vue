@@ -5,12 +5,18 @@
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">租客信息</div> 
-        <van-field v-model="ContractInfo.tenant.truename" label="姓名:" placeholder="请输入姓名" />
-        <van-field v-model="ContractInfo.tenant.telphone" label="电话:" placeholder="请输入电话" />
-        <van-field v-model="ContractInfo.tenant.idcardcode" label="身份证:" placeholder="请输入身份证" />
-        <van-field v-model="ContractInfo.tenant.start_time" label="起租时间:" placeholder="请输起租时间"  />
-        
-        <van-field v-model="ContractInfo.tenant.use_time" label="租期:" placeholder="1年" />
+        <van-cell v-model="ContractInfo.tenant.truename" title="姓名:" placeholder="请输入姓名" v-bind:disabled="diasabledInput"/>
+        <van-cell v-model="ContractInfo.tenant.telphone" title="电话:" placeholder="请输入电话" v-bind:disabled="diasabledInput" />
+        <van-cell v-model="ContractInfo.tenant.idcardcode" title="身份证:" placeholder="请输入身份证" /> 
+        <van-cell title="起租时间:" :value="ContractInfo.tenant.start_time" @click="showRentTimeSelect = true" />
+        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />    
+        <van-field readonly clickable name="rentTerm" :value="ContractInfo.tenant.rent_time" label="选择租期:"
+           label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
+          <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
+            <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
+          </van-popup> 
+        <!-- <van-field v-model="ContractInfo.tenant.use_time" label="租期:" placeholder="1年" /> -->
+        <van-field  v-bind:disabled="diasabledInput" v-model="ContractInfo.tenant.end_time" label="结束时间:" placeholder="请输结束时间"  />
         <p>身份证照片:（*请上传清晰完整照片，否则无法通过审核）</p>
             <div class="label">正面：</div>
             <div class="cardImg">
@@ -66,7 +72,7 @@
             </table>
         </div>
         <van-button style="margin: 0.625rem auto;width: 95%;border-radius: 0.3125rem;" type="primary" block color="#F8B729"
-          size="small" @click="toConfirm">点击确认查看</van-button>
+          size="small" @click="toConfirm">点击确认修改</van-button>
       </div>
     </div>
     <div class="main listConter" v-if="status=='end'">
@@ -88,6 +94,13 @@
         status:'edit',
         noticeIcon:'' ,
         value: '',
+        showRentTerm: false,
+        date:'',
+        alueRentTerm: '',// 临时变量
+        rentTerm: '',
+        rentTermList: ['一年','两年','三年'],
+        diasabledInput:true,
+        showRentTimeSelect: false,
         ContractInfo: {
           tenant:{
             truename: "",
@@ -164,7 +177,31 @@
           }
         });
         
+      },   
+      formatDate(date,addy) {
+        return `${date.getFullYear()+addy}-${date.getMonth() + 1}-${date.getDate()}`;
       },      
+      // 确认起租时间
+      onConfirmRentTime(date) {
+        this.showRentTimeSelect = false;
+        this.ContractInfo.tenant.start_time = this.formatDate(date,0);
+        this.date=date;
+        this.ContractInfo.tenant.end_time= this.formatDate(date,1);
+      },
+      // 确认租期
+      confirmRentTerm(value,e){
+        console.log(e);
+        this.ContractInfo.tenant.rent_time = value;
+        this.showRentTerm = false;
+        //let addy=new Date(this.ContractInfo.tenant.end_time);
+        //let addy=parseInt(e)+1;
+        //this.ContractInfo.tenant.end_time=this.formatDate(this.date,e+1);
+      },
+      // // 期望交房时间
+      // onConfirmHandingTime(date){
+      //   this.showHandingTimeSelect = false;
+      //   this.expectHandingTime = this.formatDate(date);
+      // },   
       // 提交信息
       toConfirm(){
        // debugger
@@ -174,13 +211,22 @@
         let param = {
           api_token: this.$store.state.global.api_token,
           order_id: this.$store.state.locale.contractId,
+          cardimg1:this.ContractInfo.tenant.cardimg1,
+          cardimg2:this.ContractInfo.tenant.cardimg2,
+          cardimg3:this.ContractInfo.tenant.cardimg3,
+          start_time:this.ContractInfo.tenant.start_time,
+          end_time:this.ContractInfo.tenant.end_time,
+          rent_time:parseInt(this.ContractInfo.tenant.rent_time)+''
         };
+        
         this.$http.post(this.$store.state.global.baseUrl + 'lease/again_post', param).then(res => {
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-              that.ContractInfo = res.data.data;
+              that.status="end";
+              //that.ContractInfo = res.data.data;
               //that.$store.state.locale.editHouseInfo = res.data.data;
+
             }else{
               that.$toast(res.data.msg);
             }
@@ -372,5 +418,19 @@
     width: 25%;
     height: 1rem;
   }
- 
+  /deep/.van-cell__title{
+     -webkit-flex:1;
+    flex: 1;
+  }
+  /deep/.van-cell__value {
+    /* -webkit-box-flex: 2; */
+    -webkit-flex: 2;
+    flex: 2;
+}
+ input[disabled],input:disabled,input.disabled{  
+        background: #fff;
+        -webkit-text-fill-color:#333;  
+        -webkit-opacity:1;  
+        opacity: 1;  
+    }
 </style>
