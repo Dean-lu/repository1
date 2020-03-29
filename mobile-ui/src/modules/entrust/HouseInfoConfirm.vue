@@ -167,19 +167,14 @@
         <van-button v-if="!showSignatureImg" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="showSignature = true">电子签名</van-button>
         <van-button v-if="generateContractBtn" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="generateContract">提交合同</van-button>
       </div>
-<<<<<<< HEAD
     </van-popup>   
-=======
-    </van-popup>
     
->>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
       <canvas ref="signHandle" class="canvas" id="canvas" />
       <div >
         <van-button size="mini" @touchstart="clearHandle">清空</van-button>
         <van-button type="info" size="mini" color="#F8B729" @touchstart="saveImg">确认</van-button>
       </div>
-<<<<<<< HEAD
     </van-action-sheet>    
     <!-- <div class="dialog" @touchmove.prevent>
         <canvas ref="signHandle" class="canvas" id="canvas" />
@@ -188,21 +183,15 @@
           <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
         </div>
     </div> -->
-=======
     </van-action-sheet>
     
->>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
   </div>
 </template>
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
-<<<<<<< HEAD
-
 // 使用 <dingtalk></dingtalk> 在页面中调用
-=======
   import JsPDF from 'jspdf'
->>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
   export default {
     name: 'HouseInfoConfirm',
     components: {HeaderBar},

@@ -302,14 +302,9 @@
         //设置请求头
         let config = {
           headers:{'Content-Type':'multipart/form-data'}
-        };  
-        //this.axios 是因为在main.js写在vue实例里
-        const axiosAjax = this.$http.create({
-             timeout: 1000 * 60, //时间
-             withCredentials: true //跨域携带cookie
-        });
-        // axiosAjax.post('http://localhost:9001/basic/user/upload', param, config).then(res => {
+        }
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+          debugger
           console.log(res)
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -395,7 +390,19 @@
           }
           // 互斥
         }
-        
+//         this.addedService
+//         if(this.addedService && this.addedService.length > 0){
+//           
+//         }
+//         if(item.mutex_ids && item.mutex_ids.length > 0){
+//           for(let i = 0; i < exclusionIds.length; i++){
+//             for(let j = 0; j < checkboxs.length; j++){
+//               if(checkboxs[j].value == exclusionIds[i]){
+//                 checkboxs[j].disabled = true;
+//               }
+//             }
+//           }
+//         }
       },
       // 去到提交确认页面
       toConfirm(){
