@@ -1,6 +1,14 @@
 <template>
   <div class="house-center">
-    <HeaderBar></HeaderBar>
+    <!-- <HeaderBar></HeaderBar> -->
+    <van-nav-bar
+      :title="title"
+      left-text="返回"
+      left-arrow
+      :fixed="true"
+      color="#FFB640"
+      @click-left="onClickLeft"
+    />
     <div class="img-head">
       
     </div>
@@ -9,7 +17,7 @@
         <div class="popup-select">
           <van-field readonly clickable name="search.house_position" :value="valueHousePosition" label="区域:" label-width="1rem" placeholder="区域" @click="showHousePosition = true" />
           <van-popup class="popup-select" v-model="showHousePosition" position="bottom" >
-            <van-picker show-toolbar title="选择区域" :columns="housePositions" @cancel="showHousePosition = false" @confirm="confirmHousePosition" />
+            <van-area :area-list="areaList" title="选择区域" @confirm="confirmHousePosition" @cancel="showHousePosition = false" />
           </van-popup>
         </div>
       </van-col>
@@ -66,12 +74,14 @@
 </template>
 
 <script>
-  import HeaderBar from '../../components/common/HeaderBar'
+  // import HeaderBar from '../../components/common/HeaderBar'
+  import areaList from '../../assets/js/area.js'
   export default {
     name: 'HouseSourceCenter',
-    components: {HeaderBar},
+    // components: {HeaderBar},
     data () {
       return {
+        title: '房源中心',
         search: {
           house_position: '',
           house_layout: '',
@@ -79,6 +89,8 @@
           garden_name: '',
           room_number: ''
         },
+        // 区域列表
+        areaList: areaList,
         valueHousePosition: '',
         housePositions: ['岳麓区','雨花区','望城区'],
         showHousePosition: false,
@@ -110,8 +122,9 @@
     },
     methods: {
       // 组件：确认区域选择
-      confirmHousePosition(value) {
-        this.valueHousePosition = value;
+      confirmHousePosition(values) {
+        this.valueHousePosition = values.map(item => item.name).join('');
+        this.search.house_position = this.valueHousePosition;
         this.showHousePosition = false;
       },
       confirmHouseLayout(value){
@@ -149,6 +162,9 @@
         this.$store.state.renting.id = id;
         console.log(this.$store.state.renting.id)
         this.$router.push({path : '/houseDetail'});
+      },
+      onClickLeft() {
+        this.$router.push({path : '/home'});
       }
     }
   }
@@ -157,6 +173,15 @@
 <style scoped>
   .house-center{
     
+  }
+  .van-nav-bar__text{
+    color: #FFB640;
+  }
+  .van-nav-bar__title{
+    color: #FFB640;
+  }
+  .van-nav-bar .van-icon{
+    color: #FFB640!important;
   }
   .img-head{
     width: 100%;
@@ -173,6 +198,7 @@
     background: url('../../assets/img/renting/arrow.png') no-repeat scroll right center #E5E5E5;
     text-align: left;
     text-indent: 0.2rem;
+    padding-right: 0.5rem;
   }
   /deep/ .popup-input .van-field__control{
     background: #E5E5E5;

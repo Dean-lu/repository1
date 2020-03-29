@@ -9,9 +9,11 @@ import RegisterSuc from '@/modules/user/RegisterSuc'
 import ResetPassword from '@/modules/user/ResetPassword'
 import HouseInfoInput from '@/modules/entrust/HouseInfoInput'
 import HouseInfoConfirm from '@/modules/entrust/HouseInfoConfirm'
+import ConfirmSuccess from '@/modules/entrust/ConfirmSuccess'
 import HouseSourceCenter from '@/modules/renting/HouseSourceCenter'
 import HouseDetail from '@/modules/renting/HouseDetail'
 import ConfirmRentInfo from '@/modules/renting/ConfirmRentInfo'
+import AuditRemind from '@/modules/renting/AuditRemind'
 import SalesLogin from '@/modules/locale/SalesLogin'
 import EntrustHouseSource from '@/modules/locale/EntrustHouseSource'
 import EntrustHouseInfo from '@/modules/locale/EntrustHouseInfo'
@@ -115,12 +117,21 @@ export default new Router({
       }
     },
     {
+      path: '/confirmSuccess',
+      name: 'ConfirmSuccess',
+      component: ConfirmSuccess,
+      meta:{
+        title: '我要委托-签约成功',
+        showHeader: false
+      }
+    },
+    {
       path: '/houseSourceCenter',
       name: 'HouseSourceCenter',
       component: HouseSourceCenter,
       meta:{
-        title: '房源中心',
-        showHeader: true
+        // title: '房源中心',
+        showHeader: false
       }
     },
     {
@@ -174,6 +185,16 @@ export default new Router({
         title: '房源信息编辑',
         showHeader: true
       }
+    },
+    {
+      path: '/auditRemind',
+      name: 'AuditRemind',
+      component: AuditRemind,
+      meta:{
+        title: '租房提交审核确认页',
+        showHeader: false
+      }
     }
+    
   ]
 })

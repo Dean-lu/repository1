@@ -22,7 +22,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toEntrustHouseInfo(item.id)">
-              <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
+              <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
               <div class="float-left">
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
@@ -55,12 +55,12 @@
         houseSource: [
           {
             id: 0,
-            garden_name: "ces1",
-            house_layout: "三室一厅",
-            house_position: "发发大二",
+            garden_name: "",
+            house_layout: "",
+            house_position: "",
             rent_price: "",
             // house_img: "[\"storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"]",
-            mutet_ids: "http://house.growingsale.cn/storage/house/FHsKJDGBre1HFOcdYPAJH5AUuzrwwxzKYf0lA7sl.jpeg"
+            mutet_ids: ""
           }
         ]
       }
@@ -82,7 +82,7 @@
       queryHouseSource(chenkType){
         var that = this;
         let param = {
-          api_token: 'xGlt1FR1HamTUfsQ9FCkzj6wAyebSQ7kPGNZX2tq335OxOIb3eWjAj3wZH1l0eWCVORE4Mjc4CtPL0ISwSI1Lyj3reF9qtx4NQcN',
+          api_token: that.$store.state.locale.api_token,
           check_type: chenkType
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/scene_index', param).then(res => {

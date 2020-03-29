@@ -5,8 +5,15 @@ export default {
   // 起租时间
   startRentTime: '',
   // 租期
-  rentTerm: '',
+  rentTerm: 0,
   // 期望交房时间
-  expectHandingTime: ''
+  expectHandingTime: '',
+  // 用户信息
+  userInfo: {
+    truename: '',
+    telphone: '',
+    idcardcode: ''
+    
+  }
   
 }
