@@ -21,6 +21,9 @@
       </van-field>
       <van-field v-model="code" type="password" label="验证码" label-align="right"
         :rules="[{ required: true, message: '验证码' }]" label-width="2rem" />
+      <div class="link">
+        <div class="float-right"><a href="javascript:;" @click="toLogin">已有账号?去登陆</a></div>
+      </div>
       <div class="submit" >
         <van-button round block size="small" color="#FFB640" native-type="submit" @click="doRegister">
           提交
@@ -163,49 +166,52 @@
           }
         });
       },
-    checkValid(){
-      if(!this.truename){
-        this.$toast('姓名不能为空');
-        return false;
+      checkValid(){
+        if(!this.truename){
+          this.$toast('姓名不能为空');
+          return false;
+        }
+        if(!this.username){
+          this.$toast('账号不能为空');
+          return false;
+        }
+        if(!this.truename){
+          this.$toast('真实姓名不能为空');
+          return false;
+        }
+        if(!this.password){
+          this.$toast('密码不能为空');
+          return false;
+        }
+        if(!this.enter_password){
+          this.$toast('确认密码不能为空');
+          return false;
+        }
+        if(this.password != this.enter_password){
+          this.$toast('确认密码与密码不一致');
+          return false;
+        }
+        if(!this.pay_password){
+          this.$toast('支付密码不能为空');
+          return false;
+        }
+        if(!this.telphone){
+          this.$toast('手机号不能为空');
+          return false;
+        }
+         if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
+          this.$toast('手机号格式不正确');
+          return false; 
+        }
+        if(!this.code){
+          this.$toast('验证码不能为空');
+          return false;
+        }
+        return true;
+      },
+      toLogin(){
+        this.$router.push({path : '/login'});
       }
-      if(!this.username){
-        this.$toast('账号不能为空');
-        return false;
-      }
-      if(!this.truename){
-        this.$toast('真实姓名不能为空');
-        return false;
-      }
-      if(!this.password){
-        this.$toast('密码不能为空');
-        return false;
-      }
-      if(!this.enter_password){
-        this.$toast('确认密码不能为空');
-        return false;
-      }
-      if(this.password != this.enter_password){
-        this.$toast('确认密码与密码不一致');
-        return false;
-      }
-      if(!this.pay_password){
-        this.$toast('支付密码不能为空');
-        return false;
-      }
-      if(!this.telphone){
-        this.$toast('手机号不能为空');
-        return false;
-      }
-       if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
-        this.$toast('手机号格式不正确');
-        return false; 
-      }
-      if(!this.code){
-        this.$toast('验证码不能为空');
-        return false;
-      }
-      return true;
-    }
     },
     beforeDestroy () {
       // 离开页面销毁定时器，不然返回之后会加速
@@ -258,5 +264,15 @@
     height: 0.9375rem;
     margin: 0 auto;
     margin-top: 1.375rem;
+  }
+  .link{
+    color: #959595;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 0.4125rem;
+  }
+  a:link {
+    color: #959595;
+    text-decoration: underline;
   }
 </style>

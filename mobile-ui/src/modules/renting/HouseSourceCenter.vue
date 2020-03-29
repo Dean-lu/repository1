@@ -139,7 +139,7 @@
       // 获取房源信息列表
       searchHouseSource(){
         let that = this;
-        this.$http.post(this.$store.state.global.baseUrl + 'house/get_house_list', this.search).then(res => {
+        this.$http.post(this.$store.state.global.baseUrl + 'house/get_house_list', that.search).then(res => {
           debugger
           if(res.status == 200) {
             if(res.data.code == 200){

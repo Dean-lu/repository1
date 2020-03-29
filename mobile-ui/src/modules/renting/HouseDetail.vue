@@ -144,7 +144,7 @@
         }
       },
       formatDate(date) {
-        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 1}`;
+        return `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
       },
       // 确认起租时间
       onConfirmRentTime(date) {
@@ -154,6 +154,7 @@
       // 确认租期
       confirmRentTerm(value){
         this.valueRentTerm = value;
+        this.rentTerm = index + 1;
         this.showRentTerm = false;
       },
       // 期望交房时间

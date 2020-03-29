@@ -1,5 +1,4 @@
 <template>
-  
   <div class="house-confirm">
     <HeaderBar></HeaderBar>
     <div style="color: red;margin-top: 1.2rem;"></div>
@@ -176,14 +175,6 @@
         <van-button type="info" size="mini" color="#F8B729" @touchstart="saveImg">确认</van-button>
       </div>
     </van-action-sheet>    
-    <!-- <div class="dialog" @touchmove.prevent>
-        <canvas ref="signHandle" class="canvas" id="canvas" />
-        <div>
-          <van-button size="mini" @touchstart="clearHandle">清空</van-button>
-          <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
-        </div>
-    </div> -->
-    </van-action-sheet>
     
   </div>
 </template>

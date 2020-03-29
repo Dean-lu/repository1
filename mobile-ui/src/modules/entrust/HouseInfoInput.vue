@@ -67,7 +67,7 @@
         <div class="house-cer">
           <van-field name="houseInfo.certifiInfo">
             <template #input>
-              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" accept=".jpg, .jpeg, .png" :max-count="1" />
+              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" :max-count="1" />
             </template>
           </van-field>
         </div>
@@ -146,7 +146,7 @@
           //产权编号
           house_number:'',
           // 增值服务总价
-          totalAddPrice: 0.0,
+          // totalAddPrice: 0.0,
           addedServiceSelect: [],
           
         },
@@ -326,9 +326,9 @@
 //       },
       // 检查增值服务互斥项
       checkExclusion(item,clickIndex){
-        if(!this.houseInfo.totalAddPrice){
-          this.houseInfo.totalAddPrice = 0.0;
-        }
+//         if(!this.houseInfo.totalAddPrice){
+//           this.houseInfo.totalAddPrice = 0.0;
+//         }
         console.log(item)
         // 互斥项禁用
         let checkboxs = $(".add-service-cell input");
@@ -344,7 +344,7 @@
             }
           }
           this.houseInfo.addedServiceSelect.push(item);
-          this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
+          // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.add(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price) ;
           // this.houseInfo.totalAddPrice += parseFloat(this.addedService[clickIndex].price);
         }else{// 反选事件
@@ -362,13 +362,13 @@
               this.houseInfo.addedServiceSelect.splice(c,1);
             }
           }
-          this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).subtract(this.$math.bignumber(this.addedService[clickIndex].price)).done());
+          // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).subtract(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.subtract(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price);
         }
-        if(this.houseInfo.totalAddPrice < 0){
-          this.houseInfo.totalAddPrice = 0;
-        }
-        console.log(this.houseInfo.totalAddPrice);
+//         if(this.houseInfo.totalAddPrice < 0){
+//           this.houseInfo.totalAddPrice = 0;
+//         }
+        // console.log(this.houseInfo.totalAddPrice);
         this.houseInfo.added_service_id = [];
         for(let i = 0; i < checkboxs.length; i++){
           if(checkboxs[i].checked == true){
@@ -390,19 +390,7 @@
           }
           // 互斥
         }
-//         this.addedService
-//         if(this.addedService && this.addedService.length > 0){
-//           
-//         }
-//         if(item.mutex_ids && item.mutex_ids.length > 0){
-//           for(let i = 0; i < exclusionIds.length; i++){
-//             for(let j = 0; j < checkboxs.length; j++){
-//               if(checkboxs[j].value == exclusionIds[i]){
-//                 checkboxs[j].disabled = true;
-//               }
-//             }
-//           }
-//         }
+        
       },
       // 去到提交确认页面
       toConfirm(){

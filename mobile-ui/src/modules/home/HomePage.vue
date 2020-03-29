@@ -14,13 +14,13 @@
         <van-grid-item :icon="icons[2]" text="现场勘查" @click="toSalesLogin" />
         <!-- <van-grid-item :icon="icons[3]" text="委托代理" /> -->
         <!-- <van-grid-item :icon="icons[4]" text="出租代理" /> -->
-        <van-grid-item :icon="icons[5]" text="更多" />
+        <van-grid-item :icon="icons[5]" text="更多" @click="more" />
       </van-grid>
     </van-row>
     <div class="source-list">
       <h2>&nbsp;靓房出租&nbsp;<span style="color: lightgray;font-size: 0.3125rem;">为您精心挑选的家</span></h2>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index">
+        <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
           <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
           <div class="float-left">
             <div class="house-item-title">{{item.garden_name}}</div>
@@ -159,7 +159,16 @@ export default {
     // 点击现场勘查
     toSalesLogin(){
       this.$router.push({path : '/salesLogin'})
-    }
+    },
+    more(){
+      this.$toast('暂无更多功能！');
+    },
+    // 房源详情
+    toDetail(id){
+      this.$store.state.renting.id = id;
+      console.log(this.$store.state.renting.id)
+      this.$router.push({path : '/houseDetail'});
+    },
   },
   beforeDestroy () {
     // 离开页面销毁定时器，不然返回之后会加速

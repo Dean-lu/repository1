@@ -114,7 +114,7 @@
               that.$toast('重置密码成功');
               that.$store.state.global.api_token = res.data.api_token;
               that.$store.state.global.loginStatus = true;
-              that.$router.push({path : '/home'});
+              that.$router.push({path : '/login'});
             }else{
               that.$toast(res.data.msg);
             }
