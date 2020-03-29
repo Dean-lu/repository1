@@ -1,4 +1,5 @@
 <template>
+  
   <div class="house-confirm">
     <HeaderBar></HeaderBar>
     <div style="color: red;margin-top: 1.5rem;">*温馨提示：请核对房源信息</div>
@@ -76,25 +77,14 @@
       <div style="width: 90%;margin: 0 auto;">
         <van-button square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="showSignature = true">打开签名版</van-button>
       </div>
-    </van-popup>
-    
-    <!-- <van-popup v-model="showSignature" closeable :close-on-click-overlay="false" >
-      <div class="signHandle">
-        <canvas ref="signHandle" class="canvas" />
-        <div>
-          <van-button size="mini" @touchstart="clearHandle">清空</van-button>
-          <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
-        </div>
-      </div>
-    </van-popup> -->
+    </van-popup>   
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
       <canvas ref="signHandle" class="canvas" id="canvas" />
       <div >
         <van-button size="mini" @touchstart="clearHandle">清空</van-button>
         <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
       </div>
-    </van-action-sheet>
-    
+    </van-action-sheet>    
     <!-- <div class="dialog" @touchmove.prevent>
         <canvas ref="signHandle" class="canvas" id="canvas" />
         <div>
@@ -107,6 +97,8 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
+
+// 使用 <dingtalk></dingtalk> 在页面中调用
   export default {
     name: 'HouseInfoConfirm',
     components: {HeaderBar},

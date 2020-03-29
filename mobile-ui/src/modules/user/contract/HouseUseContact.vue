@@ -133,10 +133,10 @@
             <p>时间：<span>{{contact.date}}</span></p>
         </div>
         <!-- <button v-if="contract.order_status==1" @click="editList" class="btnOrange">修改合同信息</button> -->
-        <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>
-        <button v-else-if="contact.order_status==3" @click="sign=true" class="btnOrange">打开签约字板</button>
+        <button v-if="contact.order_status==0" @click="paypg=true" class="btnOrange">点击支付</button>
+        <button v-else-if="contact.order_status==3" @click="sign" class="btnOrange">打开签约字板</button>
         <button v-else-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
-        <button v-else-if="contact.order_status==0" @click="editList" class="btnOrange">
+        <button v-else-if="contact.order_status==2" @click="editList" class="btnOrange">
             修改合同信息
         </button>
     </div>
@@ -144,15 +144,25 @@
       <van-divider dashed></van-divider>
       <div class="confirm">        
         <div class="confirm-bottom">
-          <div class="pay_conter">实付金额：￥20.00</div>
+          <div class="pay_conter">实付金额：{{contact.first_pay}}</div>
           <div>
             <van-button square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem; margin-bottom:1rem" @click="payfor">确认支付</van-button>
           </div>
         </div>
       </div>
     </van-action-sheet>
+    <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
+        <div class="cavas">
+      <canvas ref="signHandle" class="canvas" id="canvas" />
+      </div>
+      <div >
+        <van-button size="mini" @touchstart="clearHandle">清空</van-button>
+        <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
+      </div>
+    </van-action-sheet>
 </div>
 </template>
+ <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript"></script> 
 <script>
 export default {
     data(){
@@ -160,13 +170,39 @@ export default {
             title:'合同详情',
             diasabledInput:true,
             contract:"1",
-            paypg:false,
-            sign:false,
-            contact:{}
+            paypg:false,            
+            contact:{
+                order_status: null,
+                house_position: "",
+                garden_name: "",
+                building_number: "",
+                room_number: "",
+                use_time:null,
+                start_time: "",
+                end_time: "",
+                price: null,
+                other_price: "",
+                first_pay: null,
+                deposit: null,
+                truename: "",
+                idcardcode: "",
+                telphone: "",
+                date: "",
+            },
+            showSignature:false
         }
     },
-    mounted(){
+    beforeMount(){
         this.init();
+        // if(this.$store.state.locale.editcontractInfo){
+        //     console.log(this.$store.state.locale.editcontractInfo);
+        //     this.contact=this.$store.state.locale.editcontractInfo;
+        //     return false;
+        // }else{
+        //     this.init();
+        //     this.$store.state.locale.editcontractInfo='';
+        // }
+        
     },
     methods:{
         init(){
@@ -181,7 +217,7 @@ export default {
           if(res.status == 200) {
             if(res.data.code == 200){
               that.contact = res.data.data;
-              //that.$store.state.locale.editHouseInfo = res.data.data;
+              //that.$store.state.locale.editHouseInfo = res.data.data;             
             }else{
               that.$toast(res.data.msg);
             }
@@ -195,6 +231,9 @@ export default {
         });
         
       },
+        sign () {           
+            this.showSignature=true;
+        },
         submitList(){           
             this.$router.push({path : '/HouseBag'});
         },
@@ -205,8 +244,148 @@ export default {
             this.$router.back(-1);
         },
         payfor(){
-            //提交支付
+            let that = this;
+            let param = {
+                api_token: this.$store.state.global.api_token,
+                order_id: this.$store.state.locale.contractId,
+            };
+            this.$http.post(this.$store.state.global.baseUrl + 'user/pay_rent_house', param).then(res => {
+            //debugger
+                if(res.status == 200) {
+                    if(res.status.data==200){
+                        var data = res.status.data['list'];
+                            WeixinJSBridge.invoke(
+                                'getBrandWCPayRequest', data,
+                                function(res){
+                                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                        location.href = '/wxpay/index/';
+                                    }else{
+                                    that.$toast(res.err_msg); 
+                                    }
+                                }
+                            );
+                    }else{
+                        that.$toast(res.err_msg); 
+                    }
+                   
+                }else{
+                    that.$toast('获取合同详情失败，请刷新重试！');
+                    // setTimeout(() => {
+                    //     this.$router.back(-1);
+                    // }, 1000);
+                    return;
+                }
+            });
+           
+        },
+         draw() {
+        // debugger
+        if(!this.$refs.signHandle){
+          return
         }
+        document.addEventListener('touchmove', e => e.preventDefault(), {
+          passive: false
+        })
+        this.el = this.$refs.signHandle
+        this.initCanvas()
+      },
+      // 初始化canvas配置
+      initCanvas() {
+        //debugger
+        this.ctx = this.el.getContext('2d')
+        
+        // 解构设备的宽度, 和 高度
+        const { clientWidth, clientHeight } = document.documentElement
+        
+        var w1 = window.outerWidth;
+        var h1 = window.outerHeight;
+        var w1 = window.pageXOffset;
+        var w2 = window.pageYOffset;
+        var c =  document.body.clientHeight;
+        // 计算偏移量
+        var ss = $("#canvas");
+//         var y = ss.offset().top;
+//         var x = ss.offset().left;
+        let x = 0;
+        let y = clientHeight - this.el.offsetParent.clientHeight + this.el.offsetTop;
+        // let y2 = document.body.clientHeight - this.el.offsetParent.clientHeight + this.el.offsetTop;
+        //debugger
+        this.el.width = this.el.offsetParent.clientWidth * 0.90-2;
+        // this.el.height = 250;
+        let width = this.el.clientWidth;
+        let height = this.el.clientHeight;
+        
+        // 设置背景色:白色
+        this.ctx.fillStyle="#fff";
+        // this.ctx.fillStyle = this.background;
+        // 设置线条颜色
+        this.ctx.strokeStyle = this.color;
+        // 设置线宽
+        this.ctx.lineWidth = this.linewidth;
+        // 设置线条两头的结束点和开始点是圆形的
+        this.ctx.lineCap = 'round';
+        // 初始化画布
+        this.ctx.fillRect( 0, 0, width, height );
+        this.drawStart(x,y);
+        this.drawing(x,y);
+        this.drawEnd();
+      },
+      // 开始绘制
+      drawStart(x,y) {
+        this.el.addEventListener('touchstart',e => {
+          //debugger
+          console.log(y)
+          this.ctx.beginPath();
+          this.ctx.moveTo(e.changedTouches[0].clientX, e.changedTouches[0].clientY - y );
+        },false)
+      },
+      // 绘制中
+      drawing(x,y) {
+        this.el.addEventListener('touchmove',e => {
+          this.ctx.lineTo(e.changedTouches[0].clientX, e.changedTouches[0].clientY - y  );
+          this.ctx.stroke();
+        },false)
+      },
+      // 绘制结束
+      drawEnd() {
+        this.el.addEventListener('touchend', () => this.ctx.closePath(), false)
+      },
+      // 清空
+      clearHandle() {
+        this.initCanvas()
+      },
+      // 保存信息
+      saveImg() {
+        const imgBase64 = this.el.toDataURL()
+        let that = this;
+        let param = {
+          api_token: this.$store.state.global.api_token,
+          order_id: this.$store.state.locale.contractId,
+          contract_path:imgBase64
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/signing', param).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.$toast("签名提交成功！");
+              //that.$store.state.locale.editHouseInfo = res.data.data;    
+              
+              this.$router.back(-1);         
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取合同详情失败，请刷新重试！');
+            // setTimeout(() => {
+            //     this.$router.back(-1);
+            // }, 1000);
+            return;
+          }
+        });
+      },
+    },
+    updated () {
+        this.draw()
     }
 }
 </script>
@@ -219,7 +398,7 @@ export default {
     border-bottom: .11rem solid #f5f5f5;
   }
 .pay_conter{padding-bottom:1rem;}
-
+.cavas{border:1px solid #ccc;width:90%; margin:0.5rem auto;}
 #contactMain{
     text-align: left;
     width:90%;

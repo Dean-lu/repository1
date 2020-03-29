@@ -13,7 +13,7 @@
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
                 <div class="house-item-info">位置：{{item.house_position}}</div>
                 <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
-                <button v-if="item.current_status==0" class="house-item-edit" @click="sign(item.id)">签约</button>
+                <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
                 <button v-else class="house-item-edit" @click="edit(item.id)">修改</button>               
                 </div>
                

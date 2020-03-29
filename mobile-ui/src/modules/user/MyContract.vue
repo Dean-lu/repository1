@@ -85,7 +85,9 @@ import Vue from "vue"
       //去查看
       look(contractId){
         this.$store.state.locale.contractId = contractId;
+        this.$store.state.locale.editcontractInfo='';
         this.$router.push({path : '/HouseUseContact'});
+        
       }
      
     }
