@@ -12,12 +12,12 @@
       租客信息
     </div>
     <div class="info-detail">
-      <span>姓名:{{tenant.truename}}</span>
-      <span>电话:{{tenant.telphone}}</span>
-      <span>身份证号:{{tenant.idcardcode}}</span>
-      <span>起租时间:{{tenant.start_time}}</span>
-      <span>租期:{{tenant.rent_time}}</span>
-      <span>身份证照片:(*请上传清晰完整照片，否则无法通过审核)</span>
+      <span class="span-cell">姓名:{{tenant.truename}}</span>
+      <span class="span-cell">电话:{{tenant.telphone}}</span>
+      <span class="span-cell">身份证号:{{tenant.idcardcode}}</span>
+      <span class="span-cell">起租时间:{{tenant.start_time}}</span>
+      <span class="span-cell">租期:{{tenant.rent_time}}</span>
+      <span class="span-cell">身份证照片:(*请上传清晰完整照片，否则无法通过审核)</span>
       <div style="width: 100%; height: 0.625rem;"></div>
       <div class="label">正面：</div>
       <div class="id-front">
@@ -49,18 +49,18 @@
       房源信息
     </div>
     <div class="info-cell">
-      <span>位置:{{houseInfo.house_position}}</span>
+      <span class="span-cell">位置:{{houseInfo.house_position}}</span>
     </div>
     <div class="info-cell">
-      <span>房型:{{houseInfo.house_layout}}</span>
-      <span>面积:{{houseInfo.area}}㎡</span>
+      <span class="span-cell">房型:{{houseInfo.house_layout}}</span>
+      <span class="span-cell">面积:{{houseInfo.area}}㎡</span>
     </div>
     <div class="info-cell">
-      <span>付款方式:{{houseInfo.area}}</span>
-      <span>租金:¥{{houseInfo.rent_price}}</span>
+      <span class="span-cell">付款方式:{{houseInfo.area}}</span>
+      <span class="span-cell">租金:¥{{houseInfo.rent_price}}</span>
     </div>
     <div class="info-cell">
-      <span>押金:¥{{houseInfo.deposit}}</span>
+      <span class="span-cell">押金:¥{{houseInfo.deposit}}</span>
     </div>
     <div style="width: 50%;margin: 0.625rem auto;">
       <van-button square type="info" size="large" color="#F8B729" style="border-radius: 0.1875rem;" @click="submitConfirm">提交审核</van-button>
@@ -709,5 +709,10 @@
      background-repeat: no-repeat;
      background-size: cover; 
    }
-   
+   .span-cell{
+     line-height: 0.6125rem;
+   }
+   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+     color: #F8B729;
+   }
 </style>

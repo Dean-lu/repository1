@@ -23,7 +23,7 @@
       </van-col>
       <van-col span="12">
          <div class="popup-select">
-          <van-field readonly clickable name="search.house_layout" :value="valueHouseLayout" label="户型:" label-width="1rem" placeholder="户型" @click="showHouseLayout = true" />
+          <van-field readonly clickable name="search.house_layout" :value="search.house_layout" label="户型:" label-width="1rem" placeholder="户型" @click="showHouseLayout = true" />
           <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
             <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
           </van-popup>
@@ -128,17 +128,19 @@
         this.showHousePosition = false;
       },
       confirmHouseLayout(value){
-        this.valueHouseLayout = value;
+        // this.valueHouseLayout = value;
+        this.search.house_layout = value;
         this.showHouseLayout = false;
       },
-      confirmRentType(value){
+      confirmRentType(value,index){
         this.valueRentType = value;
-        // this.search.rent_type = value;
+        this.search.rent_type = index +1;
         this.showRentType = false;
       },
       // 获取房源信息列表
       searchHouseSource(){
         let that = this;
+        debugger
         this.$http.post(this.$store.state.global.baseUrl + 'house/get_house_list', that.search).then(res => {
           debugger
           if(res.status == 200) {
@@ -170,7 +172,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
   .house-center{
     
   }
@@ -254,5 +256,8 @@
     text-align: left;
     color: lightgrey;
     width: 100%!important;
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>

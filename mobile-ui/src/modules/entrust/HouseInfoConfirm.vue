@@ -441,8 +441,8 @@
             var file = that.blobToFile(blob, "contract_path_file");
             let param = new FormData();
             param.append("api_token",that.$store.state.global.api_token);
-            // param.append("house_id",that.house_id);
-            param.append("house_id",90);
+            param.append("house_id",that.house_id);
+            // param.append("house_id",90);
             param.append("contract_path",file);
             let config = {
               headers:{'Content-Type':'multipart/form-data'}
@@ -748,5 +748,8 @@
     background-image: url("../../assets/img/entrust/mihua-logo.png");
     background-repeat: no-repeat;
     background-size: cover; 
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>

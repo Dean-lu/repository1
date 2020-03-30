@@ -2,8 +2,8 @@
   <div class="main">
     <div class="top">
       <div class="float-left">
-        <van-icon name="location" color="white"/>
-        <span>{{location}}</span>
+        <van-icon v-show="user.court" name="location" color="white"/>
+        <span>{{user.court}}</span>
       </div>
     </div>
     <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />
@@ -92,6 +92,19 @@ export default {
       if(!this.$store.state.global.loginStatus){
          this.$router.push({path : '/login'})
       }
+      // 获取个人信息
+      var that = this;
+      this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token=' + this.$store.state.global.api_token).then(res => {
+        if(res.status == 200) {
+          if(res.data.code == 200){
+            that.user = res.data.data;
+          }else{
+            that.$toast(res.data.msg);
+          }
+        }else{
+          that.$toast("获取个人信息失败！");
+        }
+      });
     },
     // 获取首页公告数组
     getNotice(){

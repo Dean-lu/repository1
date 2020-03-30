@@ -11,7 +11,8 @@ export default {
   user: {
     truename: '',
     idcardcode: '',
-    telphone: ''
+    telphone: '',
+    court: ''
   },
   openid: '2o8AIEv3Q6owuO0qmH8Z91VbYblkY',
   pid: '',

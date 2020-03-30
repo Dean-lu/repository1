@@ -87,7 +87,7 @@
         <div class="add-service">
           <div class="add-service-cell" v-for="(item, index) in addedService" :key="index">
             <div>{{item.service_name}}</div>
-            <div>{{item.price}}</div>
+            <div>¥{{item.price}}</div>
             <div>
               <input type="checkbox" :value="item.id" @click="checkExclusion(item,index)" />
             </div>
@@ -425,9 +425,17 @@
         if(!this.houseInfo.rent_price){
           this.$toast("请输入租金");
           return;
+        } 
+        if(!/^[0-9]*$/.test(this.houseInfo.rent_price)){
+          this.$toast("租金只能是数字");
+          return;
         }
         if(!this.houseInfo.deposit){
           this.$toast("请输入押金");
+          return;
+        }
+        if(!/^[0-9]*$/.test(this.houseInfo.deposit)){
+          this.$toast("押金只能是数字");
           return;
         }
         if(!this.houseInfo.pay_style){
@@ -555,6 +563,9 @@
     display: inline-block;
     width: 25%;
     height: 1rem;
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
   /* .add-service-cell input{
     position: absolute;
