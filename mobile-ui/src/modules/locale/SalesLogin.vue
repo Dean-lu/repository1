@@ -29,8 +29,34 @@
       
     },
     methods: {
+      // 业务员登录
       onSubmit(){
-        this.$router.push({path : '/entrustHouseSource'});
+        if(!this.username){
+          this.$toast('请输入工号!');
+        }
+        if(!this.password){
+          this.$toast('请输入密码!');
+        }
+        let that = this;
+        let param = {
+          job_number: this.username,
+          password: this.password
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'scene/login_post', param).then(res => {
+          debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.$store.state.locale.api_token = res.data.api_token;
+              that.$toast("登录成功！");
+              this.$router.push({path : '/entrustHouseSource'});
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('登录失败！');
+            return;
+          }
+        });
       }
     }
   }

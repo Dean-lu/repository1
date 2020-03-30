@@ -57,6 +57,9 @@ export default {
   .text-align-right{
     text-align: right;
   }
+  .text-underline{
+    text-decoration: underline;
+  }
   .clear{
     display: block;
     clear: both;

@@ -49,7 +49,7 @@
         <van-cell title="起租时间:" :value="startRentTime" @click="showRentTimeSelect = true" />
         <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
         <van-cell>
-          <van-field readonly clickable name="rentTerm" :value="valueRentTerm" label="租期:" label-width="4.2rem"
+          <van-field readonly clickable :value="valueRentTerm" label="租期:" label-width="4.2rem"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
@@ -101,8 +101,8 @@
         // 租期
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
-        rentTerm: '',
-        rentTermList: ['一年','两年','三年'],
+        rentTerm: 0,
+        rentTermList: ['一年','半年'],
         // 期望交房时间
         showHandingTimeSelect: false,
         expectHandingTime: '期望交房时间',
@@ -144,7 +144,7 @@
         }
       },
       formatDate(date) {
-        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 1}`;
+        return `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
       },
       // 确认起租时间
       onConfirmRentTime(date) {
@@ -152,8 +152,9 @@
         this.startRentTime = this.formatDate(date);
       },
       // 确认租期
-      confirmRentTerm(value){
+      confirmRentTerm(value,index){
         this.valueRentTerm = value;
+        this.rentTerm = index + 1;
         this.showRentTerm = false;
       },
       // 期望交房时间

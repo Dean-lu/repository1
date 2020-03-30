@@ -53,16 +53,25 @@
         <van-col span="8" class="text-align-right">房源照片：</van-col>
         <van-col span="16"></van-col>
       </van-cell>
-      <van-cell>
-        <van-image :src="houseInfo.cardimg1"></van-image>
-      </van-cell>
-      <van-cell>
-        <van-image :src="houseInfo.cardimg2"></van-image>
-      </van-cell>
-      <div class="">
+      <div class="img" v-for="(item,index) in houseInfo.house_img" :key="index">
+        <van-image :src="item"></van-image>
+      </div>
+      <div class="edit-btn">
         <van-button square type="info" size="small" color="#F8B729" @click="toEditHouseInfo">编辑</van-button>
+        <van-button square type="info" size="small" color="#F8B729" @click="rejectConfirm = true">驳回</van-button>
+        <van-button square type="info" size="small" color="#F8B729" @click="passVerify">通过审核</van-button>
       </div>
     </div>
+    <van-action-sheet v-model="rejectConfirm" :round="false" title="驳回原因" height="200px">
+      <van-divider dashed></van-divider>
+      <div class="confirm">
+        <van-field v-model="rejectReason" rows="4" label="驳回原因" autosize type="textarea" maxlength="200"
+         placeholder="请输入驳回原因" show-word-limit />
+      </div>
+      <div style="margin: 0.3125rem auto;">
+        <van-button round type="info" size="small" color="#F8B729" @click="reject">确定驳回</van-button>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
@@ -99,7 +108,9 @@
           ],
           expire_year: 3,
           house_number: null
-        }
+        },
+        rejectConfirm: false,
+        rejectReason: '',
       }
     },
     mounted(){
@@ -112,8 +123,8 @@
         // 获取房源详情
         let that = this;
         let param = {
-          api_token: 'xGlt1FR1HamTUfsQ9FCkzj6wAyebSQ7kPGNZX2tq335OxOIb3eWjAj3wZH1l0eWCVORE4Mjc4CtPL0ISwSI1Lyj3reF9qtx4NQcN',
-          house_id: this.$store.state.locale.houseId,
+          api_token: this.$store.state.locale.api_token,
+          house_id: this.$store.state.locale.houseId
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/house_details', param).then(res => {
           debugger
@@ -136,6 +147,51 @@
           this.$store.state.locale.editHouseInfo = this.houseInfo;
         }
         this.$router.push({path : '/editHouseInfo'});
+      },
+      // 驳回
+      reject(){
+        let that = this;
+        let param = {
+          api_token: this.$store.state.locale.api_token,
+          house_id: this.$store.state.locale.houseId + '',
+          reason: this.rejectReason
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'scene/refuse_pass', param).then(res => {
+          debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.$toast(res.data.msg);
+              this.$router.push({path : '/houseSourceCenter'});
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取房源详情失败，请刷新重试！');
+            return;
+          }
+        });
+      },
+      // 通过审核
+      passVerify(){
+        let that = this;
+        let param = {
+          api_token: this.$store.state.locale.api_token,
+          house_id: this.$store.state.locale.houseId + ''
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'scene/pass_house', param).then(res => {
+          debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.$toast(res.data.msg);
+              this.$router.push({path : '/houseSourceCenter'});
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取房源详情失败，请刷新重试！');
+            return;
+          }
+        });
       }
     }
   }
@@ -149,8 +205,22 @@
   }
   /deep/.van-cell{
     padding: 0;
+    margin: 0.125rem 0;
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none;
+  }
+  .img{
+    width: 100%;
+    height: 3.125rem;
+    margin: 0.3125rem auto;
+  }
+  .edit-btn{
+    margin: 0.625rem auto;
+    // display: flex;
+  }
+  /deep/.edit-btn button{
+    margin: 0 5%;
+    border-radius: 0.1875rem;
   }
 </style>
