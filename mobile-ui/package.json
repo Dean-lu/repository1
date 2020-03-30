@@ -11,11 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-<<<<<<< HEAD
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
-=======
     "html2canvas": "^1.0.0-rc.5",
->>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
     "jquery": "^3.4.1",
     "jspdf": "^1.5.3",
     "lib-flexible": "^0.3.2",

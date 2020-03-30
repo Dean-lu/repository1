@@ -43,7 +43,6 @@ import myInfo from '@/modules/user/MyInfo'
 Vue.use(Router)
 
 export default new Router({
-<<<<<<< HEAD
     routes: [{
             path: '/',
             name: 'NoLogin',
@@ -380,7 +379,6 @@ export default new Router({
         }
     ]
 })
-=======
   routes: [
     {
       path: '/',
@@ -555,5 +553,4 @@ export default new Router({
     }
     
   ]
-})
->>>>>>> 00610c25c93dc92c9fee6097a1d1619f3f78da3b
+

@@ -2,7 +2,7 @@
   <div class="main">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
     <div class="division"></div>
-    <div class="remind">*温馨提示：请认真核对房源信息</div>
+    <!-- <div class="remind">*温馨提示：请认真核对房源信息</div> -->
     <div class="house-info">
       <van-cell>
         <van-col span="8" class="text-align-right">所属区域：</van-col>
@@ -23,12 +23,24 @@
         <van-col span="16">{{houseInfo.room_number}}</van-col>
       </van-cell>
       <van-cell>
+        <van-col span="8" class="text-align-right">房产编号：</van-col>
+        <van-col span="16">{{houseInfo.house_number}}</van-col>
+      </van-cell>
+      <van-cell>
         <van-col span="8" class="text-align-right">面积：</van-col>
-        <van-col span="16">{{houseInfo.area}}</van-col>
+        <van-col span="16">{{houseInfo.area}}㎡</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">户型：</van-col>
         <van-col span="16">{{houseInfo.house_layout}}</van-col>
+      </van-cell>
+      <van-cell>
+        <van-col span="8" class="text-align-right">委托年限：</van-col>
+        <van-col span="16">{{valueExpireYear}}</van-col>
+      </van-cell>
+      <van-cell>
+        <van-col span="8" class="text-align-right">出租类型：</van-col>
+        <van-col span="16">{{}}</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">租金：</van-col>
@@ -78,6 +90,16 @@
       <van-cell v-for="(item,index) in houseInfo.house_img" :key="index">
         <van-image :src="item"></van-image>
       </van-cell>  
+      <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
+          增值服务
+          <div class="ques-icon"></div>
+        </div>
+        <div class="add-service">          
+            <div class="add-service-cell"  v-for="(item,index) in houseInfo.added_service" :key="index">
+              <div>{{item.service_name}}:<span> ￥ {{item.price}} 元</span></div>                        
+            </div> 
+        </div>
+        <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
     </div>
   </div>
 </template>
@@ -90,7 +112,13 @@
     data () {
       return {
         title:"查看委托房屋详情",
-        houseInfo: {}
+        houseInfo: {},
+        //委托年限
+        valueExpireYear: '',
+        expireYearDesc: ['三年', '四年', '五年'],
+        //出租类型
+        valueRentType: '',
+        rentTypeDesc: ['整租', '合租', '转租'], 
       }
     },
     mounted(){
@@ -111,6 +139,8 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseInfo = res.data.data;
+              that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
+              that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
               //that.$store.state.locale.editHouseInfo = res.data.data;
             }else{
               that.$toast(res.data.msg);

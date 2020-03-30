@@ -2,7 +2,8 @@
   <div class="to-entrust">
     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
     <div class="main" v-if="status=='edit'">      
-      <div class="remind">*温馨提示：{{whyedit}}</div>
+      <div class="remind" v-if="houseInfo.reason">*温馨提示：{{houseInfo.reason}}</div>
+      <div class="remind" v-else>*温馨提示：还没有提示您要修改的内容</div>
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">基本信息</div>
@@ -14,15 +15,23 @@
         <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
         <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
         <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
+        <van-field v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
         <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  />
         
         <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
         <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
           <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
         </van-popup>
-        
+        <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
+        <van-popup v-model="showExpireYear" position="bottom">
+          <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
+        </van-popup>
         <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金" />
         <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金" />
+        <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击出租类型" @click="showRentType = true" />
+        <van-popup v-model="showRentType" position="bottom">
+          <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
+        </van-popup>
         <van-field readonly clickable :value="houseInfo.pay_style_name" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
         <van-popup v-model="showPayStyle" position="bottom">
           <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
@@ -35,69 +44,47 @@
       <div class="pic-area">
         <div class="title">证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
-        <div class="id-front">
+        <div class="id-front img_are">
           <van-uploader :max-count="1" :after-read="onread1">
               <img :src="houseInfo.cardimg1" ref="goodsImg" />
           </van-uploader>
         </div>
         <div class="label">身份证反面照片(与产权人一致)：</div>
-        <div class="id-back">
+        <div class="id-back img_are">
           <van-uploader :max-count="1" :after-read="onread2">
               <img :src="houseInfo.cardimg2" ref="goodsImg_2" />
           </van-uploader> 
         </div>
         <div class="label">房产证或产权合同照片：</div>
-        <div class="house-cer">
+        <div class="house-cer img_are">
           <van-uploader :max-count="1" :after-read="onread3">
               <img :src="houseInfo.certifi_info" ref="goodsImg_3" />
           </van-uploader>
-          <!-- <van-cell>
-            <van-image :src="houseInfo.certifi_info"></van-image>
-          </van-cell>
-          <van-field name="houseInfo.certifi_info">
-            <template #input>
-              <van-uploader v-model="houseInfo.certifi_info" :max-count="1" />
-            </template>
-          </van-field> -->
         </div>
         <div class="test">
           <div class="test1"></div>
           <div class="test2"></div>
         </div>
         <div class="label">房屋照片（*限8张)</div>
-        <!-- <div>
-          <van-field name="houseInfo.house_img">
-            <template #input>
-              <van-uploader v-model="houseInfo.house_img" :max-count="8" />
-            </template>
-          </van-field>
-        </div> -->
-        <div class="ver-code-bottom-one-right-code">
-          <div class="posting-uploader-item" v-for="(item,index) in house_showImg" :key="index">
+        <div class="ver-code-bottom-one-right-code manyPic">
+          <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
             <img :src="item"  alt="图片" class="imgPreview">
             <van-icon name="close" @click="delImg(index)" class="delte"/>
           </div>
-          <van-uploader  :after-read="afterZRead" :accept="'image/*'"  />
+          <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
         </div>
-        <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
           增值服务
           <div class="ques-icon"></div>
         </div>
-        <div class="add-service">
-          <!-- <div class="add-service-cell" >
-            <div>{{houseInfo.addedService.service_name}}</div>
-            <div>{{houseInfo.addedService.price}}</div>            
-          </div> -->
-
-          <!-- v-if="houseInfo.addedService.length==1"-->
+        <div class="add-service">          
             <div class="add-service-cell"  v-for="(item,index) in houseInfo.added_service" :key="index">
               <div>{{item.service_name}}:<span> ￥ {{item.price}} 元</span></div>                        
             </div> 
         </div>
         <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
         <van-button style="margin: 0.625rem auto;width: 95%;border-radius: 0.3125rem;" type="primary" block color="#F8B729"
-          size="small" @click="toConfirm">点击修改</van-button>
+          size="small" @click="ifsubmit">点击确认修改</van-button>
       </div>
     </div>
     <div class="listConter" v-if="status=='end'">
@@ -110,7 +97,12 @@
 </template>
 
 <script>
-  import areaList from '../../assets/js/area.js'
+  import areaList from '../../assets/js/area.js';
+  import Vue from 'vue';
+  import { Dialog } from 'vant';
+
+// 全局注册
+Vue.use(Dialog);
   export default {
     name: 'HouseInfoInput',
     data() {
@@ -120,38 +112,8 @@
         status:'edit',
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),
         value: '',
-        house_showImg:{},
-        houseInfo: {
-          // id: 1,
-          // house_position: "长沙市岳麓区大学城",
-          // garden_name: "麓谷明珠",
-          // building_number: "2",
-          // room_number: "1201",
-          // area: "60.00",
-          // house_layout: "两室一厅",
-          // rent_price: "1500.00",
-          // deposit: "1500.00",
-          // pay_style: 3,
-          // pay_style_name: "季付",
-          // house_desc: "临近地铁口，周边配套齐全",
-          // house_img: ["http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg"],
-          // cardimg1: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          // cardimg2: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          // certifi_info: "http://house.growingsale.cn/storage/safeimgs/ExbbYXQ6BhOruDWql0DTQZN4AWcUD3gtAgTMvbSx.jpeg",
-          // added_service:[
-          //   {
-          //   id: 1,
-          //   service_name: "服务1",
-          //   price: "10.33"
-          //   },
-          //   {
-          //   id: 1,
-          //   service_name: "服务1",
-          //   price: "10.33"
-          //   }
-          // ],
-          // expire_year: 3,
-          // house_number: null
+        house_showImg:[],
+        houseInfo: {          
         },
         // areaList: require('../../assets/js/area.js'), // 数据格式见 Area 组件文档
         areaList: areaList,
@@ -165,9 +127,17 @@
         // 付款方式显示控制
         showPayStyle :false,
         valuePayStyle: '',
-        payStyleDesc: ['年付', '半年付', '季付', '月付'],
-        // 增值服务包
-        
+        payStyleDesc: ['年付', '半年付', '季付', '月付'], 
+         // 委托时间
+        showExpireYear: false,
+        valueExpireYear: '',
+        expireYearDesc: ['三年', '四年', '五年'],   
+        // 出租类型
+        showRentType: false,
+        valueRentType: '',
+        rentTypeDesc: ['整租', '合租', '转租'],  
+        addhouse:[],
+        houseImgcout:[]
       }
     },
     mounted(){
@@ -188,6 +158,8 @@
               that.houseInfo = res.data.data;
               //that.$store.state.locale.editHouseInfo = res.data.data;
               that.house_showImg=res.data.data.house_img;
+              that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
+              that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
             }else{
               that.$toast(res.data.msg);
             }
@@ -213,6 +185,14 @@
         this.houseInfo.house_layout = this.valueHouseLayout;
         this.showHouseLayout = false;
       },
+      // 确认类型
+      confirmRentType(value, index){
+        this.valueRentType = value;
+        this.houseInfo.rent_type = index + 1;
+        this.houseInfo.rentTypeDesc = value;
+        this.showRentType = false;
+      },
+      //付款方式
       confirmPayStyle(value,index) {
         this.valuePayStyle = value;
         this.houseInfo.pay_style = index + 1;
@@ -222,22 +202,27 @@
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },     
+      //身份证正面照片
       onread1(file){
-         this.$refs.goodsImg.src=file.content;
+       //this.$refs.goodsImg.src=file.content;
         this.watermark(file.file,1);   
       },
+      //身份证反面照片
       onread2(file){
-         this.$refs.goodsImg_2.src=file.content;
+        //this.$refs.goodsImg_2.src=file.content;
         this.watermark(file.file,2);
       },
+      //房产证照片
       onread3(file){
-         this.$refs.goodsImg_3.src=file.content;
-        this.watermark(file.file,3);
+        //this.$refs.goodsImg_3.src=file.content;
+        this.watermark(file.file,3);       
       },
+      //多图上传
       afterZRead(file){
-          this.houseInfo.house_img.push(file.content); 
-          this.house_showImg.push(file.content)
+          this.house_showImg=this.house_showImg;
+          this.watermark(file.file,4);         
       },
+      //水印
       watermark(res,imgw){
         console.log("res",res)
         let fileMain=res;
@@ -250,52 +235,69 @@
           if(res.status == 200) {
             if(res.data.code == 200){
              console.log(res.data.data)
-              //that.$store.state.locale.editHouseInfo = res.data.data;
+              
               let src=res.data.data;
               if(imgw==1){
-                that.houseInfo.imgcard1=src;
+                that.houseInfo.cardimg1=src;
                 that.$refs.goodsImg.src=src;
               }else if(imgw==2){
-                that.houseInfo.imgcard2=src;
+                that.houseInfo.cardimg2=src;
                 that.$refs.goodsImg_2.src=src;
               }else if(imgw==3){
                  that.houseInfo.certifi_info=src;
                  that.$refs.goodsImg_3.src=src;
-              }
-              console.log("a:"+that.ContractInfo.tenant.imgcard1);            
+              }else if(imgw==4){
+                that.houseInfo.house_img.push(src);
+                console.log(that.houseInfo.house_img);
+              }            
             }else{
               that.$toast(res.data.msg);
             }
           }else{
-            that.$toast('获取房源详情失败，请刷新重试！');
-            // setTimeout(() => {
-            //     this.$router.back(-1);
-            // }, 1000);
+            that.$toast('获取图片失败，请刷新重试！');            
             return;
           }
         });
-      },
+      }, 
+      //删除图片
       delImg(index){
-       console.log(this.house_showImg);
+       console.log(index);
         if(isNaN(index) || index >= this.houseInfo.house_img.length){
           return false;
         }
-        let tmp = [];
-        let tmp_img=[];
+         let tmp = [];        
         for(let i=0,len = this.houseInfo.house_img.length;i<len;i++){
-          if (this.houseInfo.house_img[i] !== this.houseInfo.house_img[index]) {
-            tmp.push(this.houseInfo.house_img[i]);
-            tmp_img.push(this.house_showImg[i])
+          if (i!=index) {
+            tmp.push(this.houseInfo.house_img[i]);            
           }
         }
-        this.houseInfo.house_img = tmp;
-        this.house_showImg=tmp_img;
+        this.houseInfo.house_img = tmp;       
+      },
+      // 确认委托时间
+      confirmExpireYear(value,index){
+        this.valueExpireYear = value;
+        this.houseInfo.expire_year = index + 3;
+        this.houseInfo.expireYearDesc = value;
+        this.showExpireYear = false;
       },
       // 提交信息
+      ifsubmit(){
+          const that=this;
+          Dialog.confirm({
+            title: '修改提示',
+            message: '确定要修改此内容吗？\n提交了会重新审核哦~'
+          }).then(() => {
+            // on confirm
+            that.toConfirm();
+          }).catch(() => {
+            // on cancel
+          });
+      },
       toConfirm(){
        // debugger
         // this.$store.state.entrust.houseInfo = this.houseInfo;
         // this.$router.push({path : '/lookentrust'});
+        
         let that = this;
         let param = {
           api_token: this.$store.state.global.api_token,
@@ -305,6 +307,7 @@
         this.houseInfo.api_token=this.$store.state.global.api_token;
         this.houseInfo.house_id=this.houseInfo.id;
         this.$http.post(this.$store.state.global.baseUrl + 'user/edit_myentrust', this.houseInfo).then(res => {
+          console.log(this.addhouse);
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -449,7 +452,11 @@
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
   }
-  .pic-area img{width:85%; margin-bottom:0.5rem;}
+  .manyPic,.img_are{width:85%; margin:0.5rem auto;}
+  .manyPic img,.img_are img{
+    width:100%;
+    margin-bottom:0.35rem;
+  }
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem; width:80%;margin:0 auto;}
   .add-service-cell{

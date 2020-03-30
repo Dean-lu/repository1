@@ -10,7 +10,7 @@
         <van-cell v-model="ContractInfo.tenant.idcardcode" title="身份证:" placeholder="请输入身份证" /> 
         <van-cell title="起租时间:" :value="ContractInfo.tenant.start_time" @click="showRentTimeSelect = true" />
         <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />    
-        <van-field readonly clickable name="rentTerm" :value="ContractInfo.tenant.rent_time" label="选择租期:"
+        <van-field readonly clickable name="rentTerm" :value="userent" label="选择租期:"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
@@ -18,7 +18,7 @@
         <!-- <van-field v-model="ContractInfo.tenant.use_time" label="租期:" placeholder="1年" /> -->
         <van-field  v-bind:disabled="diasabledInput" v-model="ContractInfo.tenant.end_time" label="结束时间:" placeholder="请输结束时间"  />
         <p>身份证照片:（*请上传清晰完整照片，否则无法通过审核）</p>
-            <div class="label">正面：</div>
+            <div class="label">正面：{{statTime}}</div>
             <div class="cardImg">
               <van-uploader :max-count="1" :after-read="onread1">
                   <img :src="ContractInfo.tenant.cardimg1" ref="goodsImg_1" />
@@ -101,6 +101,9 @@
         rentTermList: ['一年','两年','三年'],
         diasabledInput:true,
         showRentTimeSelect: false,
+        userent:'',
+        choiceStartTime:'',
+        statTime:"",
         ContractInfo: {
           tenant:{
             truename: "",
@@ -164,6 +167,10 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               that.ContractInfo = res.data.data;
+              that.userent=that.rentTermList[parseInt(res.data.data.tenant.rent_time)-1];
+              that.choiceStartTime=res.data.data.tenant.rent_time;
+              let time=res.data.data.tenant.start_time;              
+              that.statTime=that.getTimestamp(time);
               //that.$store.state.locale.editHouseInfo = res.data.data;
             }else{
               that.$toast(res.data.msg);
@@ -183,20 +190,28 @@
       },      
       // 确认起租时间
       onConfirmRentTime(date) {
+        console.log(date);
         this.showRentTimeSelect = false;
         this.ContractInfo.tenant.start_time = this.formatDate(date,0);
-        this.date=date;
-        this.ContractInfo.tenant.end_time= this.formatDate(date,1);
+        this.startTime=date;
+        this.ContractInfo.tenant.end_time= this.formatDate(date,this.choiceStartTime);
       },
       // 确认租期
-      confirmRentTerm(value,e){
-        console.log(e);
-        this.ContractInfo.tenant.rent_time = value;
-        this.showRentTerm = false;
-        //let addy=new Date(this.ContractInfo.tenant.end_time);
-        //let addy=parseInt(e)+1;
-        //this.ContractInfo.tenant.end_time=this.formatDate(this.date,e+1);
+      confirmRentTerm(value,index){
+        console.log(index);
+        this.userent=value;
+        this.ContractInfo.tenant.rent_time = index+1;
+        this.choiceStartTime=index+1;
+        let data= new Date(this.startTime);
+        this.ContractInfo.tenant.end_time= this.formatDate(data,this.choiceStartTime)
+        this.showRentTerm = false;        
       },
+      //日期转换成时间戳用来计算结束日期
+      getTimestamp(time) { //把时间日期转成时间戳
+      console.log(time+"time");
+        return (new Date(time)).getTime() / 1000
+        },
+
       // // 期望交房时间
       // onConfirmHandingTime(date){
       //   this.showHandingTimeSelect = false;
@@ -216,7 +231,7 @@
           cardimg3:this.ContractInfo.tenant.cardimg3,
           start_time:this.ContractInfo.tenant.start_time,
           end_time:this.ContractInfo.tenant.end_time,
-          rent_time:parseInt(this.ContractInfo.tenant.rent_time)+''
+          rent_time:this.ContractInfo.tenant.rent_time+''
         };
         
         this.$http.post(this.$store.state.global.baseUrl + 'lease/again_post', param).then(res => {
@@ -267,7 +282,10 @@
         param.append("api_token", this.$store.state.global.api_token),
         param.append("file",fileMain)         
         let that=this;
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
+        let config = {
+              headers:{'Content-Type':'multipart/form-data'}
+            };
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param,config).then(res => {
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -426,6 +444,7 @@
     /* -webkit-box-flex: 2; */
     -webkit-flex: 2;
     flex: 2;
+    text-align:left;
 }
  input[disabled],input:disabled,input.disabled{  
         background: #fff;

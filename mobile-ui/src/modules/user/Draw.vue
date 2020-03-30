@@ -147,9 +147,11 @@ export default {
                 that.backHandle();
               } else {
                 that.$toast(res.data.msg);
+                that.clearPasswordHandle();
               }
             } else {
-              that.$toast("系统异常！");
+              that.$toast("系统异常,请重试！");
+              that.backHandle();
             }
           });
       }

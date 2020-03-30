@@ -15,7 +15,7 @@
                         <span v-if="item.order_status==1" class="contract_status">待修改</span>
                         <span v-if="item.order_status==2" class="contract_status">待支付</span>
                         <span v-if="item.order_status==3" class="contract_status">待签约</span> 
-                        <span v-if="item.order_status==4" class="contract_status">带入住</span>                        
+                        <span v-if="item.order_status==4" class="contract_status">待入住</span>                        
                         <van-icon name="arrow"/>
                     </div>
                 </div>                
@@ -37,8 +37,8 @@ import Vue from "vue"
         areaKeyWord: '',
         roomNum: '',
         active: 0,
-        tabs: ['全部','待审核','待修改','待支付','待签约','待入住','已出租'],
-        tabsCode: ['all','0','1','2','3','4','-1'],
+        tabs: ['全部','待审核','待修改','待支付','待签约','待入住'],
+        tabsCode: ['all','0','1','2','3','4'],
         loading:false,
         finished:true,
         checkType: 'all',
