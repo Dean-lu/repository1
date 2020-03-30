@@ -64,10 +64,10 @@ export default {
         that.$toast('填写的手机号格式不正确');
         return false; 
       }
-      if(that.form.bank_card_no.length !=15){
-        that.$toast('请填写正确的银行卡号！');
-        return false;
-      }
+      // if(that.form.bank_card_no.length!=19 || that.form.bank_card_no.length!=16){
+      //   that.$toast('请填写正确的银行卡号！');
+      //   return false;
+      // }
       this.$http
         .post(this.$store.state.global.baseUrl + "user/bind_card", this.form)
         .then(res => {
@@ -174,7 +174,7 @@ a:active {
   line-height: 0.857487923rem;
   color: white;
   background: #ffb640;
-  font-size: 0.217391304rem;
+  font-size: 0.417391304rem;
   border-radius: 0.048309179rem;
   /* bottom: 49px; */
   display: block;

@@ -22,7 +22,7 @@
                 2、房屋使用期为<span>{{contact.use_time}}</span>年，自<span>{{contact.end_time}}</span>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；
                 <br/>
                 3、该房屋每月房屋使用费为人民币大写）<span>{{contact.price}}</span>（其中<span>{{contact.other_price}}</span>，剩余部分为房屋租金）；支付方式为：预付押金为人民币（大写）<span>{{contact.deposit}}</span><br/>
-                4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每<span>{{contact.use_time}}</span>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。                 
+                4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每<span>{{contact.pay_style}}</span>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。                 
             </p>            
         </div>
         <div>
@@ -119,26 +119,37 @@
             </p>
         </div>
         <div class="housesign">
-            <div>
-                委托方（甲方）:  <span>{{contact.truename}}</span><br/>
-                身份证号： <span>{{contact.idcardcode}}</span><br/>
-                电话:  <span>{{contact.telphone}}</span>  <br/>    
-                紧急联系人：
-            </div>
-            <div>
-                受托方（乙方）: 湖南米花寓公寓管理有限公司<br/>
-                签约代表：<br/>
-                电话:  <br/>            
-            </div>
+            <div style="width: 100%;min-height: 2rem;">
+            <van-col span="12">
+              <div class="text-align-left">委托方（甲方）: </div>
+              <div class="text-align-left signature-area">
+                <van-image v-show="showSignatureImg" :src="signatureImg" />
+              </div>
+              <div class="text-align-left">身份证号：{{contact.idcardcode}}</div>
+              <div class="text-align-left">电话：{{contact.telphone}}</div>
+            </van-col>
+            <van-col class="logo-parent" span="12">
+              <div class="text-align-left">受托方（乙方）: </div>
+              <div class="text-align-left" style="text-indent: 0.2rem;line-height: 1.6rem;">湖南米花寓公寓管理有限公司</div>
+              <div class="text-align-left">签约代表：</div>
+              <div class="text-align-left">电话：</div>
+              <div class="mihua-logo"></div>
+            </van-col>
+          </div>
             <p>时间：<span>{{contact.date}}</span></p>
         </div>
         <!-- <button v-if="contract.order_status==1" @click="editList" class="btnOrange">修改合同信息</button> -->
-        <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>
-        <button v-else-if="contact.order_status==3" @click="sign" class="btnOrange">打开签约字板</button>
-        <button v-else-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
-        <button v-else-if="contact.order_status==0" @click="editList" class="btnOrange">
-            修改合同信息
-        </button>
+        <div v-if="btnstatus=='enter'">
+          <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>        
+          <button v-else-if="contact.order_status==3" @click="sign" class="btnOrange">打开签约字板</button>
+          <button v-else-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
+          <button v-else-if="contact.order_status==1" @click="editList" class="btnOrange">
+              修改合同信息
+          </button>
+        </div>
+        <div v-if="btnstatus=='submit'">
+          <button @click="submitSign" class="btnOrange">提交合同</button>
+        </div>
     </div>
     <van-action-sheet v-model="paypg" :round="false" title="合同费用支付" height="200px">
       <van-divider dashed></van-divider>
@@ -172,6 +183,9 @@
 </template>
  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript"></script> 
 <script>
+import html2Canvas from 'html2canvas' ;
+import Vue from 'vue'; 
+import JsPDF from 'jspdf';
 export default {
     data(){
         return {
@@ -182,6 +196,7 @@ export default {
             status:"start",    
             tips:"",      
             pay_wrong:"", 
+            btnstatus:"enter",          
             contact:{
                 order_status: null,
                 house_position: "",
@@ -200,7 +215,9 @@ export default {
                 telphone: "",
                 date: "",
             },
-            showSignature:false
+            showSignature:false,
+            signatureImg:'',
+            showSignatureImg:false
         }
     },
     beforeMount(){
@@ -289,7 +306,9 @@ export default {
                 'getBrandWCPayRequest', params,
                 function(res){
                     if(res.err_msg == "get_brand_wcpay_request:ok" ){
-                    that.$toast('获取合同详情失败，请刷新重试！');
+                      that.status="end";
+                      that.tips="恭喜支付成功！1-2个工作日会有工作人员联系您!";
+                    //that.$toast('支付成功');
                 } 
             }); 
         },
@@ -369,35 +388,97 @@ export default {
       clearHandle() {
         this.initCanvas()
       },
-      // 保存信息
+      // 保存签名信息
       saveImg() {
-        const imgBase64 = this.el.toDataURL()
-        let that = this;
-        let param = {
-          api_token: this.$store.state.global.api_token,
-          order_id: this.$store.state.locale.contractId,
-          contract_path:imgBase64
-        };
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/signing', param).then(res => {
-          //debugger
-          if(res.status == 200) {
-            if(res.data.code == 200){
-              //that.$toast("签名提交成功！");
-              //that.$store.state.locale.editHouseInfo = res.data.data;    
-             that.tips="签名提交成功,我们快尽快审核！" 
-             that.status="end";       
-            }else{
-              that.$toast(res.data.msg);
-            }
-          }else{
-            that.$toast('获取合同详情失败，请刷新重试！');
-            // setTimeout(() => {
-            //     this.$router.back(-1);
-            // }, 1000);
-            return;
-          }
-        });
+        const imgBase64 = this.el.toDataURL();
+        this.signatureImg=imgBase64;
+        this.btnstatus="submit";
+        this.showSignature=false;
+        this.showSignatureImg=true;
+
+        console.log('保存签名成功' + imgBase64);       
       },
+       // 合同生成
+      submitSign(){
+        var that = this;       
+        this.generateContractBtn = false;// 隐藏生成合同按钮
+        window.pageYOffset = 0;
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        console.log("合同生成....")
+        //debugger
+        var title = this.htmlTitle;
+        this.$html2Canvas(document.querySelector('#contactMain'), {
+          allowTaint: true,
+          useCORS: true
+        }).then(function(canvas) {    
+            let contentWidth = canvas.width;
+            let contentHeight = canvas.height;
+
+            let pageData = canvas.toDataURL('image/jpeg', 0.4);
+
+            let pdfWidth = (contentWidth + 10) / 2 * 0.75;
+            let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 500为底部留白
+
+            let imgWidth = pdfWidth;
+            let imgHeight = (contentHeight / 2 * 0.75); //内容图片这里不需要留白的距离
+
+            let pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
+            pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
+            
+            //debugger
+            // var datauri = pdf.output('dataurlstring');
+            //调用
+            var blob = that.dataURLtoBlob(pageData);
+            var file = that.blobToFile(blob, "contract_path_file");
+            console.log(file);
+            let param = new FormData();
+            param.append("api_token",that.$store.state.global.api_token);
+            // param.append("house_id",that.house_id);
+            param.append("order_id",that.$store.state.locale.contractId);
+            param.append("file",file);
+            let config = {
+              headers:{'Content-Type':'multipart/form-data'}
+            }; 
+            that.$http.post(that.$store.state.global.baseUrl + 'user/sign_post', param, config).then(res => {
+              //debugger
+              console.log(file);
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  console.log("合同上传成功！");
+                  // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
+                  // 跳转到
+                  that.status="end";
+                  that.tips="恭喜您！合同签约成功，1-2个工作日会有工作人员联系您!"
+                }else{
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                console.log("合同上传失败！");
+                that.$toast("合同上传失败！");
+                return;
+              }
+            });            
+           pdf.save(title + '.pdf');  
+        })
+      },
+      dataURLtoBlob: function(dataurl) { 
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+      },
+      //将blob转换为file
+      blobToFile: function(theBlob, fileName){
+         theBlob.lastModifiedDate = new Date();
+         theBlob.name = fileName;
+         return theBlob;
+      }
     },
     updated () {
         this.draw()
@@ -416,11 +497,11 @@ export default {
 .cavas{border:1px solid #ccc;width:90%; margin:0.5rem auto;}
 #contactMain{
     text-align: left;
-    width:90%;
+    width:100%;
     margin:0 auto;
     line-height:0.5rem;
     font-size:0.3rem;
-    padding-top:1.25rem;
+    padding:1.25rem 5% 0 5%;
     box-sizing:border-box;
     position:relative;
     h1{
@@ -479,6 +560,19 @@ export default {
         display: block;
     }
 }
+.logo-parent{position:relative;}
+.signature-area{ height:1.6rem;}
+/deep/.signature-area img{height:1.6rem; max-width:100%;}
+.mihua-logo{
+    position: absolute;
+    width: 4rem;
+    height: 4rem;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    background-image: url("../../../assets/img/entrust/mihua-logo.png");
+    background-repeat: no-repeat;
+    background-size: cover; 
+  }
  .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem; width:80%;margin:0 auto;}
 
