@@ -57,9 +57,9 @@ export default {
             if (res.data.code == 200) {
               //that.$toast("提交成功");
               that.is_show=false;
-              setTimeout(() => {
-                that.$router.push({ path: "/mine" });
-              }, 3000);
+              // setTimeout(() => {
+              //   that.$router.push({ path: "/mine" });
+              // }, 3000);
             } else {
               that.$toast(res.data.msg);
             }
@@ -73,7 +73,13 @@ export default {
 </script>
 
 <style scoped>
-
+.confirm-rent .van-nav-bar .van-icon,
+  .confirm-rent .van-nav-bar__title{
+    color:#FFB640;
+  }
+.confirm-rent .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .submit {
   width: 4.375rem;
   height: 0.9375rem;

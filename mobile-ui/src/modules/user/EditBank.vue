@@ -64,6 +64,10 @@ export default {
         that.$toast('填写的手机号格式不正确');
         return false; 
       }
+      // if(that.form.bank_card_no.length!=19 || that.form.bank_card_no.length!=16){
+      //   that.$toast('请填写正确的银行卡号！');
+      //   return false;
+      // }
       this.$http
         .post(this.$store.state.global.baseUrl + "user/bind_card", this.form)
         .then(res => {
@@ -71,10 +75,10 @@ export default {
             if (res.data.code == 200) {
               that.$toast("提交成功");
               setTimeout(() => {
-                that.$router.back(-1);
-              }, 3000);
+                that.$router.push({ path: "/Bank" });
+              }, 1000);
             } else {
-              that.$toast(res.data.msg);
+              that.$toast(res.data.msg);              
             }
           } else {
             that.$toast("系统异常！");
@@ -85,14 +89,15 @@ export default {
 };
 </script>
 
-<style scoped>
-.login {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../assets/img/user/login-b.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+<style scoped lang="less">
+
+.confirm-rent .van-nav-bar .van-icon,
+  .confirm-rent .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .confirm-rent .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .button-container {
   position: relative;
   width: 83%;
@@ -118,13 +123,13 @@ a:link {
 /* .bindConter{
   margin-top:1rem;
 } */
-.van-cell {
+/deep/.van-cell {
   color: #959595;
   background-color: #f5f5f5;
   border-radius: 0.225rem;
   width: 90%;
   height: 1.2rem;
-  margin: 0.15rem auto;
+  margin:0.4rem  auto;
   line-height: 0.8rem;
 }
 .division {
@@ -153,7 +158,7 @@ a:active {
   margin: 0 auto;
   margin-top: 6.25rem;
 }
-.van-button--small {
+/deep/.van-button--small {
   font-size: 0.5rem;
 }
 .cont {
@@ -169,7 +174,7 @@ a:active {
   line-height: 0.857487923rem;
   color: white;
   background: #ffb640;
-  font-size: 0.217391304rem;
+  font-size: 0.417391304rem;
   border-radius: 0.048309179rem;
   /* bottom: 49px; */
   display: block;
@@ -177,9 +182,12 @@ a:active {
   margin-top: 1.195652174rem;
 }
 .bindcard{
-  width:100%;color:black;font-size: 0.217391304rem;margin-top: 1.63236715rem;
+  width:100%;color:black;
+  font-size: 0.417391304rem;
+  margin-top: 1.83236715rem;
   text-align: left;padding-left: 0.169082126rem;
   margin-left:0.15rem;
+  line-height:0.8rem;
 }
 input{
   width:7.971014493rem;

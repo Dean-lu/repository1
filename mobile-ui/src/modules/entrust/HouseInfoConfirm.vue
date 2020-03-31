@@ -166,7 +166,7 @@
         <van-button v-if="!showSignatureImg" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="showSignature = true">电子签名</van-button>
         <van-button v-if="generateContractBtn" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="generateContract">提交合同</van-button>
       </div>
-    </van-popup>
+    </van-popup>   
     
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
       <canvas ref="signHandle" class="canvas" id="canvas" />
@@ -174,13 +174,14 @@
         <van-button size="mini" @touchstart="clearHandle">清空</van-button>
         <van-button type="info" size="mini" color="#F8B729" @touchstart="saveImg">确认</van-button>
       </div>
-    </van-action-sheet>
+    </van-action-sheet>    
     
   </div>
 </template>
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
+// 使用 <dingtalk></dingtalk> 在页面中调用
   import JsPDF from 'jspdf'
   export default {
     name: 'HouseInfoConfirm',
@@ -440,8 +441,8 @@
             var file = that.blobToFile(blob, "contract_path_file");
             let param = new FormData();
             param.append("api_token",that.$store.state.global.api_token);
-            // param.append("house_id",that.house_id);
-            param.append("house_id",90);
+            param.append("house_id",that.house_id);
+            // param.append("house_id",90);
             param.append("contract_path",file);
             let config = {
               headers:{'Content-Type':'multipart/form-data'}
@@ -747,5 +748,8 @@
     background-image: url("../../assets/img/entrust/mihua-logo.png");
     background-repeat: no-repeat;
     background-size: cover; 
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>

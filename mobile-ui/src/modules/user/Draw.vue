@@ -6,7 +6,18 @@
       <!-- 到账银行卡 -->
       <div class="card">
         <span class="info">到账银行卡</span>
-        <span class="bank">{{bank}}</span>
+        <!-- <span class="bank">{{bank}}</span> -->
+        <div class="bank">
+          <!-- <select>
+            <option v-for="(item ,index) in bank" :key="index">
+               {{item}}
+            </option>
+          </select> -->
+          <van-field readonly clickable name="choiceBank" :value="choiceBank" placeholder="选择银行卡" @click="showBankLayout = true" />
+          <van-popup class="popup-select" v-model="showBankLayout" position="bottom" >
+            <van-picker show-toolbar title="选择银行卡" :columns="bank" @cancel="showBankLayout = false" @confirm="DrawBankLayout" />
+          </van-popup>
+        </div>
         <span class="hour">2小时内到账</span>
       </div>
       <!-- 提现金额 -->
@@ -17,15 +28,15 @@
           alt
           class="moneyImg"
         />
-        <input type="number" class="money" />
+        <input type="number" v-model="money" class="money" />
       </div>
       <!-- 提示 -->
       <div class="tips">
         当前可提现金额为{{can}}元，
-        <strong>全部提现</strong>
+        <strong @click="drawmoneyall">全部提现</strong>
       </div>
       <!-- 按钮 -->
-      <div class="btn" @click="drawmoney">提现</div>
+      <div class="btn" @click="drawmoneyb">提现</div>
     </div>
     <!-- 提现申请成功 -->
     <div class="success" v-if="status=='success'">
@@ -46,10 +57,10 @@
     <!-- 支付密码 -->
     <div class="pay-tool" v-if="status=='keyword'">
       <div class="pay-tool-title border-bottom">
-        <span class="icon icon-back" @click="backHandle"></span>
+        <span class="van-icon van-icon-cross van-nav-bar__arrow icon icon-back" @click="backHandle"></span>
         <strong>输入支付密码</strong>
         <p>提现金额</p>
-        <p>{{drawmoney}}</p>
+        <p>￥{{drawmoney}}元</p>
         <p>
           <span style="float:left;">服务费</span>
           <span style="float:right">{{fee}}元</span>
@@ -58,7 +69,7 @@
       <div class="pay-tool-content">
         <div class="pay-tool-inputs">
           <div class="item" v-for="i in items" :key="i">
-            <span class="icon_dot" v-if="password[i]"></span>
+            <span class="icon_dot" v-if="password[i]">●</span>
           </div>
         </div>
         <!-- <div class="pay-tool-link"><router-link class="link" to="/getP">忘记密码？</router-link></div> -->
@@ -67,7 +78,7 @@
         <ul>
           <li @click="keyUpHandle($event)" v-for="val in keys" :key="val">{{ val }}</li>
           <li class="del" @click="delHandle">
-            <span class="icon-del"></span>
+            <span class="icon-del van-icon van-icon-arrow-left van-nav-bar__arrow" style="font-size:0.8rem"></span>
           </li>
         </ul>
       </div>
@@ -84,12 +95,17 @@ export default {
       status: "init",
       title: "提现",
       can: 0,
-      bank: "长沙银行",
+      choiceBank:'',
+      bank:[],
       items: [0, 1, 2, 3, 4, 5],
       keys: keys(),
       password: [],
+      bankId:'',
+      bankAll:'',
       fee:0,
-      drawmoney:0
+      drawmoney:0,
+      showBankLayout:false,
+      money:null
     };
   },
   mounted() {
@@ -98,23 +114,48 @@ export default {
   methods: {
     backHandle() {
       this.clearPasswordHandle(); // 返回时清除password
-      this.$emit("backFnc"); // 返回上级
+      //this.$emit("backFnc"); // 返回上级
+      this.status='init'
     },
     keyUpHandle(e) {
       let text = e.currentTarget.innerText;
       let len = this.password.length;
-      if (!text || len >= 6) return;
+      if (!text || len > 6)  return false;
       this.password.push(text);
       this.ajaxData();
     },
     delHandle() {
       if (this.password.length <= 0) return false;
-      this.password.shift();
+      this.password.pop();
     },
     ajaxData() {
+      let that=this;
       if (this.password.length >= 6) {
-        console.log(parseInt(this.password.join(" ").replace(/\s/g, "")));
+         console.log(parseInt(this.password.join(" ").replace(/\s/g, "")));
+         that.password=parseInt(this.password.join(" ").replace(/\s/g, ""));
+         that.$http.post(that.$store.state.global.baseUrl + "user/withdraw",{
+              api_token:that.$store.state.global.api_token,
+              money:that.money,
+              bank_card_id:that.bankId,
+              pay_password:that.password
+            })
+          .then(res => {
+            if (res.status == 200) {
+              if (res.data.code == 200) {
+                //todo
+                that.$toast("提现完成");
+                that.backHandle();
+              } else {
+                that.$toast(res.data.msg);
+                that.clearPasswordHandle();
+              }
+            } else {
+              that.$toast("系统异常,请重试！");
+              that.backHandle();
+            }
+          });
       }
+       
       return false;
     },
     clearPasswordHandle: function() {
@@ -123,63 +164,83 @@ export default {
     onClickLeft() {
       this.$router.back(-1);
     },
-    drawmoney() {
-      //todo 执行提现申请
+    drawmoneyall(){      
+      if(this.can==0 || this.can==0.00){
+        this.$toast("没有可提现金额");
+        return false;
+      }
+      this.money=this.can;
+      this.status='keyword'
+    },
+    drawmoneyb() {
+      //todo 执行提现申请      
+      if(!this.money) {
+        this.$toast("请输入提现金额");
+        return false;
+      }else if(this.money==0 || this.money==0.00){
+        this.$toast("没有可提现金额");
+        return false;
+      }else if(this.money > this.can){
+         this.$toast("提现金额不能大于可提现金额");
+         return false;
+      }else{
+        this.status='keyword'
+      }   
+     
     },
     init() {
       //todo 获取可提现金额、银行类型等
-      // var that=this
-      //  this.$http.post(this.$store.state.global.baseUrl + "user/bank", this.user)
-      // .then(res => {
-      //   if (res.status == 200) {
-      //     if (res.data.code == 200) {
-      //       //todo
-      //       this.is_show='none'
-      //     } else {
-      //       that.$toast(res.data.msg);
-      //     }
-      //   } else {
-      //     that.$toast("系统异常！");
-      //   }
-      // });
+      var that=this;
+       this.$http.post(this.$store.state.global.baseUrl + "base/pre_withdraw",{
+           api_token:this.$store.state.global.api_token
+         })
+      .then(res => {
+        if (res.status == 200) {
+          if (res.data.code == 200) {
+            //todo
+            for(let i=0,len=res.data.data.length; i<len;i++){
+              that.bank.push(res.data.data[i].bank_card_no);              
+            }
+            that.bankId=res.data.data[0].id;
+            that.bankAll=res.data.data;
+            that.can=res.data.balance;
+            that.choiceBank=res.data.data[0].bank_card_no;
+          } else {
+            that.$toast(res.data.msg);
+          }
+        } else {
+          that.$toast("系统异常！");
+        }
+      });
     },
     close() {
       this.$router.back(-1);
     },
-    save() {
-      var that = this;
-      if (that.advice == "" || that.advice == undefined) {
-        that.$toast("填写投诉建议后才能提交");
-      }
-      this.$http
-        .post(this.$store.state.global.baseUrl + "user/advice", this.user)
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.code == 200) {
-              that.$toast("提交成功");
-              setTimeout(() => {
-                that.$router.push({ path: "/mine" });
-              }, 3000);
-            } else {
-              that.$toast(res.data.msg);
-            }
-          } else {
-            that.$toast("系统异常！");
+    // 银行卡选择
+      DrawBankLayout(value){
+        this.choiceBank = value;
+        //this.houseInfo.house_layout = this.valueHouseLayout;
+        for(let i=0,len=this.bankAll.length;i<len;i++){
+          if(this.bankAll[i].bank_card_no==value){
+            this.bankId=this.bankAll[i].id;
           }
-        });
-    }
+        }
+        console.log(this.bankId);
+        this.showBankLayout = false;
+      }
+    
   }
 };
 </script>
 
 <style scoped lang="less">
-.login {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../assets/img/user/login-b.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+.confirm-rent .van-nav-bar .van-icon,
+  .confirm-rent .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .confirm-rent .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .button-container {
   position: relative;
   width: 83%;
@@ -192,56 +253,23 @@ export default {
   padding-top: 0.6125rem;
   color: #959595;
 }
-.link {
-  color: #959595;
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 0.4125rem;
-}
-.link div {
-}
-a:link {
-  color: #959595;
-  text-decoration: underline;
-}
-.van-cell {
+
+/deep/.van-cell {
   color: #959595;
   background-color: #f5f5f5;
-  border-radius: 0.625rem;
-  width: 90%;
-  height: 0.8rem;
-  margin: 0.125rem auto;
+  border-radius:0;
+  width:100%;
+  height: 100%;
+  margin:0;
   line-height: 0.4rem;
+  background:rgb(247, 248, 248);
+  padding:0;
+  color:red;
+  
 }
-.division {
-  position: absolute;
-  width: 25%;
-  height: 2rem;
-  left: 0.125rem;
-  z-index: 10;
-  border-right: 0.03125rem solid white;
-}
-a:visited {
-  color: #959595;
-  text-decoration: underline;
-}
-a:hover {
-  color: #959595;
-  text-decoration: underline;
-}
-a:active {
-  color: #959595;
-  text-decoration: underline;
-}
-.submit {
-  width: 4.375rem;
-  height: 0.9375rem;
-  margin: 0 auto;
-  margin-top: 6.25rem;
-}
-.van-button--small {
-  font-size: 0.5rem;
-}
+/deep/.van-field__control{
+    color:red
+  }
 .card {
   width: 9.034rem;
   height: 1.769323671rem;
@@ -252,23 +280,26 @@ a:active {
 }
 .card .info {
   position: absolute;
-  width: 1.769323671rem;
+  width: 1.969323671rem;
   left: 0.736714976rem;
   top: 0.373188406rem;
+  text-align: left;
 }
 .card .bank {
   position: absolute;
-  width: 1.40942029rem;
+  width: 4.0942029rem;
   /* height:0.332125604rem; */
   top: 0.373188406rem;
   left: 3.669082126rem;
   color: red;
+  text-align: left;
 }
 .card .hour {
   position: absolute;
-  width: 1.885748792rem;
+  width:  4.0942029rem;
   top: 0.964975845rem;
-  left: 3.65942029rem;
+  left:  3.669082126rem;
+  text-align: left;
 }
 .cont {
   text-align: center;
@@ -300,10 +331,11 @@ a:active {
   font-size: 0.6rem;
 }
 .tips {
-  width: 5.047101449rem;
+  width:8.047101449rem;
   position: fixed;
   left: 1.194444444rem;
   top: 5.90410628rem;
+  text-align: left;
 }
 .btn {
   width: 7.363285024rem;
@@ -347,34 +379,53 @@ a:active {
   height: 18.11111111rem;
   z-index: 1;
   background: rgb(197, 198, 198);
+  padding-top:1.2rem;
+  box-sizing: border-box;
+  
 }
 .pay-tool {
   position: relative;
-  height: 18.93333333rem;
+  // height: 18.93333333rem;
   background-color: #fff;
   overflow: hidden;
+  position:fixed;
+  left:0; top:0;
+  bottom:0;
+  z-index: 9;
+  right:0;  
   &-title {
     width: 100%;
-    height: 1.08888888rem;
+    //height: 1.08888888rem;
     padding: 0 0.8rem;
-    line-height: 1.08888888rem;
+    //line-height: 1.08888888rem;
     text-align: center;
     overflow: hidden;
     margin-top: 1.3rem;
     font-size: 0.6rem;
+    box-sizing: border-box;   
     .icon {
-      float: left;
-      margin-top: 0.72222222rem;
+      float: right; 
+      margin-top:0.4rem;     
     }
     strong {
       font-size: 0.4rem;
+       line-height:1rem;
     }
+    p{
+      color:#666;
+      font-size:0.35rem;
+      padding:0.1111rem 0;
+      margin:0;
+    }
+  }
+  &-title::after{
+    clear:both
   }
   &-content {
     .pay-tool-inputs {
-      width: 9.057971014rem;
+      width:90%;
       height: 1.314492754rem;
-      margin: 1.28888888rem auto 0;
+      margin: 0.2rem auto 0;
       border: 1px solid #b9b9b9;
       border-radius: 0.26666666rem;
       box-shadow: 0 0 1px #e6e6e6;
@@ -394,6 +445,7 @@ a:active {
           height: 0.51111111rem;
           // background: url("../../assets/images/icon_dot.png") no-repeat;
           background-size: cover;
+          font-size:0.8rem;
         }
       }
     }

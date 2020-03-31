@@ -5,25 +5,20 @@
       <van-tabs color="#FFB640" v-model="active" @click="onClick">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell class="list-item" v-for="(item, index) in contract" :key="index" >              
-                <div v-if="item.rent_status==1" @click="edit(item.id)">
+            <van-cell class="list-item" v-for="(item, index) in contract" :key="index" >      
+                <div @click="look(item.id)">
                     <div class="float-left">                        
-                        <span>{{item.name}}</span>
+                        <span>房屋租赁合同</span>
                     </div>
                     <div class="float-right">
-                        <span class="contract_status">{{item.contact_status}}</span>
-                        <van-icon name="arrow"/>
-                    </div>                    
-                </div>
-                <div v-else  @click="look(item.id)">
-                    <div class="float-left">                        
-                        <span>{{item.name}}</span>
-                    </div>
-                    <div class="float-right">
-                        <span class="contract_status">{{item.contact_status}}</span>
+                        <span v-if="item.order_status==0" class="contract_status">待审核</span>
+                        <span v-if="item.order_status==1" class="contract_status">待修改</span>
+                        <span v-if="item.order_status==2" class="contract_status">待支付</span>
+                        <span v-if="item.order_status==3" class="contract_status">待签约</span> 
+                        <span v-if="item.order_status==4" class="contract_status">待入住</span>                        
                         <van-icon name="arrow"/>
                     </div>
-                </div>
+                </div>                
             </van-cell>
           </van-list>
         </van-tab>
@@ -42,36 +37,17 @@ import Vue from "vue"
         areaKeyWord: '',
         roomNum: '',
         active: 0,
-        tabs: ['全部','待审核','待修改','待支付','待签约','待入住','已出租'],
-        tabsCode: ['all','0','1','2','3','4','-1'],
+        tabs: ['全部','待审核','待修改','待支付','待签约','待入住'],
+        tabsCode: ['all','0','1','2','3','4'],
         loading:false,
         finished:true,
         checkType: 'all',
-        contract: [
-          {
-            id: 0,
-            name:"房屋租赁合同1",            
-            rent_status:2,
-            contact_status:1
-          },
-          {
-            id: 0,
-            name:"房屋租赁合同2",            
-            rent_status:1,
-            contact_status:0
-          },
-          {
-            id: 0,
-            name:"房屋租赁合同3",            
-            rent_status:1,
-            contact_status:1
-          }
-        ]
+        contract: []
       }
     },
     mounted(){
-       this.changeStatus()
-      //this.contactSourct('all');
+      // this.changeStatus()
+      this.contactSourct('all');
     },
     methods: {
       onClickLeft() {
@@ -81,11 +57,7 @@ import Vue from "vue"
         
       },
       onClick(name, title) {
-        this.$toast(title + this.active);
-        this.contactSourct(this.tabsCode[this.active]);
-      },
-      query(){
-        this.$toast(title + this.active);
+       // this.$toast(title + this.tabsCode[this.active]);
         this.contactSourct(this.tabsCode[this.active]);
       },
       contactSourct(chenkType){
@@ -99,57 +71,37 @@ import Vue from "vue"
           if(res.status == 200) {
             if(res.data.code == 200){
               //console.log(res.data.data.data);
-              //that.houseSource = res.data.data.data;
+              that.contract = res.data.data.data;
+
             }else{
               that.$toast(res.data.msg);
             }
           }else{
-            that.$toast('获取房源信息失败，请刷新重试！');
+            that.$toast('获取合同信息失败，请刷新重试！');
             return;
           }
         });
       },      
-      // 去编辑
-      edit(contractId){
-       this.$store.state.locale.contractId = contractId;
-        this.$router.push({path : '/HouseContact'});
-      },
       //去查看
       look(contractId){
         this.$store.state.locale.contractId = contractId;
-        this.$router.push({path : '/HouseContact'});
-      },
-      Status(res){
-            console.log(res);
-            let status=Number(res);
-            switch (status) {
-                case 0:
-                    return "待审核"
-                case 1:
-                    return "待修改"
-                case 2:
-                    return "待支付"
-                case 3:
-                    return "待签约"
-                case 4:
-                    return "待入住"
-                default:
-                    return "待审核"
-            }             
-      },
-      changeStatus(){
-          const that=this;
-          for(let j=0,len=that.contract.length;j<len;j++){ 
-              console.log(len +"len");
-              that.contract[j].contact_status=that.Status(that.contract[j].contact_status);
-              Vue.set(that.contract,j,that.contract[j])
-            }  
+        this.$store.state.locale.editcontractInfo='';
+        this.$router.push({path : '/HouseUseContact'});
+        
       }
+     
     }
   }
 </script>
 
 <style scoped lang="less">
+.main .van-nav-bar .van-icon,
+  .main .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .main .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .main{
     padding-top:1.226667rem;
     box-sizing: border-box;
@@ -159,17 +111,20 @@ import Vue from "vue"
     height: 1.4rem;
     background-color: #F5F5F5;
   }
-  .van-cell{
+  /deep/.van-tabs__nav{
+  background:#f5f5f5
+}
+  /deep/.van-cell{
     padding: 0.125rem auto 0.2rem auto;   
   }
-  .van-cell > div{
+  /deep/.van-cell > div{
     position:relative;
   }
   .search{
     width: 100%;
     height: 1.25rem
   }
-.van-field__control{
+/deep/.van-field__control{
     background-color: #E4E4E4
   }
   .contract_status{
@@ -183,9 +138,8 @@ import Vue from "vue"
     
   }
   .list{
-    width: 90%;
-    min-height: 3rem;
-    margin: 0 auto;
+    width:100%;
+    min-height: 3rem;    
   }
   .list .title{
     text-align:  left;

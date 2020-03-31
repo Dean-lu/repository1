@@ -56,6 +56,34 @@
       <div class="img" v-for="(item,index) in houseInfo.house_img" :key="index">
         <van-image :src="item"></van-image>
       </div>
+      <van-cell>
+        <van-col span="20" offset="3" class="text-align-left">身份证正面照片：</van-col>
+      </van-cell>
+      <div class="img">
+        <van-image :src="houseInfo.cardimg1"></van-image>
+      </div>
+      <van-cell>
+        <van-col span="20" offset="3" class="text-align-left">身份证反面照片：</van-col>
+      </van-cell>
+      <div class="img">
+        <van-image :src="houseInfo.cardimg2"></van-image>
+      </div>
+      <van-cell>
+        <van-col span="20" offset="3" class="text-align-left">购房合同或房产证照片：</van-col>
+      </van-cell>
+      <div class="img">
+        <van-image :src="houseInfo.certifi_info"></van-image>
+      </div>
+      <van-divider></van-divider>
+      <van-cell>
+        <van-col span="20" offset="3" class="text-align-left"><span style="font-weight: bolder;">增值服务</span></van-col>
+      </van-cell>
+      <div class="add-serv">
+         <van-cell v-for="(item,index) in houseInfo.added_service" :key="index">
+          <van-col class="float-left">{{item.service_name}}</van-col>
+          <van-col class="float-right">￥{{item.price}}</van-col>
+        </van-cell>
+      </div>
       <div class="edit-btn">
         <van-button square type="info" size="small" color="#F8B729" @click="toEditHouseInfo">编辑</van-button>
         <van-button square type="info" size="small" color="#F8B729" @click="rejectConfirm = true">驳回</van-button>
@@ -222,5 +250,9 @@
   /deep/.edit-btn button{
     margin: 0 5%;
     border-radius: 0.1875rem;
+  }
+  .add-serv{
+    width: 60%;
+    margin: 0 auto;
   }
 </style>

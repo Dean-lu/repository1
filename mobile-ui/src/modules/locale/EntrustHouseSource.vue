@@ -5,10 +5,10 @@
     <div class="search">
       <div style="width: 90%;margin: 0 auto;">
         <van-col span="12">
-          <van-field v-model="areaKeyWord" placeholder="请输入小区名称关键词" />
+          <van-field v-model="keyword" placeholder="请输入小区名称关键词" />
         </van-col>
         <van-col span="6">
-          <van-field v-model="roomNum" placeholder="请输入房号" />
+          <van-field v-model="roomNumber" placeholder="请输入房号" />
         </van-col>
         <van-col span="6">
           <van-button block size="mini" color="#FFB640" native-type="submit" @click="query">
@@ -22,7 +22,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toEntrustHouseInfo(item.id)">
-              <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
+              <van-image src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
               <div class="float-left">
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
@@ -44,11 +44,14 @@
     components: {HeaderBar},
     data () {
       return {
-        areaKeyWord: '',
-        roomNum: '',
+        // 小区名称搜索
+        keyword: '',
+        // 房号搜索
+        roomNumber: '',
+        // tab
         active: 0,
-        tabs: ['全部','初审中','复审中','待修改','已审核'],
-        tabsCode: ['all','0','1','2','3'],
+        tabs: ['全部','待初审','待复审','已审核'],
+        tabsCode: ['all','0','1','2'],
         loading:false,
         finished:true,
         checkType: 'all',
@@ -73,7 +76,6 @@
         
       },
       onClick(name, title) {
-        this.$toast(title + name + this.active);
         this.queryHouseSource(this.tabsCode[this.active]);
       },
       query(){
@@ -83,10 +85,11 @@
         var that = this;
         let param = {
           api_token: that.$store.state.locale.api_token,
-          check_type: chenkType
+          check_type: chenkType,
+          garden_name: this.keyword,
+          room_number: this.roomNumber
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/scene_index', param).then(res => {
-          debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseSource = res.data.data.data;

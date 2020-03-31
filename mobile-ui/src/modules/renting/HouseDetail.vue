@@ -49,16 +49,17 @@
         <van-cell title="起租时间:" :value="startRentTime" @click="showRentTimeSelect = true" />
         <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
         <van-cell>
-          <van-field readonly clickable :value="valueRentTerm" label="租期:" label-width="4.2rem"
+          <van-field readonly clickable name="rentTerm" :value="valueRentTerm" label="租期:" label-width="4.2rem"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
           </van-popup>
         </van-cell>
-        <van-cell title="期望交房时间:" :value="expectHandingTime" @click="showHandingTimeSelect = true" />
-        <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" />
+        <van-cell title="期望交房时间:" :value="expectHandingTime" />
+        <!-- @click="showHandingTimeSelect = true" -->
+        <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
       </div>
-      <div style="color: #777;">起租时间请设置为您入住的日期，且不晚于2020年3月13日</div>
+      <div style="color: #777;">起租时间请设置为您入住的日期，实际入住时间不晚于{{actualRentTimeLimit}}</div>
       <div class="confirm-bottom">
         <van-button square type="info" size="small" color="#F8B729" @click="toConfirmRentInfo">下一步</van-button>
       </div>
@@ -97,15 +98,17 @@
         // 起租租期
         showRentTimeSelect: false,
         startRentTime: '选择起租时间',
+        startRentDate: new Date(),
+        actualRentTimeLimit: '',
         // startRentTime: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear() + 1}`,
         // 租期
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
-        rentTerm: 0,
-        rentTermList: ['一年','半年'],
+        rentTerm: '',
+        rentTermList: ['一年','两年','三年'],
         // 期望交房时间
         showHandingTimeSelect: false,
-        expectHandingTime: '期望交房时间',
+        expectHandingTime: '',
       }
     },
     mounted(){
@@ -114,7 +117,6 @@
     methods: {
       init(){
         console.log(this.$store.state.renting.id)
-        debugger
         // 获取房源详情
         let that = this;
         let param = {house_id: this.$store.state.renting.id};
@@ -142,20 +144,33 @@
         if(this.$store.state.renting.expectHandingTime){
           this.expectHandingTime = this.$store.state.renting.expectHandingTime;
         }
+        this.actualRentTimeLimit = this.dateAddFormat(new Date(),3);
       },
       formatDate(date) {
         return `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
       },
+      // 返回date+3day后的日期
+      dateAddFormat(date,day){
+        let seconds = date.getTime();
+        console.log(seconds)
+        let newDate = new Date(seconds + day * 1000 * 60 * 60 * 24);
+        return `${newDate.getFullYear() + 1}年${newDate.getMonth() + 1}月${newDate.getDate()}日`;
+      },
       // 确认起租时间
       onConfirmRentTime(date) {
         this.showRentTimeSelect = false;
+        this.startRentDate = date;
         this.startRentTime = this.formatDate(date);
+        this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
       },
       // 确认租期
       confirmRentTerm(value,index){
         this.valueRentTerm = value;
         this.rentTerm = index + 1;
         this.showRentTerm = false;
+        // 计算交房时间（退房时间）
+        console.log(this.startRentDate)
+        this.expectHandingTime = `${this.startRentDate.getFullYear() + 1 + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
       },
       // 期望交房时间
       onConfirmHandingTime(date){
@@ -175,7 +190,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
   .van-nav-bar__text{
     color: #FFB640;
   }
@@ -263,5 +278,8 @@
     width: 3.125rem;
     border-radius: 0.125rem;
     font-size: 0.5rem;
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>

@@ -9,8 +9,8 @@
       <!-- 有银行卡信息 -->
       <div v-if="is_show=='has'">
           <div class="card" v-for="(item, index) in cardArr" :key="index">
-              <div class="cardno">{{item.cardno}}</div>
-              <div class="bank">{{item.bank}}</div>
+              <div class="cardno">{{item.bank_card_no}}</div>
+              <!-- <div class="bank">{{item.bank}}</div> -->
           </div>
           <div class="btn" @click="add">
               添加银行卡
@@ -31,17 +31,8 @@ export default {
     };
   },
   mounted() {
-    this.cardArr=[
-      {          
-          cardno:'234',
-          bank:'中国农业银行'
-        },
-        {          
-          cardno:'2345234523452345345',
-          bank:'中国建设银行'
-        }
-    ]
-    //this.init()
+    
+    this.init()
   },
   methods: {
      onClickLeft() {
@@ -91,6 +82,13 @@ export default {
   width: 100%;
   height: 100%;  
 }
+.confirm-rent .van-nav-bar .van-icon,
+  .confirm-rent .van-nav-bar__title{
+    color:#FFB640;
+  }
+  .confirm-rent .van-nav-bar{
+    border-bottom: .11rem solid #f5f5f5;
+  }
 .addimg{
   width:120px;height:120px;
   margin:2.173913043rem auto 0 auto;
@@ -116,7 +114,7 @@ export default {
   color:white;
   background:rgb(114, 113, 113);
   width:9.034rem;
-  height:2.971014493rem;
+  height:1.571014493rem;
   margin-left:0.483091787rem;
   margin-top:1rem;
   text-align:left;

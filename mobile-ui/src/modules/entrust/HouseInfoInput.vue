@@ -67,7 +67,7 @@
         <div class="house-cer">
           <van-field name="houseInfo.certifiInfo">
             <template #input>
-              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" accept=".jpg, .jpeg, .png" :max-count="1" />
+              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" :max-count="1" />
             </template>
           </van-field>
         </div>
@@ -87,7 +87,7 @@
         <div class="add-service">
           <div class="add-service-cell" v-for="(item, index) in addedService" :key="index">
             <div>{{item.service_name}}</div>
-            <div>{{item.price}}</div>
+            <div>¥{{item.price}}</div>
             <div>
               <input type="checkbox" :value="item.id" @click="checkExclusion(item,index)" />
             </div>
@@ -146,7 +146,7 @@
           //产权编号
           house_number:'',
           // 增值服务总价
-          totalAddPrice: 0.0,
+          // totalAddPrice: 0.0,
           addedServiceSelect: [],
           
         },
@@ -302,14 +302,9 @@
         //设置请求头
         let config = {
           headers:{'Content-Type':'multipart/form-data'}
-        };  
-        //this.axios 是因为在main.js写在vue实例里
-        const axiosAjax = this.$http.create({
-             timeout: 1000 * 60, //时间
-             withCredentials: true //跨域携带cookie
-        });
-        // axiosAjax.post('http://localhost:9001/basic/user/upload', param, config).then(res => {
+        }
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+          debugger
           console.log(res)
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -331,9 +326,9 @@
 //       },
       // 检查增值服务互斥项
       checkExclusion(item,clickIndex){
-        if(!this.houseInfo.totalAddPrice){
-          this.houseInfo.totalAddPrice = 0.0;
-        }
+//         if(!this.houseInfo.totalAddPrice){
+//           this.houseInfo.totalAddPrice = 0.0;
+//         }
         console.log(item)
         // 互斥项禁用
         let checkboxs = $(".add-service-cell input");
@@ -349,7 +344,7 @@
             }
           }
           this.houseInfo.addedServiceSelect.push(item);
-          this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
+          // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.add(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price) ;
           // this.houseInfo.totalAddPrice += parseFloat(this.addedService[clickIndex].price);
         }else{// 反选事件
@@ -367,13 +362,13 @@
               this.houseInfo.addedServiceSelect.splice(c,1);
             }
           }
-          this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).subtract(this.$math.bignumber(this.addedService[clickIndex].price)).done());
+          // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).subtract(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.subtract(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price);
         }
-        if(this.houseInfo.totalAddPrice < 0){
-          this.houseInfo.totalAddPrice = 0;
-        }
-        console.log(this.houseInfo.totalAddPrice);
+//         if(this.houseInfo.totalAddPrice < 0){
+//           this.houseInfo.totalAddPrice = 0;
+//         }
+        // console.log(this.houseInfo.totalAddPrice);
         this.houseInfo.added_service_id = [];
         for(let i = 0; i < checkboxs.length; i++){
           if(checkboxs[i].checked == true){
@@ -430,9 +425,17 @@
         if(!this.houseInfo.rent_price){
           this.$toast("请输入租金");
           return;
+        } 
+        if(!/^[0-9]*$/.test(this.houseInfo.rent_price)){
+          this.$toast("租金只能是数字");
+          return;
         }
         if(!this.houseInfo.deposit){
           this.$toast("请输入押金");
+          return;
+        }
+        if(!/^[0-9]*$/.test(this.houseInfo.deposit)){
+          this.$toast("押金只能是数字");
           return;
         }
         if(!this.houseInfo.pay_style){
@@ -560,6 +563,9 @@
     display: inline-block;
     width: 25%;
     height: 1rem;
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
   /* .add-service-cell input{
     position: absolute;
