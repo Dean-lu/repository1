@@ -155,11 +155,16 @@ Vue.use(Dialog);
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-              that.houseInfo = res.data.data;
+              
               //that.$store.state.locale.editHouseInfo = res.data.data;
+              if(res.data.data.house_img==null){
+                 res.data.data.house_img=[];
+              }
+              that.houseInfo = res.data.data;
               that.house_showImg=res.data.data.house_img;
               that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
               that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
+              
             }else{
               that.$toast(res.data.msg);
             }
