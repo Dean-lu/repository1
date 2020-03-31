@@ -111,7 +111,7 @@
       <div id="pdfDom" style="width: 100%;margin: 0 auto;padding-top: 1rem;">
         <div style="width: 90%;margin: 0 auto;">
           <h2>委托出租服务协议</h2>
-          <p class="text-align-left">委托方（甲方）：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{entruster}}&nbsp;&nbsp;&nbsp;</span></p>
+          <p class="text-align-left">委托方（甲方）：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{user.truename}}&nbsp;&nbsp;&nbsp;</span></p>
           <p class="text-align-left">受托方（乙方）：湖南米花寓公寓管理有限公司</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">甲、乙双方根据《中华人民共和国合同法》等相关法律的规定，在平等、自愿的原则上，就甲方将房屋委托乙方独家出租事宜，协商一致签定本协议。</p>
           <h3 class="text-align-left" style="text-indent: 0.5rem;">一、房屋位置与产权人</h3>
@@ -119,8 +119,8 @@
           <p class="text-align-left" style="text-indent: 0.5rem;">2、房号：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.building_number}}&nbsp;&nbsp;&nbsp;</span>栋<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.house_number}}&nbsp;&nbsp;&nbsp;</span>号</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">3、房屋面积：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.area}}&nbsp;&nbsp;&nbsp;</span>㎡</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">4、房屋户型：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.house_layout}}&nbsp;&nbsp;&nbsp;</span></p>
-          <p class="text-align-left" style="text-indent: 0.5rem;">5、房屋产权人姓名：（甲方须与产权人一致）：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{owner}}&nbsp;&nbsp;&nbsp;</span></p>
-          <p class="text-align-left" style="text-indent: 0.5rem;">6、产权人身份证号：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{idNumber}}&nbsp;&nbsp;&nbsp;</span></p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">5、房屋产权人姓名：（甲方须与产权人一致）：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{user.truename}}&nbsp;&nbsp;&nbsp;</span></p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">6、产权人身份证号：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{user.idcardcode}}&nbsp;&nbsp;&nbsp;</span></p>
           <p class="text-align-left" style="text-indent: 0.5rem;">7、房屋产权证号：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.house_number}}&nbsp;&nbsp;&nbsp;</span></p>
           <h3 class="text-align-left" style="text-indent: 0.5rem;">二、委托期<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.expire_year}}&nbsp;&nbsp;&nbsp;</span>年，自本协议签署后开始计算。</h3>
           <h3 class="text-align-left" style="text-indent: 0.5rem;">三、委托事项：</h3>
@@ -148,8 +148,8 @@
               <div class="text-align-left signature-area">
                 <van-image v-show="showSignatureImg" :src="signatureImg" />
               </div>
-              <div class="text-align-left">身份证号：{{idNumber}}</div>
-              <div class="text-align-left">电话：{{mobile}}</div>
+              <div class="text-align-left">身份证号：{{user.idcardcode}}</div>
+              <div class="text-align-left">电话：{{user.telphone}}</div>
             </van-col>
             <van-col class="logo-parent" span="12">
               <div class="text-align-left">受托方（乙方）: </div>
@@ -188,9 +188,12 @@
     components: {HeaderBar},
     data() {
       return {
-        entruster: 'xx物业',
-        owner: '张先生',
-        idNumber: '430723199651524851',
+        user: {
+          truename: '',
+          idcardcode: '',
+          telphone: '',
+          court: ''
+        },
         mobile: '15841526398',
         currDate : new Date(),
         showSignatureImg: false,
@@ -268,6 +271,7 @@
       generationConfirm(){
         // 从vuex获取数据
         this.houseInfo = this.$store.state.entrust.houseInfo;
+        this.user = this.$store.state.global.user;
       },
       showConfirmF(){
         
@@ -454,7 +458,7 @@
                   console.log("合同上传成功！");
                   // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
                   // 跳转到
-                  this.$router.push({path : '/confirmSuccess'});
+                  that.$router.push({path : '/confirmSuccess'});
                 }else{
                   that.$toast(res.data.msg);
                 }
@@ -643,7 +647,7 @@
     text-indent: 0.5rem;
   }
   .info-card .area{
-    font-size: 0.2rem;
+    font-size: 0.4rem;
     text-align: left;
     text-indent: 0.5rem;
     

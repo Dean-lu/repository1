@@ -5,11 +5,11 @@
     </van-nav-bar>
     <div class="remind">
       <div class="title">
-        <van-col span="10">
-          logo
+        <van-col span="8" offset="2">
+          <van-icon size="1.5rem" :name="logo" />
         </van-col>
         <van-col span="14">
-          <div >签约成功</div>
+          <div style="line-height: 1.5rem;" >签约成功</div>
         </van-col>
       </div>
       <div class="division"></div>
@@ -23,7 +23,7 @@
     name: 'ConfirmSuccess',
     data () {
       return {
-        
+        logo: require('../../assets/img/entrust/entrust-suc.png'),
       }
     },
     mounted(){

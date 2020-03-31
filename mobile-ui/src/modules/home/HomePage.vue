@@ -18,7 +18,7 @@
       </van-grid>
     </van-row>
     <div class="source-list">
-      <h2>&nbsp;靓房出租&nbsp;<span style="color: lightgray;font-size: 0.3125rem;">为您精心挑选的家</span></h2>
+      <h2>&nbsp;靓房出租&nbsp;<span style="color: #777;font-size: 0.3125rem;">为您精心挑选的家</span></h2>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
           <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
@@ -98,6 +98,7 @@ export default {
         if(res.status == 200) {
           if(res.data.code == 200){
             that.user = res.data.data;
+            that.$store.state.global.user = res.data.data;
           }else{
             that.$toast(res.data.msg);
           }
@@ -247,7 +248,7 @@ export default {
     display: block!important;
     line-height: 0.625rem;
     text-align: left;
-    color: lightgrey;
+    color: #777;
     width: 100%!important;
   }
 </style>
