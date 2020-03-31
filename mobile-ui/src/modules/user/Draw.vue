@@ -60,7 +60,7 @@
         <span class="van-icon van-icon-cross van-nav-bar__arrow icon icon-back" @click="backHandle"></span>
         <strong>输入支付密码</strong>
         <p>提现金额</p>
-        <p>￥{{drawmoney}}元</p>
+        <p>￥{{money}}元</p>
         <p>
           <span style="float:left;">服务费</span>
           <span style="float:right">{{fee}}元</span>
@@ -145,6 +145,7 @@ export default {
                 //todo
                 that.$toast("提现完成");
                 that.backHandle();
+                that.init();
               } else {
                 that.$toast(res.data.msg);
                 that.clearPasswordHandle();
