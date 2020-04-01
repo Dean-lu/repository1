@@ -76,8 +76,8 @@
           </div>
             <p>时间：<span>{{contact.date}}</span></p>
         </div>
-        <button @click="showSignature=true" v-if="signbtn='sign'" class="btnOrange">打开签名版</button>
-        <button @click="submitSign" v-else-if="signbtn='submit'" class="btnOrange">提交合同</button>
+        <button @click="showSignature=true" v-if="signbtn=='sign'" class="btnOrange">打开签名版</button>
+        <button @click="submitSign" v-if="signbtn=='submit'" class="btnOrange">提交合同</button>
     </div>
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
         <div class="cavas">
@@ -238,9 +238,9 @@ export default {
         const imgBase64 = this.el.toDataURL();
         this.signatureImg=imgBase64;
         this.signbtn="submit";
-        this.showSignature=false;
-        this.showSignatureImg=true;
-        console.log('保存签名成功' + imgBase64)
+       this.showSignature=false;
+        this.showSignatureImg=true;        
+        console.log('保存签名成功' + imgBase64);   
         
       },      
       // 合同生成
@@ -251,7 +251,7 @@ export default {
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
         console.log("合同生成....")
-        debugger
+        //debugger
         var title = this.htmlTitle;
         this.$html2Canvas(document.querySelector('#contactMain'), {
           allowTaint: true,
@@ -347,6 +347,7 @@ export default {
     padding:1.25rem 5% 0 5%;
     box-sizing:border-box;
     position:relative;
+    overflow-y:auto;
     h1{
         font-size:0.6rem;
         text-align: center;

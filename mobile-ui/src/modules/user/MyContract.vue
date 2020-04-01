@@ -2,7 +2,7 @@
   <div class="main">
      <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
     <div class="list">
-      <van-tabs color="#FFB640" v-model="active" @click="onClick">
+      <van-tabs color="#FFB640" v-model="active" @click="onClick"  :swipe-threshold="6">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in contract" :key="index" >      

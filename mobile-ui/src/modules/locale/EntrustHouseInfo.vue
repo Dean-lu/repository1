@@ -84,7 +84,7 @@
           <van-col class="float-right">￥{{item.price}}</van-col>
         </van-cell>
       </div>
-      <div class="edit-btn">
+      <div class="edit-btn" v-if="houseInfo.check_status == 0">
         <van-button square type="info" size="small" color="#F8B729" @click="toEditHouseInfo">编辑</van-button>
         <van-button square type="info" size="small" color="#F8B729" @click="rejectConfirm = true">驳回</van-button>
         <van-button square type="info" size="small" color="#F8B729" @click="passVerify">通过审核</van-button>

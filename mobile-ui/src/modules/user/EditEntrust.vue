@@ -154,12 +154,16 @@ Vue.use(Dialog);
         this.$http.post(this.$store.state.global.baseUrl + 'user/see_entrust', param).then(res => {
           //debugger
           if(res.status == 200) {
-            if(res.data.code == 200){
-              that.houseInfo = res.data.data;
+            if(res.data.code == 200){              
               //that.$store.state.locale.editHouseInfo = res.data.data;
+              if(res.data.data.house_img==null || !res.data.data.house_img){
+                 res.data.data.house_img=[];
+              }
+              that.houseInfo = res.data.data;
               that.house_showImg=res.data.data.house_img;
               that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
               that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
+              
             }else{
               that.$toast(res.data.msg);
             }
@@ -282,6 +286,82 @@ Vue.use(Dialog);
       },
       // 提交信息
       ifsubmit(){
+           // 校验参数
+          if(!this.houseInfo.house_position){
+            this.$toast("请选择所属区域");
+            return;
+          }
+          if(!this.houseInfo.garden_name){
+            this.$toast("请填写小区名称");
+            return;
+          }
+          if(!this.houseInfo.building_number){
+            this.$toast("请填写楼栋号");
+            return;
+          }
+          if(!this.houseInfo.room_number){
+            this.$toast("请填写房间号");
+            return;
+          }
+          if(!this.houseInfo.area){
+            this.$toast("请填写房间面积");
+            return;
+          }
+          if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.area)){
+            this.$toast("面积只能是数字或两位数内的小数");
+            return;
+          }
+          if(!this.houseInfo.house_layout){
+            this.$toast("请选择户型");
+            return;
+          }
+          if(!this.houseInfo.rent_type){
+            this.$toast("必须选择类型");
+          }
+          if(!this.houseInfo.rent_price){
+            this.$toast("请输入租金");
+            return;
+          } 
+          if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.rent_price)){
+            this.$toast("租金只能是数字");
+            return;
+          }
+          if(!this.houseInfo.deposit){
+            this.$toast("请输入押金");
+            return;
+          }
+          if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.deposit)){
+            this.$toast("押金只能是数字");
+            return;
+          }
+          if(!this.houseInfo.pay_style){
+            this.$toast("请选择付款方式");
+            return;
+          }
+          if(!this.houseInfo.expire_year){
+            this.$toast("请选择委托时间");
+            return;
+          }
+          if(!this.houseInfo.house_desc){
+            this.$toast("请输入房源描述");
+            return;
+          }
+          if(!this.houseInfo.certifi_info){
+            this.$toast("请上传房产证或购房合同照片");
+            return;
+          }
+          if(!this.houseInfo.cardimg1){
+            this.$toast("请上传身份证正面照");
+            return;
+          }
+          if(!this.houseInfo.cardimg2){
+            this.$toast("请上传身份证反面照");
+            return;
+          }
+          if(!this.houseInfo.house_img || this.houseInfo.house_img.length == 0){
+            this.$toast("请上传房源照片");
+            return;
+          }
           const that=this;
           Dialog.confirm({
             title: '修改提示',

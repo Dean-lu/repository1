@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同确认">
+    <van-nav-bar :left-arrow="false" :fixed="true" border title="租房合同确认">
       <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="toHouseCenter" />
     </van-nav-bar>
     <div class="remind">

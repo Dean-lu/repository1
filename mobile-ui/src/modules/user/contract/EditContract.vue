@@ -170,7 +170,7 @@
               that.userent=that.rentTermList[parseInt(res.data.data.tenant.rent_time)-1];
               that.choiceStartTime=res.data.data.tenant.rent_time;
               let time=res.data.data.tenant.start_time;              
-              that.statTime=that.getTimestamp(time);
+              that.statTime=that.getTimestamp(time);              
               //that.$store.state.locale.editHouseInfo = res.data.data;
             }else{
               that.$toast(res.data.msg);

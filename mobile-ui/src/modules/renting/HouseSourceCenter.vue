@@ -15,7 +15,7 @@
     <div class="search-area">
       <van-col span="12">
         <div class="popup-select">
-          <van-field readonly clickable name="search.house_position" :value="valueHousePosition" label="区域:" label-width="1rem" placeholder="区域" @click="showHousePosition = true" />
+          <van-field readonly clickable name="search.house_position" :value="search.house_position" label="区域:" label-width="1rem" placeholder="区域" @click="showHousePosition = true" />
           <van-popup class="popup-select" v-model="showHousePosition" position="bottom" >
             <van-area :area-list="areaList" title="选择区域" @confirm="confirmHousePosition" @cancel="showHousePosition = false" />
           </van-popup>
@@ -49,6 +49,7 @@
       </van-col>
       <van-col span="12">
         <div class="button-submit">
+          <van-button block size="mini" color="#FFB640" native-type="submit" @click="resetSearch">重置</van-button>
           <van-button block size="mini" color="#FFB640" native-type="submit" @click="searchHouseSource">搜索</van-button>
         </div>
       </van-col>
@@ -123,8 +124,7 @@
     methods: {
       // 组件：确认区域选择
       confirmHousePosition(values) {
-        this.valueHousePosition = values.map(item => item.name).join('');
-        this.search.house_position = this.valueHousePosition;
+        this.search.house_position = values.map(item => item.name).join('');
         this.showHousePosition = false;
       },
       confirmHouseLayout(value){
@@ -164,6 +164,16 @@
         this.$store.state.renting.id = id;
         console.log(this.$store.state.renting.id)
         this.$router.push({path : '/houseDetail'});
+      },
+      resetSearch(){
+        this.valueRentType = '';
+        this.search = {
+          house_position: '',
+          house_layout: '',
+          rent_type: '',
+          garden_name: '',
+          room_number: ''
+        }
       },
       onClickLeft() {
         this.$router.push({path : '/home'});
@@ -208,11 +218,12 @@
     text-indent: 0.2rem;
   }
   .button-submit button{
-    width: 50%;
-    margin: 0 auto;
-    position: relative;
-    left: 0.6125rem;
-    top: 0.25rem;
+    display: inline-block;
+    width: 40%;
+    margin: 0.25rem auto 0 auto;
+//     position: relative;
+//     left: 0.6125rem;
+//     top: 0.25rem;
   }
   .division{
     width: 100%;
@@ -254,7 +265,7 @@
     display: block!important;
     line-height: 0.625rem;
     text-align: left;
-    color: lightgrey;
+    color: #777;
     width: 100%!important;
   }
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{

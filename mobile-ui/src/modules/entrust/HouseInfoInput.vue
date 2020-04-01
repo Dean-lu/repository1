@@ -7,43 +7,46 @@
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">基本信息</div>
-        <van-field readonly clickable :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
-        <van-popup v-model="showHousePosition" position="bottom">
-          <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
-        </van-popup>
-        
-        <van-field v-model="houseInfo.house_number" label="产权编号:" placeholder="请输入产权编号" />
-        
-        <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
-        <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
-        <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
-        <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  />
-        
-        <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
-        <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
-          <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
-        </van-popup>
-        
-        <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击房屋类型" @click="showRentType = true" />
-        <van-popup v-model="showRentType" position="bottom">
-          <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
-        </van-popup>
-        
-        <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金" />
-        <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金" />
-        <van-field readonly clickable :value="valuePayStyle" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
-        <van-popup v-model="showPayStyle" position="bottom">
-          <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
-        </van-popup>
-        
-        <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
-        <van-popup v-model="showExpireYear" position="bottom">
-          <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
-        </van-popup>
-        
-        <div class="label">房源描述:</div>
-        <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
-         placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
+        <van-form >
+          <van-field readonly clickable :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
+          <van-popup v-model="showHousePosition" position="bottom">
+            <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
+          </van-popup>
+          
+          <van-field v-model="houseInfo.house_number" label="产权编号:" placeholder="请输入产权编号"
+            :rules="[{ validator, message: '请不要输入数字和英文字母' }]"/>
+          
+          <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
+          <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
+          <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
+          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  />
+          
+          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
+          <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
+            <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
+          </van-popup>
+          
+          <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击房屋类型" @click="showRentType = true" />
+          <van-popup v-model="showRentType" position="bottom">
+            <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
+          </van-popup>
+          
+          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金" />
+          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金" />
+          <van-field readonly clickable :value="valuePayStyle" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
+          <van-popup v-model="showPayStyle" position="bottom">
+            <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
+          </van-popup>
+          
+          <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
+          <van-popup v-model="showExpireYear" position="bottom">
+            <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
+          </van-popup>
+          
+          <div class="label">房源描述:</div>
+          <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
+           placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
+        </van-form>
       </div>
       <div class="pic-area">
         <div class="title">证件信息</div>
@@ -146,7 +149,7 @@
           //产权编号
           house_number:'',
           // 增值服务总价
-          // totalAddPrice: 0.0,
+          totalAddPrice: 0.0,
           addedServiceSelect: [],
           
         },
@@ -326,9 +329,9 @@
 //       },
       // 检查增值服务互斥项
       checkExclusion(item,clickIndex){
-//         if(!this.houseInfo.totalAddPrice){
-//           this.houseInfo.totalAddPrice = 0.0;
-//         }
+        if(!this.houseInfo.totalAddPrice){
+          this.houseInfo.totalAddPrice = 0.0;
+        }
         console.log(item)
         // 互斥项禁用
         let checkboxs = $(".add-service-cell input");
@@ -343,7 +346,9 @@
               }
             }
           }
+          debugger
           this.houseInfo.addedServiceSelect.push(item);
+          this.houseInfo.totalAddPrice = Math.round((this.houseInfo.totalAddPrice + parseFloat(this.addedService[clickIndex].price))*100)/100;
           // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.add(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price) ;
           // this.houseInfo.totalAddPrice += parseFloat(this.addedService[clickIndex].price);
@@ -362,12 +367,12 @@
               this.houseInfo.addedServiceSelect.splice(c,1);
             }
           }
+          if(this.houseInfo.totalAddPrice >= parseFloat(this.addedService[clickIndex].price)){
+            this.houseInfo.totalAddPrice = Math.round((this.houseInfo.totalAddPrice - parseFloat(this.addedService[clickIndex].price))*100)/100;
+          }
           // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).subtract(this.$math.bignumber(this.addedService[clickIndex].price)).done());
           // this.houseInfo.totalAddPrice = this.$math.subtract(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price);
         }
-//         if(this.houseInfo.totalAddPrice < 0){
-//           this.houseInfo.totalAddPrice = 0;
-//         }
         // console.log(this.houseInfo.totalAddPrice);
         this.houseInfo.added_service_id = [];
         for(let i = 0; i < checkboxs.length; i++){
@@ -391,6 +396,9 @@
           // 互斥
         }
         
+      },
+      validator(val){
+        return /^[0-9a-zA-Z_]{1,}$/.test(val);
       },
       // 去到提交确认页面
       toConfirm(){
