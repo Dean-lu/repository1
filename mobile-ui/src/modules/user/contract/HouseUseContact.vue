@@ -196,7 +196,8 @@ export default {
             status:"start",    
             tips:"",      
             pay_wrong:"", 
-            btnstatus:"enter",          
+            btnstatus:"enter",
+            htmlTitle:"房屋使用合同",          
             contact:{
                 order_status: null,
                 house_position: "",
@@ -250,9 +251,11 @@ export default {
         });
         
       },
+      //打开签名
         sign () {           
             this.showSignature=true;
         },
+        
         submitList(){           
             this.$router.push({path : '/HouseBag'});
         },
@@ -262,7 +265,8 @@ export default {
         onClickLeft() {
             this.$router.back(-1);
         },
-        payfor(){
+       
+      payfor(){
             let that = this;
             let param = {
                 api_token: this.$store.state.global.api_token,
@@ -312,6 +316,7 @@ export default {
                 } 
             }); 
         },
+        //绘图
          draw() {
         // debugger
         if(!this.$refs.signHandle){
@@ -504,6 +509,7 @@ export default {
     padding:1.25rem 5% 0 5%;
     box-sizing:border-box;
     position:relative;
+    overflow-y:auto;
     h1{
         font-size:0.6rem;
         text-align: center;

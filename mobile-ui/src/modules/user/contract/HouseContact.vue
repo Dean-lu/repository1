@@ -347,6 +347,7 @@ export default {
     padding:1.25rem 5% 0 5%;
     box-sizing:border-box;
     position:relative;
+    overflow-y:auto;
     h1{
         font-size:0.6rem;
         text-align: center;
