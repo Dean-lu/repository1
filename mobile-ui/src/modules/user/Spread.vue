@@ -6,7 +6,7 @@
         <div class="info-box">
           <div class="info">
             <p>可用余额</p>
-            <p>1000.00</p>
+            <p v-text="balance"></p>
             <p class="tolink" @click="jump('Draw')">去提现</p>
           </div>
         </div>
@@ -77,8 +77,9 @@ export default {
     return {
       is_show: true,
       title: "推广赚钱",
+      balance:'0.00',
       group:{
-        page:0,
+        page:1,
         lastpage: 0,
         limit: 15,
         list:[],
@@ -90,11 +91,25 @@ export default {
   },
   mounted() {
     this.getList();
+    this.init();
   },
   methods: {
     onClickLeft() {
         this.$router.back(-1);
       },
+    init(){
+      var that = this;
+      var api_token = this.$store.state.global.api_token;
+      this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token='+api_token).then(res => {
+        if(res.status == 200) {
+          if(res.data.code == 200){
+            that.balance = res.data.data.balance;
+          }else{
+            that.$toast(res.data.msg);
+          }
+        }
+      });
+    },
     getList(){
       var that = this,group = that.group;
       if(that.loading || that.lastpage)return;
@@ -107,7 +122,7 @@ export default {
           if(res.data.code == 200){
             var list = res.data.data.data,groupLength = group.list.length;
             that.group.lastpage = res.data.data.last_page;
-            if(!res.data.data.last_page)that.group.page++;//如果不是最后一页当前页码加1
+            if(res.data.data.last_page != res.data.data.page)that.group.page++;//如果不是最后一页当前页码加1
             group.loaded = list.length < group.limit;
             group.list = group.list.concat(list);
             that.loading = false;
@@ -184,7 +199,7 @@ export default {
   }
   .info-list li {
     padding: .2rem 0;
-    font-size: .22rem;
+    font-size: .4rem;
     color: #595757;
     line-height: 1.5;
     position: relative;
@@ -198,12 +213,12 @@ export default {
   .info-list li span {
     clear: both;
     display:block;
-    font-size: .18rem;
+    font-size: .35rem;
     padding-top: .15rem;
     color: #9fa0a0;
   }
   .info-list li .count {
-    font-size: .24rem;
+    font-size: .4rem;
     color: #595757;
   }
   .loading-line {
