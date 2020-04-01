@@ -75,13 +75,22 @@
           </van-field>
         </div>
         <div class="label">房屋照片（*限8张)</div>
-        <div>
+        <div class="ver-code-bottom-one-right-code pic-area">            
+            <div class="ver-code-bottom-one-right-code manyPic">
+              <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
+                <img :src="item"  alt="图片" class="imgPreview">
+                <van-icon name="close" @click="delImg(index)" class="delte"/>
+              </div>
+              <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
+            </div> 
+        </div>
+        <!-- <div>
           <van-field name="houseInfo.house_img">
             <template #input>
-              <van-uploader v-model="houseInfo.house_img" multiple :max-count="8" />
+              <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
             </template>
           </van-field>
-        </div>
+        </div> -->
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
           增值服务<span style="font-size: 0.01875rem;">(*自愿选取)</span>
@@ -177,12 +186,7 @@
         expireYearDesc: ['三年', '四年', '五年'],
         // 增值服务包
         addedService: [
-          {
-            id: 1,
-            service_name: "服务1",
-            price: "10.33",
-            mutex_ids:[]
-          }
+          
         ]
       }
     },
@@ -209,6 +213,7 @@
             return;
           }
         });
+        
       },
       // 组件：确认区域选择
       confirmArea(values) {
@@ -307,7 +312,6 @@
           headers:{'Content-Type':'multipart/form-data'}
         }
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
-          debugger
           console.log(res)
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -323,6 +327,46 @@
           }
         });
       },
+      // 读取房屋图片
+      afterReadHouseImg(file){
+        let param=new FormData;
+        param.append("api_token", this.$store.state.global.api_token),
+        param.append("file",file.file)         
+        let that=this;
+        //设置请求头
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+        }
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+          debugger
+          console.log(res);   
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.houseInfo.house_img.push(res.data.data);
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取图片失败，请刷新重试！');            
+            return;
+          }
+        });
+        
+      },
+      //删除图片
+      delImg(index){
+       console.log(index);
+        if(isNaN(index) || index >= this.houseInfo.house_img.length){
+          return false;
+        }
+         let tmp = [];        
+        for(let i=0,len = this.houseInfo.house_img.length;i<len;i++){
+          if (i!=index) {
+            tmp.push(this.houseInfo.house_img[i]);            
+          }
+        }
+        this.houseInfo.house_img = tmp;       
+      },   
 //       afterRead(file){
 //         debugger
 //         this.imgFormData.append("")
@@ -346,7 +390,6 @@
               }
             }
           }
-          debugger
           this.houseInfo.addedServiceSelect.push(item);
           this.houseInfo.totalAddPrice = Math.round((this.houseInfo.totalAddPrice + parseFloat(this.addedService[clickIndex].price))*100)/100;
           // this.houseInfo.totalAddPrice = this.$math.format(this.$math.chain(this.$math.bignumber(this.houseInfo.totalAddPrice)).add(this.$math.bignumber(this.addedService[clickIndex].price)).done());
@@ -390,10 +433,16 @@
             for(let j = 0; j < checkboxs.length; j++){
               if(checkboxs[j].value == this.houseInfo.added_service_id[i]){
                 checkboxs[j].checked = true;
+                // 检查互斥
+                if(this.addedService[j].mutex_ids && this.addedService[j].mutex_ids.length > 0){
+                  let mutexIds = this.addedService[j].mutex_ids;
+                  for(let k = 0; k < mutexIds.length; k++){
+                    checkboxs[parseInt(mutexIds[k]) - 1].disabled = true;
+                  }
+                }
               }
             }
           }
-          // 互斥
         }
         
       },
@@ -579,6 +628,20 @@
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;
   }
+  .pic-area{position:relative;}
+    /deep/.delte{
+    position:absolute;
+    right:8%;
+    top: 2%;
+    font-size: 0.6rem;
+    color:#fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
+  .pic-area img{width:85%; margin-bottom:0.5rem;}
+  .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
+  .tips{text-align: center; color:#666; font-size: 0.5rem;}
+  /deep/.posting-uploader-item{position:relative;float:left;width:3rem; height:3rem;}
   /* .add-service-cell input{
     position: absolute;
     visibility: hidden;

@@ -4,8 +4,8 @@
     <div style="color: red;margin-top: 1.2rem;"></div>
     <div style="width: 100%;">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="#F8B729" >
-        <van-swipe-item v-for="(image, index) in houseInfo.house_img" :key="index">
-          <van-image width="100%" fit="fill" height="6.125rem" :src="image.content" />
+        <van-swipe-item v-for="(item, index) in houseInfo.house_img" :key="index">
+          <van-image width="100%" fit="fill" height="6.125rem" :src="item" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -298,17 +298,17 @@
         formData.append("deposit",this.houseInfo.deposit);
         formData.append("pay_style",this.houseInfo.pay_style);
         formData.append("house_desc",this.houseInfo.house_desc);
-        // formData.append("house_img",this.houseInfo.house_img);
+        formData.append("house_img",this.houseInfo.house_img);
         formData.append("certifi_info",this.houseInfo.certifi_info);
         formData.append("cardimg1",this.houseInfo.cardimg1);
         formData.append("cardimg2",this.houseInfo.cardimg2);
         formData.append("added_service_id",this.houseInfo.added_service_id);
         formData.append("house_number",this.houseInfo.house_number);
         debugger
-        for(let i =0; i < this.houseInfo.house_img.length; i++){
-          // formData.append("house_img[]",this.houseInfo.house_img[i].file);
-          formData.append("house_img[]",this.houseInfo.house_img[i].file);
-        }
+//         for(let i =0; i < this.houseInfo.house_img.length; i++){
+//           // formData.append("house_img[]",this.houseInfo.house_img[i].file);
+//           formData.append("house_img[]",this.houseInfo.house_img[i].file);
+//         }
         let config = {
           headers:{'Content-Type':'multipart/form-data'}
         }; 
@@ -497,9 +497,9 @@
         if(!this.$refs.signHandle){
           return
         }
-        document.addEventListener('touchmove', e => e.preventDefault(), {
+        /* document.addEventListener('touchmove', e => e.preventDefault(), {
           passive: false
-        })
+        }) */
         this.el = this.$refs.signHandle
         this.initCanvas()
       },
@@ -597,7 +597,7 @@
     line-height: 0.75rem;
   }
   .pop-contract{
-    width: 100%;
+    width: 101%;
     height: 100%;
   }
   .pop-contract .head{
