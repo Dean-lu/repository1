@@ -39,7 +39,7 @@
         {{houseDetail.house_desc}}
       </div>
       <div class="sign-btn">
-        <van-button block size="small" color="#FFB640" native-type="submit" @click="showSignPopup = true">
+        <van-button block size="small" color="#FFB640" native-type="submit" @click="signhouse">
           马上签约
         </van-button>
       </div>
@@ -146,6 +146,29 @@
         }
         this.actualRentTimeLimit = this.dateAddFormat(new Date(),3);
       },
+      //马上签约按钮
+      signhouse(){
+        
+        // 获取房源详情
+        let that = this;
+        let param = {
+          api_token: this.$store.state.global.api_token,
+          house_id: this.$store.state.renting.id
+        };
+        this.$http.post(this.$store.state.global.baseUrl + 'lease/pre_sign', param).then(res => {
+          debugger
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.showSignPopup = true;
+            }else{
+              that.$toast(res.data.msg);
+            }            
+          }else{
+            that.$toast('获取房源详情失败，请刷新重试！');
+            return;
+          }
+        });
+      },
       formatDate(date) {
         return `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
       },
@@ -182,7 +205,7 @@
           this.$toast("请选择起租时间！");
           return;
         }
-        if(this.rentTerm){
+        if(!this.rentTerm){
           this.$toast("请选择租期！");
           return;
         }

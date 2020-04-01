@@ -82,8 +82,15 @@
         <van-col span="8" class="text-align-right">房源照片：</van-col>
         <van-col span="16"></van-col>
       </van-cell>
-      <div class="img" v-for="(item,index) in houseInfo.house_img" :key="index">
+      <!-- <div class="img" v-for="(item,index) in houseInfo.house_img" :key="index">
         <van-image :src="item"></van-image>
+      </div> -->
+      <div class="ver-code-bottom-one-right-code manyPic">
+        <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
+          <img :src="item"  alt="图片" class="imgPreview">
+          <van-icon name="close" @click="delImg(index)" class="delte"/>
+        </div>
+        <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
       </div>
       <div class="edit-btn">
         <van-button square type="info" size="small" color="#F8B729" @click="submitHouseInfo">确认修改</van-button>
@@ -117,7 +124,7 @@
         this.houseInfo = this.$store.state.locale.editHouseInfo;
       },
       submitHouseInfo(){
-        debugger
+        //debugger
         let that = this;
         let param = {
           api_token: this.$store.state.locale.api_token,
@@ -133,10 +140,11 @@
           deposit: this.houseInfo.deposit,
           pay_style: this.houseInfo.pay_style,
           house_desc: this.houseInfo.house_desc,
-          expire_year: this.houseInfo.expire_year
+          expire_year: this.houseInfo.expire_year,
+          edit_house: this.houseInfo.house_img
         }
         this.$http.post(this.$store.state.global.baseUrl + 'scene/edit_house', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$toast('修改房源信息成功！');
@@ -162,6 +170,48 @@
         this.houseInfo.pay_style = index + 1;
         this.showPayStyle = false;
       },
+      //删除图片
+      delImg(index){
+       console.log(index);
+        if(isNaN(index) || index >= this.houseInfo.house_img.length){
+          return false;
+        }
+         let tmp = [];        
+        for(let i=0,len = this.houseInfo.house_img.length;i<len;i++){
+          if (i!=index) {
+            tmp.push(this.houseInfo.house_img[i]);            
+          }
+        }
+        this.houseInfo.house_img = tmp;       
+      },
+       //多图上传
+      afterZRead(file){
+          //this.house_showImg=this.house_showImg;
+          let param=new FormData;
+          param.append("api_token", this.$store.state.global.api_token),
+          param.append("file",(file.file));         
+          let that=this;
+          this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
+            //debugger
+            if(res.status == 200) {
+              if(res.data.code == 200){
+                console.log(res.data.data)
+                
+                let src=res.data.data;
+                if(that.houseInfo.house_img==null && !that.houseInfo.house_img){
+                  that.houseInfo.house_img=[]
+                };
+                that.houseInfo.house_img.push(src);
+                console.log(that.houseInfo.house_img);       
+              }else{
+                that.$toast(res.data.msg);
+              }
+            }else{
+              that.$toast('获取图片失败，请刷新重试！');            
+              return;
+            }
+          });      
+      }
     }
   }
 </script>
@@ -182,6 +232,9 @@
   /deep/.van-field__body{
     // background-color: #e4e4e445;
     border: 0.0625rem solid #e4e4e445;
+    input,textarea{
+      padding:0 0.15rem;
+    }
   }
   /deep/.van-field__control{
     color: #777!important;
@@ -197,11 +250,27 @@
     color: #FFB640;
   }
   .img{
-    width: 100%;
-    height: 3.125rem;
+    width: 85%;
+    // height: 3.125rem;
     margin: 0.3125rem auto;
+    display: block;
   }
   .edit-btn{
     margin: 0.625rem auto;
+  }
+  .remind{padding:0.2rem 0;}
+  .manyPic,.img_are{width:85%; margin:0.5rem auto; position:relative;}
+  .manyPic img,.img_are img{
+    width:100%;
+    margin-bottom:0.35rem;
+  }
+  /deep/.delte{
+    position:absolute;
+    right:8%;
+    top: 2%;
+    font-size: 0.8rem;
+    color:#fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
   }
 </style>

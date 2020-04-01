@@ -16,7 +16,7 @@
         <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
         <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
         <van-field v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
-        <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  />
+        <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
         
         <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
         <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
@@ -26,8 +26,8 @@
         <van-popup v-model="showExpireYear" position="bottom">
           <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
         </van-popup>
-        <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金" />
-        <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金" />
+        <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
+        <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
         <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击出租类型" @click="showRentType = true" />
         <van-popup v-model="showRentType" position="bottom">
           <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
@@ -415,6 +415,13 @@ Vue.use(Dialog);
 </script>
 
 <style scoped lang="less">
+/deep/.van-field__body {
+    border: 0.0625rem solid #e4e4e445;
+    input{
+      padding:0 0.15rem;
+    }
+}
+ 
 .to-entrust .van-nav-bar .van-icon,
   .to-entrust .van-nav-bar__title{
     color:#FFB640;

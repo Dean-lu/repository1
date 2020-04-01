@@ -19,7 +19,7 @@
           <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
           <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
           <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
-          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  />
+          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
           
           <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
           <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
@@ -31,8 +31,8 @@
             <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
           </van-popup>
           
-          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金" />
-          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金" />
+          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
+          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
           <van-field readonly clickable :value="valuePayStyle" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
           <van-popup v-model="showPayStyle" position="bottom">
             <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
@@ -423,6 +423,10 @@
           this.$toast("请填写房间面积");
           return;
         }
+        if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.area)){
+            this.$toast("面积只能是数字");
+            return;
+          }
         if(!this.houseInfo.house_layout){
           this.$toast("请选择户型");
           return;
@@ -434,7 +438,7 @@
           this.$toast("请输入租金");
           return;
         } 
-        if(!/^[0-9]*$/.test(this.houseInfo.rent_price)){
+        if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.rent_price)){
           this.$toast("租金只能是数字");
           return;
         }
@@ -442,7 +446,7 @@
           this.$toast("请输入押金");
           return;
         }
-        if(!/^[0-9]*$/.test(this.houseInfo.deposit)){
+        if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.deposit)){
           this.$toast("押金只能是数字");
           return;
         }

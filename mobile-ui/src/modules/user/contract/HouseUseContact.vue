@@ -317,14 +317,14 @@ export default {
             }); 
         },
         //绘图
-         draw() {
+      draw() {
         // debugger
         if(!this.$refs.signHandle){
           return
         }
-        document.addEventListener('touchmove', e => e.preventDefault(), {
-          passive: false
-        })
+        // document.addEventListener('touchmove', e => e.preventDefault(), {
+        //   passive: false
+        // })
         this.el = this.$refs.signHandle
         this.initCanvas()
       },
@@ -485,7 +485,7 @@ export default {
       }
     },
     updated () {
-        this.draw()
+      this.draw()
     }
 }
 </script>

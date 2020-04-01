@@ -81,7 +81,7 @@
     </div>
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
         <div class="cavas">
-      <canvas ref="signHandle" class="canvas" id="canvas" />
+          <canvas ref="signHandle" class="canvas" id="canvas" />
       </div>
       <div >
         <van-button size="mini" @touchstart="clearHandle">清空</van-button>
@@ -162,9 +162,9 @@ export default {
         if(!this.$refs.signHandle){
           return
         }
-        document.addEventListener('touchmove', e => e.preventDefault(), {
-          passive: false
-        })
+        // document.addEventListener('touchmove', e => e.preventDefault(), {
+        //   passive: false
+        // })
         this.el = this.$refs.signHandle
         this.initCanvas()
       },
@@ -234,13 +234,17 @@ export default {
         this.initCanvas()
       },
       // 保存信息
-      saveImg() {
+      saveImg() {       
         const imgBase64 = this.el.toDataURL();
         this.signatureImg=imgBase64;
         this.signbtn="submit";
        this.showSignature=false;
         this.showSignatureImg=true;        
         console.log('保存签名成功' + imgBase64);   
+        // document.removeEventListener('touchmove', e => e.preventDefault(), {
+        //   passive: true
+        // })
+        
         
       },      
       // 合同生成

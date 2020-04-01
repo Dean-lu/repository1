@@ -27,6 +27,18 @@
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
+                <div class="house-item-status orange"  v-if="item.check_status==0">
+                  待初审
+                </div>
+                <div class="house-item-status black"  v-if="item.check_status==1">
+                  待复审
+                </div>
+                <div class="house-item-status orange"  v-if="item.check_status==2">
+                  待修改
+                </div>
+                <div class="house-item-status green"  v-if="item.check_status==3">
+                  已审核
+                </div>
                 <!-- <div class="house-item-info">位置：{{item.house_position}}</div> -->
               </div>
             </van-cell>
@@ -51,7 +63,7 @@
         // tab
         active: 0,
         tabs: ['全部','待初审','待复审','已审核'],
-        tabsCode: ['all','0','1','2'],
+        tabsCode: ['all','0','1','3'],
         loading:false,
         finished:true,
         checkType: 'all',
@@ -171,5 +183,21 @@
     text-align: left;
     color: lightgrey;
     width: 100%!important;
+  }
+  .house-item-status{
+    display: block!important;
+    line-height: 0.625rem;
+    text-align: left;    
+    
+    width: 100%!important;
+  }
+  .orange{
+    color:#FFB640;
+  }
+  .green{
+    color:green;
+  }
+  .black{
+    color:#666;
   }
 </style>

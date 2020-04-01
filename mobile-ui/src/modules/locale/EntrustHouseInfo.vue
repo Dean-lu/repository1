@@ -7,7 +7,7 @@
       <van-cell>
         <van-col span="8" class="text-align-right">所属区域：</van-col>
         <van-col span="16">
-          <van-field v-model="houseInfo.house_position"/>
+          {{houseInfo.house_position}}
         </van-col>
       </van-cell>
       <van-cell>
@@ -185,11 +185,11 @@
           reason: this.rejectReason
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/refuse_pass', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$toast(res.data.msg);
-              this.$router.push({path : '/houseSourceCenter'});
+              this.$router.push({path : '/EntrustHouseSource'});
             }else{
               that.$toast(res.data.msg);
             }
@@ -207,11 +207,11 @@
           house_id: this.$store.state.locale.houseId + ''
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/pass_house', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$toast(res.data.msg);
-              this.$router.push({path : '/houseSourceCenter'});
+              this.$router.push({path : '/EntrustHouseSource'});
             }else{
               that.$toast(res.data.msg);
             }
@@ -240,7 +240,7 @@
   }
   .img{
     width: 100%;
-    height: 3.125rem;
+    // height: 3.125rem;
     margin: 0.3125rem auto;
   }
   .edit-btn{
