@@ -399,8 +399,7 @@ export default {
         this.signatureImg=imgBase64;
         this.btnstatus="submit";
         this.showSignature=false;
-        this.showSignatureImg=true;
-
+        this.showSignatureImg=true;       
         console.log('保存签名成功' + imgBase64);       
       },
        // 合同生成

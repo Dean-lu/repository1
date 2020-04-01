@@ -154,10 +154,9 @@ Vue.use(Dialog);
         this.$http.post(this.$store.state.global.baseUrl + 'user/see_entrust', param).then(res => {
           //debugger
           if(res.status == 200) {
-            if(res.data.code == 200){
-              
+            if(res.data.code == 200){              
               //that.$store.state.locale.editHouseInfo = res.data.data;
-              if(res.data.data.house_img==null){
+              if(res.data.data.house_img==null || !res.data.data.house_img){
                  res.data.data.house_img=[];
               }
               that.houseInfo = res.data.data;

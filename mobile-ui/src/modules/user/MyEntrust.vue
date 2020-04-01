@@ -6,11 +6,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" >
-              <van-image class="float-left" :src="item.house_img[0]"  fill width="3.8rem" height="2rem" />
-              <!-- <div class="float-left" width="3.8rem" height="2rem" v-for="(items, index2) in item.house_img">
-                <van-image :src="item.house_img[0]"  fill width="3.8rem" height="2rem" />
-              </div> -->
-              
+              <van-image class="float-left" v-if="item.house_img" :src="item.house_img[0]"  fill width="3.8rem" height="2rem" />              
               <div class="house-item float-left">
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
