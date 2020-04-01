@@ -178,6 +178,14 @@
         this.expectHandingTime = this.formatDate(date);
       },
       toConfirmRentInfo(){
+        if(!this.startRentTime){
+          this.$toast("请选择起租时间！");
+          return;
+        }
+        if(this.rentTerm){
+          this.$toast("请选择租期！");
+          return;
+        }
         this.$store.state.renting.startRentTime = this.startRentTime;
         this.$store.state.renting.rentTerm = this.rentTerm;
         this.$store.state.renting.expectHandingTime = this.expectHandingTime;
@@ -212,6 +220,7 @@
     line-height: 0.625rem;
     color: lightgrey;
     display: block;
+    color: #777;
   }
   .price-title{
     color: #FFB640;
@@ -238,7 +247,7 @@
     min-height: 3.0rem;
     margin: 0 auto;
     text-align: left;
-    color:lightgrey;
+    color:#777;
     /* text-indent: 0.3rem; */
   }
   .sign-btn{
