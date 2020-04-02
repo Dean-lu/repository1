@@ -4,7 +4,8 @@
     <div class="header">      
       <div class="header_pesonal"> 
         <div class="hearder_head">
-          <van-icon name="user-o" />
+          <!-- <van-icon name="user-o" /> -->
+          <van-image :src="user.headimgurl"></van-image>
         </div>     
         <div class="float-left header_txt">  
           <span>{{user.truename}} （{{user.court}}）</span>
@@ -12,8 +13,8 @@
         </div>
       </div>
     </div>
-    <van-row>
-      <van-grid :column-num="3">
+    <van-row class="bgorange">
+      <van-grid :column-num="3" :gutter="0" :border="false">
         <van-grid-item>
           <div>{{user.balance}}</div>
           <div>余额</div>
@@ -29,9 +30,9 @@
       </van-grid>
     </van-row>
     <!-- 推广宣传图 -->
-    <van-row>
+    <!-- <van-row>
       <van-image src="https://yanxuan.nosdn.127.net/3d1993dbd9f84de18716944d3682d62f.jpg?_width=750&_height=343"></van-image>
-    </van-row>
+    </van-row> -->
     <van-row class="mine-list">
       <ul>
         <li @click="jump('myInfo')">
@@ -178,6 +179,9 @@
     color:#fff;
     
   } 
+  /deep/.bgorange .van-grid-item__content,.bgorange{
+    background:#f7b343;    
+  }
   .header_pesonal{
     position:absolute;
     top:1rem;
@@ -197,8 +201,13 @@
     line-height:1.6rem;
     .van-icon{
       margin-top:9px;
-    }
-    
+    }    
+  }
+  /deep/.van-image__img{
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+    border-radius:0.8rem;
   }
   .header_txt{
     text-align: left;
@@ -208,13 +217,12 @@
       color:#f7b343;
       font-size:0.35rem;
       padding:0.08rem; 
-      border-radius: ;
     }
-  .mine .van-image{
-    width: auto;
-    margin: 0.125rem;
-    border-radius: 0.3125rem;
-  }
+  // .mine .van-image{
+  //   width: auto;
+  //   margin: 0.125rem;
+  //   border-radius: 0.3125rem;
+  // }
   .mine .van-hairline ::after{
     border: none !important;
   }
@@ -223,9 +231,10 @@
     width: auto;
     margin: 0.125rem;
     border-radius: 0.3125rem;
+    padding-top:0.5rem;
   }
   .mine-list ul li{
     display: block;
-    min-height: 0.625rem;
+    min-height: 0.925rem;
   }
 </style>

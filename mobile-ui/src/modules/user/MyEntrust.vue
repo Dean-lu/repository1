@@ -40,6 +40,7 @@
         finished:true,
         checkType: 'all',
         houseSource: []
+        
       }
     },
     mounted(){
@@ -69,8 +70,9 @@
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-              //console.log(res.data.data.data);
-              that.houseSource = res.data.data.data;
+              console.log(res.data.data);
+              that.houseSource = res.data.data;             
+                 
             }else{
               that.$toast(res.data.msg);
             }

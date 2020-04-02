@@ -54,14 +54,14 @@
         </div>
       </van-col>
     </div>
-    <div class="division"></div>
+    <div class="divisiodaxian"></div>
     <div class="list">
       <div class="title">
         好房推荐
       </div>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
+          <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
           <div class="float-left">
             <div class="house-item-title">{{item.garden_name}}</div>
             <div class="house-item-info">租金：{{item.rent_price}}</div>
@@ -69,6 +69,7 @@
             <div class="house-item-info">位置：{{item.house_position}}</div>
           </div>
         </van-cell>
+        
       </van-list>
     </div>
   </div>
@@ -90,6 +91,13 @@
           garden_name: '',
           room_number: ''
         },
+        //上拉刷新
+        loading: false,
+        finished: false,  
+         error: false,    
+        PageIndex:1,
+        lastPage:0,
+        list:[],
         // 区域列表
         areaList: areaList,
         valueHousePosition: '',
@@ -140,12 +148,16 @@
       // 获取房源信息列表
       searchHouseSource(){
         let that = this;
-        debugger
+        //debugger
         this.$http.post(this.$store.state.global.baseUrl + 'house/get_house_list', that.search).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseSource = res.data.data.data;
+              that.lastPage=res.data.data.last_page;
+              // 加载状态结束
+              that.loading = false;  
+              that.finished = false;            
             }else{
               that.$toast(res.data.msg);
             }
@@ -155,9 +167,39 @@
           }
         });
       },
-      onLoad(){
-        this.searchHouseSource();
-      },
+      onLoad() {
+        if(this.PageIndex >= this.lastPage){
+          this.loading = true;
+          this.finished = true;
+          return false;          
+        }
+        this.PageIndex++;
+         let that = this;
+        this.$http.post(this.$store.state.global.baseUrl + 'house/get_house_list',{
+              Status: 1,
+              page: that.PageIndex,
+              PageSize: 10,
+         }).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              for(let j=0,len=res.data.data.data.length;j<len;j++){
+                  that.houseSource.push(res.data.data.data[j]);
+              }             
+              // 加载状态结束
+              that.loading = false;
+              if(!res.data.data.data ){
+                that.finished = true;
+              }
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取房源信息失败，请刷新重试！');
+            return;
+          }
+        });
+    },
+    
       // 房源详情
       toDetail(id){
         
@@ -183,9 +225,6 @@
 </script>
 
 <style scoped lang="less">
-  .house-center{
-    
-  }
   .van-nav-bar__text{
     color: #FFB640;
   }

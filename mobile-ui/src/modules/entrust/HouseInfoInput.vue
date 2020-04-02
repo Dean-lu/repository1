@@ -338,7 +338,7 @@
           headers:{'Content-Type':'multipart/form-data'}
         }
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
-          debugger
+          //debugger
           console.log(res);   
           if(res.status == 200) {
             if(res.data.code == 200){

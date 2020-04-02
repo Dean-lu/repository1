@@ -43,7 +43,7 @@
           password: this.password
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/login_post', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$store.state.locale.api_token = res.data.api_token;

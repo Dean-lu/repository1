@@ -277,43 +277,37 @@
         
         var that = this;
         // 提交房源确认信息，成功->去支付
-        this.houseInfo.api_token = this.$store.state.global.api_token;
+        
 //         let houseImg = [];
 //         // let houseImg = this.houseInfo.house_img[0];
 //         var dd = this.houseInfo.houseImg;
 //         for(let i =0; i < this.houseInfo.house_img.length; i++){
 //           houseImg.push(this.houseInfo.house_img[i]);
-//         }
-        let formData = new FormData();
-        formData.append("api_token",this.$store.state.global.api_token);
-        formData.append("house_position",this.houseInfo.house_position);
-        formData.append("garden_name",this.houseInfo.garden_name);
-        formData.append("building_number",this.houseInfo.building_number);
-        formData.append("expire_year",this.houseInfo.expire_year);
-        formData.append("room_number",this.houseInfo.room_number);
-        formData.append("area",this.houseInfo.area);
-        formData.append("house_layout",this.houseInfo.house_layout);
-        formData.append("rent_type",this.houseInfo.rent_type);
-        formData.append("rent_price",this.houseInfo.rent_price);
-        formData.append("deposit",this.houseInfo.deposit);
-        formData.append("pay_style",this.houseInfo.pay_style);
-        formData.append("house_desc",this.houseInfo.house_desc);
-        formData.append("house_img",this.houseInfo.house_img);
-        formData.append("certifi_info",this.houseInfo.certifi_info);
-        formData.append("cardimg1",this.houseInfo.cardimg1);
-        formData.append("cardimg2",this.houseInfo.cardimg2);
-        formData.append("added_service_id",this.houseInfo.added_service_id);
-        formData.append("house_number",this.houseInfo.house_number);
-        debugger
-//         for(let i =0; i < this.houseInfo.house_img.length; i++){
-//           // formData.append("house_img[]",this.houseInfo.house_img[i].file);
-//           formData.append("house_img[]",this.houseInfo.house_img[i].file);
-//         }
-        let config = {
-          headers:{'Content-Type':'multipart/form-data'}
-        }; 
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/submit_entrust', formData, config).then(res => {
-          debugger
+//         }       
+        let param = {
+          api_token: this.$store.state.global.api_token,
+          house_position:this.houseInfo.house_position,
+          garden_name:this.houseInfo.garden_name,
+          building_number:this.houseInfo.building_number,
+          expire_year:this.houseInfo.expire_year,
+          room_number:this.houseInfo.room_number,
+          area:this.houseInfo.area,
+          house_layout:this.houseInfo.house_layout,
+          rent_type:this.houseInfo.rent_type,
+          rent_price:this.houseInfo.rent_price,
+          deposit:this.houseInfo.deposit,
+          pay_style:this.houseInfo.pay_style,
+          house_desc:this.houseInfo.house_desc,
+          house_img:JSON.stringify(this.houseInfo.house_img),
+          certifi_info:this.houseInfo.certifi_info,
+          cardimg1:this.houseInfo.cardimg1,
+          cardimg2:this.houseInfo.cardimg2,
+          added_service_id:JSON.stringify(this.houseInfo.added_service_id),
+          house_number:this.houseInfo.house_number
+        };
+       
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/submit_entrust', param).then(res => {
+          //debugger
           console.log(res.data)
           if(res.status == 200) {
             if(res.data.code == 200){

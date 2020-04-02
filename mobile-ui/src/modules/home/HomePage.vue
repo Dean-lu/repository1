@@ -21,7 +21,7 @@
       <h2>&nbsp;靓房出租&nbsp;<span style="color: #777;font-size: 0.3125rem;">为您精心挑选的家</span></h2>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.mutet_ids" fill width="3.8rem" height="2rem" class="float-left" />
+          <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
           <div class="float-left">
             <div class="house-item-title">{{item.garden_name}}</div>
             <div class="house-item-info">租金：{{item.rent_price}}</div>

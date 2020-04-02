@@ -67,6 +67,8 @@
         loading:false,
         finished:true,
         checkType: 'all',
+        PageIndex:1,
+        lastPage:0,
         houseSource: [
           {
             id: 0,
@@ -85,13 +87,49 @@
     },
     methods: {
       onLoad(){
-        
+        if(this.PageIndex >= this.lastPage){
+          this.loading = true;
+          this.finished = true;
+          return false;          
+        }
+        this.PageIndex++;
+         let that = this;
+        this.$http.post(this.$store.state.global.baseUrl + 'scene/scene_index',{
+              Status: 1,
+              page: that.PageIndex,
+              PageSize: 14,
+              api_token: that.$store.state.locale.api_token,
+              check_type: this.checkType,
+              garden_name: this.keyword,
+              room_number: this.roomNumber
+         }).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              for(let j=0,len=res.data.data.data.length;j<len;j++){
+                  that.houseSource.push(res.data.data.data[j]);
+              }             
+              // 加载状态结束
+              that.loading = false;
+              if(!res.data.data.data ){
+                that.finished = true;
+              }
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取房源信息失败，请刷新重试！');
+            return;
+          }
+        });
       },
       onClick(name, title) {
+        this.checkType=this.tabsCode[this.active];
         this.queryHouseSource(this.tabsCode[this.active]);
       },
       query(){
+        this.checkType=this.tabsCode[this.active]
         this.queryHouseSource(this.tabsCode[this.active]);
+        
       },
       queryHouseSource(chenkType){
         var that = this;
@@ -105,6 +143,10 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseSource = res.data.data.data;
+              that.lastPage=res.data.data.last_page;
+              // 加载状态结束
+              that.loading = false;  
+              that.finished = false;  
             }else{
               that.$toast(res.data.msg);
             }

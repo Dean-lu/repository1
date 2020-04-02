@@ -176,7 +176,8 @@ export default {
     color:#f7b343;
     background: #ffffff;
     display: inline-block;
-    padding: .06rem .1rem;
+    padding: .06rem;
+    font-size:0.35rem;
   }
   .mine-list{
     font-size: 0.5rem;

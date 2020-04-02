@@ -11,7 +11,7 @@
     </div>
     <div class="swipe">
       <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in houseDetail.mutet_ids" :key="index">
+        <van-swipe-item v-for="(image, index) in houseDetail.house_img" :key="index">
           <img v-lazy="image" />
         </van-swipe-item>
       </van-swipe>
@@ -236,6 +236,13 @@
     width: 100%;
     height: 7.875rem;
   }
+  .van-swipe{
+    width: 100%;
+    height:7.875rem;
+  }
+  .van-swipe img{
+    width:100%;
+    }
  .house-info{
     width: 90%;
     height: 3.75rem;

@@ -16,7 +16,7 @@
               添加银行卡
           </div>
       </div>
-    </div>
+    </div>     
   </div>
 </template>
 
@@ -28,13 +28,14 @@ export default {
       is_show: "has",
       title: "银行卡",
       cardArr:[]
+      
     };
   },
   mounted() {
     
     this.init()
   },
-  methods: {
+  methods: {     
      onClickLeft() {
         this.$router.back(-1);
       },
