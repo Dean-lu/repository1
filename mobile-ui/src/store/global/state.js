@@ -7,14 +7,14 @@ export default {
   isShowFooter: false,
   // 激活的tabBar id
   footerActive: 0,
-  api_token: 'lKSyjcUcZmYfLtXJiryaJUhMBqjJ4Th955rK8bLx6nNiMQ7J8cnD6ADpjMPlPRBFPJOoXMG2zxDhSk0Ra6dyfDREwECZWlw1zbkg',
+  api_token: '',
   user: {
     truename: '',
     idcardcode: '',
     telphone: '',
     court: ''
   },
-  openid: '2o8AIEv3Q6owuO0qmH8Z91VbYblkY',
+  openid: '',
   pid: '',
   appid: 'wxd974fd73c9511a6d',
   urlParam: {}

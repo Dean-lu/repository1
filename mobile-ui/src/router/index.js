@@ -45,11 +45,12 @@ Vue.use(Router)
 export default new Router({
     routes: [{
             path: '/',
-            name: 'NoLogin',
-            component: NoLogin,
+            name: 'HomePage',
+            component: HomePage,
             meta: {
                 title: '首页',
                 showHeader: false,
+                footerActive: 0
             }
         },
         {

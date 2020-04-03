@@ -93,7 +93,7 @@
         </div> -->
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
-          增值服务<span style="font-size: 0.01875rem;">(*自愿选取)</span>
+          增值服务<span style="font-size: 0.3rem;">(*自愿选取)</span>
           <div class="ques-icon"></div>
         </div>
         <div class="add-service">
@@ -396,15 +396,37 @@
           // this.houseInfo.totalAddPrice = this.$math.add(this.houseInfo.totalAddPrice, this.addedService[clickIndex].price) ;
           // this.houseInfo.totalAddPrice += parseFloat(this.addedService[clickIndex].price);
         }else{// 反选事件
-          if(item.mutex_ids && item.mutex_ids.length > 0){
-            for(let i = 0; i < exclusionIds.length; i++){
-              for(let j = 0; j < checkboxs.length; j++){
-                if(checkboxs[j].value == exclusionIds[i]){
-                  checkboxs[j].disabled = false;
+          let indexArr = [];
+          if(exclusionIds && exclusionIds.length > 0){
+            for(let a = 0; a < exclusionIds.length; a++){
+              debugger
+              for(let b = 0; b < checkboxs.length; b++){
+                if(checkboxs[b].value == exclusionIds[a]){// 当前item对应的mutexid解禁
+                  checkboxs[b].disabled = false;
+                  indexArr.push(b);
                 }
               }
             }
           }
+          // 但还需检查其他item
+          debugger
+          for(let e = 0; e < indexArr.length; e++){
+            for(let c = 0; c < this.addedService.length; c++){
+              if(c == clickIndex){
+                continue;
+              }
+              let mutexIdsElse = this.addedService[c].mutex_ids;
+              if(mutexIdsElse && mutexIdsElse.length > 0){
+                for(let d = 0; d < mutexIdsElse.length; d++){
+                  if(checkboxs[indexArr[e]].value == mutexIdsElse[d] && checkboxs[c].checked == true){
+                    checkboxs[indexArr[e]].disabled = true;
+                  }
+                }
+              }
+            }
+          }
+          
+          
           for(let c = 0; c < this.houseInfo.addedServiceSelect.length; c++){
             if(item.id == this.houseInfo.addedServiceSelect[c].id){
               this.houseInfo.addedServiceSelect.splice(c,1);

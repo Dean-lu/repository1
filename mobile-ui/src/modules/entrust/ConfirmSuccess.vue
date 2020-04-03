@@ -30,6 +30,45 @@
     },
     methods: {
       toHome(){
+        this.$store.state.global.houseInfo = {
+          initMark: '0x10',
+          house_position: '',
+          garden_name: '',
+          building_number: null,
+          expire_year: null,
+          expireYearDesc: '',
+          room_number: null,
+          area: null,
+          house_layout: '',
+          rent_type: null,
+          rentTypeDesc: '',
+          rent_price: null,
+          deposit: null,
+          pay_style: null,
+          payStyleDesc: '',
+          house_desc: '',
+          house_img: [],
+          houseImg:[],
+          // 带水印的房产证/合同照片url
+          certifi_info: null,
+          // 房产证file
+          certifiInfo: [],
+          // 带水印的身份证正面照url
+          cardimg1: null,
+          // 身份证正面file
+          idcardFront: [],
+          // 带水印的身份证反面照url
+          cardimg2: null,
+          // 身份证反面file
+          idcardBack: [],
+          added_service_id: [],
+          //产权编号
+          house_number:'',
+          // 增值服务总价
+          totalAddPrice: 0.0,
+          addedServiceSelect: [],
+          
+        };
         this.$router.push({path : '/home'});
       }
     }

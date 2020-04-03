@@ -91,7 +91,7 @@
       <div class="confirm">
         <van-cell v-for="(item,index) in safe_package" :key="index">
           <van-col class="float-left">{{item.service_name}}</van-col>
-          <van-col class="float-right">￥{{item.price}}</van-col>
+          <van-col class="float-right">￥{{item.service_price}}</van-col>
         </van-cell>
         <!-- <van-cell style="color: red;font-size: 0.25rem">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</van-cell> -->
         <div class="add-serv">*<span>管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</span></div>
@@ -159,7 +159,7 @@
               <div class="mihua-logo"></div>
             </van-col>
           </div>
-          <div class="text-align-right">时间：{{currDate.getFullYear()}}年{{currDate.getMonth()}}月{{currDate.getDate()}}日</div>
+          <div class="text-align-right">时间：{{currDate.getFullYear()}}年{{currDate.getMonth() + 1}}月{{currDate.getDate()}}日</div>
         </div>
       </div>
       <div style="width: 90%;margin: 0 auto;">
@@ -463,7 +463,7 @@
               }
             });
             
-            pdf.save(title + '.pdf');
+            // pdf.save(title + '.pdf');
             
             
         })
@@ -705,12 +705,13 @@
     width: 100%;
   }
   .add-service-item{
-    width: 100%;
+    width: 95%;
     line-height: 1rem;
     font-size: 0.3125rem;
+    margin: 0 auto;
   }
   .add-service-item .name{
-    width: 50%;
+    width: 49%;
     display: inline-block;
     text-align: left;
   }

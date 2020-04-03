@@ -141,7 +141,7 @@
           pay_style: this.houseInfo.pay_style,
           house_desc: this.houseInfo.house_desc,
           expire_year: this.houseInfo.expire_year,
-          edit_house: this.houseInfo.house_img
+          house_img: this.houseInfo.house_img
         }
         this.$http.post(this.$store.state.global.baseUrl + 'scene/edit_house', param).then(res => {
           //debugger

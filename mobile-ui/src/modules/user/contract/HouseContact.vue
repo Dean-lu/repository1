@@ -77,7 +77,7 @@
             <p>时间：<span>{{contact.date}}</span></p>
         </div>
         <button @click="showSignature=true" v-if="signbtn=='sign'" class="btnOrange">打开签名版</button>
-        <button @click="submitSign" v-if="signbtn=='submit'" class="btnOrange">提交合同</button>
+        <button @click="submitSign" v-if="signbtn=='submit' && generateContractBtn" class="btnOrange">提交合同</button>
     </div>
     <van-action-sheet v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
         <div class="cavas">
@@ -110,7 +110,8 @@ export default {
             signatureImg:"",
             showSignatureImg:false,
             status:'start',
-            htmlTitle: '房屋使用合同',
+            htmlTitle: '委托出租服务协议',
+            generateContractBtn: false,
             contact:{
                
             }
@@ -238,6 +239,7 @@ export default {
         const imgBase64 = this.el.toDataURL();
         this.signatureImg=imgBase64;
         this.signbtn="submit";
+        this.generateContractBtn = true;
        this.showSignature=false;
         this.showSignatureImg=true;        
         console.log('保存签名成功' + imgBase64);   
@@ -285,7 +287,7 @@ export default {
             param.append("api_token",that.$store.state.global.api_token);
             // param.append("house_id",that.house_id);
             param.append("house_id",that.$store.state.locale.houseId);
-            param.append("file",file);
+            param.append("contract_path",file);
             let config = {
               headers:{'Content-Type':'multipart/form-data'}
             }; 
@@ -307,7 +309,8 @@ export default {
                 return;
               }
             });            
-           pdf.save(title + '.pdf');  
+           // pdf.save(title + '.pdf');  
+           
         })
       },
       dataURLtoBlob: function(dataurl) { 

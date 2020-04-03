@@ -4,17 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-// 路由守卫：全局api_token为空，强制去登陆
-router.beforeEach((to,from,next)=>{
-  if(to.path == '/login' || to.path == '/register' || to.path == '/resetPassword' || to.path == '/salesLogin' 
-    || to.path == '/editHouseInfo' || to.path == '/entrustHouseInfo' || to.path == '/entrustHouseSource' || store.state.global.api_token){
-    next();
-  }else{
-    Vue.prototype.$toast('您还没有登录，请先登录');
-    next('/login');
-  }
-})
-
 // vuex
 import store from './store'
 
@@ -58,20 +47,37 @@ if(search != ''){
   console.log(urlParam);
   store.state.global.urlParam = urlParam;
 }
-
 // 获取LocalStorage参数
+if(localStorage.getItem('api_token')){
+  store.state.global.api_token = localStorage.getItem('api_token');
+  localStorage.removeItem('api_token')
+}
 if(localStorage.getItem('openid')){
   store.state.global.openid = localStorage.getItem('openid');
+  localStorage.removeItem('openid')
 }
 if(localStorage.getItem('pid')){
   store.state.global.pid = localStorage.getItem('pid');
+  localStorage.removeItem('pid')
 }
+
+// 路由守卫：全局api_token为空，强制去登陆
+router.beforeEach((to,from,next)=>{
+  debugger
+  if(to.path == '/' || to.path == '/home' || to.path == '/login' || to.path == '/register' || to.path == '/resetPassword' || to.path == '/salesLogin' 
+    || to.path == '/editHouseInfo' || to.path == '/entrustHouseInfo' || to.path == '/entrustHouseSource' || store.state.global.api_token){
+    next();
+  }else{
+    Vue.prototype.$toast('您还没有登录，请先登录');
+    next('/login');
+  }
+})
 
 /* 开发环境vconsole */
 import VConsole  from  'vconsole'
-if (process.env.NODE_ENV === "development"){
+// if (process.env.NODE_ENV === "development"){
   const vConsole = new VConsole()
-}
+// }
 
 Vue.config.productionTip = false
 

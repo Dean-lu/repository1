@@ -89,21 +89,25 @@ export default {
   methods: {
     init(){
       // debugger
-      if(!this.$store.state.global.loginStatus){
-         this.$router.push({path : '/login'})
-      }
+//       if(!this.$store.state.global.api_token){
+//          this.$router.push({path : '/login'})
+//       }
       // 获取个人信息
       var that = this;
       this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token=' + this.$store.state.global.api_token).then(res => {
+        debugger
         if(res.status == 200) {
           if(res.data.code == 200){
             that.user = res.data.data;
             that.$store.state.global.user = res.data.data;
           }else{
-            that.$toast(res.data.msg);
+            // that.$toast(res.data.msg);
+            // window.location.href = 'http://house.growingsale.cn/wxindex';
+            // this.$router.push({path : '/noLogin'})
           }
         }else{
-          that.$toast("获取个人信息失败！");
+          // that.$toast("获取个人信息失败！");
+          
         }
       });
     },

@@ -56,11 +56,46 @@
       <span class="span-cell">面积:{{houseInfo.area}}㎡</span>
     </div>
     <div class="info-cell">
-      <span class="span-cell">付款方式:{{houseInfo.area}}</span>
+      <span class="span-cell">付款方式:{{houseInfo.pay_style_desc}}</span>
       <span class="span-cell">租金:¥{{houseInfo.rent_price}}</span>
     </div>
     <div class="info-cell">
       <span class="span-cell">押金:¥{{houseInfo.deposit}}</span>
+    </div>
+    <div class="house-desc">
+      <div class="title">
+        描述：
+      </div>
+      <div class="desc-detail">
+        {{houseInfo.house_desc}}
+      </div>
+    </div>
+    <van-divider></van-divider>
+    <div class="info-title">
+      账单明细
+    </div>
+    <div class="bill-table">
+      <table>
+        <thead>
+          <tr>
+            <th>次数</th>
+            <th>付款时间</th>
+            <th>有效时限</th>
+            <th>合计</th>
+          </tr>
+        </thead>
+        <tbody v-for="(item,index) in bill" :key="index">
+          <tr>
+            <td rowspan="2">{{item.times}}</td>
+            <td>{{item.pay_time}}</td>
+            <td>{{item.validity}}</td>
+            <td rowspan="2">{{item.total_price}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">付款金额:{{item.pay_price}}&nbsp;服务费：{{item.service}}&nbsp;保险：{{item.insurance}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div style="width: 50%;margin: 0.625rem auto;">
       <van-button square type="info" size="large" color="#F8B729" style="border-radius: 0.1875rem;" @click="submitConfirm">提交审核</van-button>
@@ -226,7 +261,10 @@
           telphone: "",
           date: ""
         },
+        // 返回的房屋信息
         houseInfo: {},
+        // 返回的bill
+        bill: {},
         idCardFront: [],
         cardimg1: '',
         idCardBack: [],
@@ -279,6 +317,7 @@
             if(res.data.code == 200){
               that.tenant = res.data.data.tenant;
               that.houseInfo = res.data.data.house;
+              that.bill = res.data.data.bill;
             }else{
               that.$toast(res.data.msg);
             }
@@ -714,5 +753,37 @@
    }
    /deep/.van-picker__cancel, /deep/.van-picker__confirm{
      color: #F8B729;
+   }
+   .house-desc{
+     width: 90%;
+     margin: 0 auto;
+   }
+   .house-desc .title{
+     text-align:  left;
+     line-height: 1rem;
+     text-indent: 0.3125rem;
+   }
+   .house-desc .desc-detail{
+     width: 85%;
+     min-height: 3.0rem;
+     margin: 0 auto;
+     text-align: left;
+     color:#777;
+     /* text-indent: 0.3rem; */
+   }
+   .bill-table{
+     
+   }
+   .bill-table table{
+     width: 90%;
+     margin: 0 auto;
+     border-collapse:collapse;
+     border-spacing:0px;
+     border: 1px solid #777;
+   }
+   .bill-table table td{
+     border-left: 1px solid #777;
+     border-top: 1px solid #777;
+     padding: 0;
    }
 </style>

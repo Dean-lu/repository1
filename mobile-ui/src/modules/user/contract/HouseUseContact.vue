@@ -136,14 +136,14 @@
               <div class="mihua-logo"></div>
             </van-col>
           </div>
-            <p>时间：<span>{{contact.date}}</span></p>
+            <p>时间：<span>{{currDate.getFullYear()}}年{{currDate.getMonth() + 1}}月{{currDate.getDate()}}日</span></p>
         </div>
         <!-- <button v-if="contract.order_status==1" @click="editList" class="btnOrange">修改合同信息</button> -->
         <div v-if="btnstatus=='enter'">
           <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>        
-          <button v-else-if="contact.order_status==3" @click="sign" class="btnOrange">打开签约字板</button>
-          <button v-else-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
-          <button v-else-if="contact.order_status==1" @click="editList" class="btnOrange">
+          <button v-if="contact.order_status==3" @click="sign" class="btnOrange">打开签约字板</button>
+          <button v-if="contact.order_status==4" @click="submitList" class="btnOrange">提交房屋清单</button>
+          <button v-if="contact.order_status==1" @click="editList" class="btnOrange">
               修改合同信息
           </button>
         </div>
@@ -189,6 +189,7 @@ import JsPDF from 'jspdf';
 export default {
     data(){
         return {
+            currDate : new Date(),
             title:'合同详情',
             diasabledInput:true,
             contract:"1",
@@ -197,6 +198,7 @@ export default {
             tips:"",      
             pay_wrong:"", 
             btnstatus:"enter",
+            isShowSign: false,// 是否打开签名版
             htmlTitle:"房屋使用合同",          
             contact:{
                 order_status: null,
@@ -276,7 +278,7 @@ export default {
             //debugger
                 if(res.status == 200) {
                     if(res.data.code==200){
-                       const pay_params=res.status.data;
+                       const pay_params=res.data.data;
                        if (typeof WeixinJSBridge == "undefined"){
                             if( document.addEventListener ){
                                 document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
@@ -313,6 +315,9 @@ export default {
                       that.status="end";
                       that.tips="恭喜支付成功！1-2个工作日会有工作人员联系您!";
                     //that.$toast('支付成功');
+                    that.paypg = false;
+                    that.contact.order_status = 3;
+                    that.isShowSign = true;
                 } 
             }); 
         },
@@ -463,7 +468,7 @@ export default {
                 return;
               }
             });            
-           pdf.save(title + '.pdf');  
+           // pdf.save(title + '.pdf');  
         })
       },
       dataURLtoBlob: function(dataurl) { 

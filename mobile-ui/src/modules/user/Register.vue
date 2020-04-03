@@ -51,7 +51,8 @@
         password: '',
         enter_password: '',
         telphone: '',
-        openid: 'ohP60wCWD_LZ_RIDbXqj9zKTzfBQ',
+        openid: '',
+        pid: '',
         pay_password: '',
         code: '',
         sendMsgBtnTxt: '发送验证码',
@@ -68,6 +69,7 @@
     methods: {
       init(){
         this.openid = this.$store.state.global.openid;
+        this.pid = this.$store.state.global.pid;
       },
       // 校验函数返回 true 表示校验通过，false 表示不通过
       validator(val) {
@@ -147,6 +149,7 @@
         param.enter_password = this.enter_password;
         param.telphone = this.telphone;
         param.openid = this.openid;
+        param.pid = this.pid;
         param.pay_password = this.pay_password;
         param.code = this.code;
         this.$http.post(this.$store.state.global.baseUrl + 'user/register_post',param).then(res => {

@@ -21,7 +21,7 @@
         <div class="text-align-left">位置:{{houseDetail.house_position}}</div>
         <div class="text-align-left">房型:{{houseDetail.house_layout}}</div>
         <div class="text-align-left">面积:{{houseDetail.house_position}}</div>
-        <div class="text-align-left">付款方式:{{houseDetail.pay_style}}</div>
+        <div class="text-align-left">付款方式:{{houseDetail.pay_style_desc}}</div>
         <div class="text-align-left">租金:{{houseDetail.deposit}}</div>
       </van-col>
       <van-col span="12">
@@ -47,7 +47,6 @@
     <van-action-sheet v-model="showSignPopup" round title="选择租期" height="200px">
       <div class="chooseRentItem">
         <van-cell title="起租时间:" :value="startRentTime" @click="showRentTimeSelect = true" />
-        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
         <van-cell>
           <van-field readonly clickable name="rentTerm" :value="valueRentTerm" label="租期:" label-width="4.2rem"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
@@ -64,6 +63,9 @@
         <van-button square type="info" size="small" color="#F8B729" @click="toConfirmRentInfo">下一步</van-button>
       </div>
     </van-action-sheet>
+    <div style="position：absolute;z-index:9999;">
+      <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
+    </div>
   </div>
 </template>
 
@@ -185,6 +187,7 @@
         this.startRentDate = date;
         this.startRentTime = this.formatDate(date);
         this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
+        this.expectHandingTime = `${this.startRentDate.getFullYear() + 1 + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
       },
       // 确认租期
       confirmRentTerm(value,index){
@@ -291,7 +294,7 @@
   }
   .chooseRentItem{
     width: 80%;
-    height: 2.5rem;
+    // height: 2.5rem;
     margin: 0 auto;
   }
   .van-cell__title{

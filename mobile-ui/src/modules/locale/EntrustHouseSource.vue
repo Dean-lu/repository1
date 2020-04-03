@@ -22,7 +22,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toEntrustHouseInfo(item.id)">
-              <van-image src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
+              <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
               <div class="float-left">
                 <div class="house-item-title">{{item.garden_name}}</div>
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
@@ -172,8 +172,8 @@
     height: 1.4rem;
     background-color: #F5F5F5;
   }
-  .van-cell{
-    padding: 0.125rem;
+  /deep/.van-cell{
+    padding: 0.3125rem 0.125rem;
   }
   .search{
     width: 100%;
@@ -186,7 +186,7 @@
     width: 70%;
     position: relative;
     left: 0.8rem;
-    top: 0.125rem;
+    top: 0.3125rem;
   }
   .list{
     width: 90%;

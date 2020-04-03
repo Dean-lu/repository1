@@ -140,7 +140,7 @@
     methods:{
       init(){
         // debugger
-        if(!this.$store.state.global.loginStatus){
+        if(!this.$store.state.global.api_token){
           this.$router.push({path : '/login'})
         }
         let that = this;
@@ -228,8 +228,8 @@
   }
   .mine-list{
     font-size: 0.4rem;
-    width: auto;
-    margin: 0.125rem;
+    width: 75%;
+    margin: 0.5rem auto 0 auto;
     border-radius: 0.3125rem;
     padding-top:0.5rem;
   }
