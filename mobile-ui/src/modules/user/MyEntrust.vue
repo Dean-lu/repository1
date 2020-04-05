@@ -113,7 +113,7 @@
     border-bottom: .11rem solid #f5f5f5;
   }
 .main{
-    padding-top:1.226667rem;
+    // padding-top:1.226667rem;
     box-sizing: border-box;
 }
 /deep/.van-tabs__nav{
