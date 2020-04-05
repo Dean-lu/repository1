@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="list">
       <van-tabs color="#FFB640" v-model="active" @click="onClick"  :swipe-threshold="6">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
@@ -46,6 +46,7 @@ import Vue from "vue"
       }
     },
     mounted(){
+      document.title = "我的合同";
       // this.changeStatus()
       this.contactSourct('all');
     },
@@ -103,7 +104,7 @@ import Vue from "vue"
     border-bottom: .11rem solid #f5f5f5;
   }
 .main{
-    padding-top:1.226667rem;
+    // padding-top:1.226667rem;
     box-sizing: border-box;
 }
   .division{

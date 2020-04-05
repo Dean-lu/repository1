@@ -1,6 +1,6 @@
 <template>
   <div class="to-entrust">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="main" v-if="status=='edit'">      
       <div class="remind" v-if="houseInfo.reason">*温馨提示：{{houseInfo.reason}}</div>
       <div class="remind" v-else>*温馨提示：还没有提示您要修改的内容</div>
@@ -141,6 +141,7 @@ Vue.use(Dialog);
       }
     },
     mounted(){
+      document.title = "修改房源信息";
       this.init();
     },
     methods: {
@@ -438,7 +439,7 @@ Vue.use(Dialog);
     line-height: 0.64rem;
   }
   .to-entrust {
-    padding-top:1.5rem;
+    // padding-top:1.5rem;
     box-sizing: border-box;
   }
    .remind{

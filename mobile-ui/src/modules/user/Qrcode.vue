@@ -20,6 +20,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "我的二维码";
     this.init();
   },
   methods: {

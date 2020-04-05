@@ -1,6 +1,6 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
      <div>
       <!-- 没有银行卡信息 -->
       <div v-if="is_show==='none'">
@@ -32,7 +32,7 @@ export default {
     };
   },
   mounted() {
-    
+    document.title = "我的银行卡";
     this.init()
   },
   methods: {     

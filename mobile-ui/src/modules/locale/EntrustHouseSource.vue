@@ -17,7 +17,6 @@
         </van-col>
       </div>
     </div>
-    <div style="width: 100%;height: 0.1rem;"></div>
     <div class="list">
       <van-tabs color="#FFB640" v-model="active" @click="onClick">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
@@ -178,7 +177,8 @@
   }
   .search{
     width: 100%;
-    height: 1.25rem
+    height: 1.25rem;
+    overflow: hidden;
   }
   /deep/.van-field__control{
     background-color: #E4E4E4

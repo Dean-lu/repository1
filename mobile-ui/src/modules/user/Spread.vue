@@ -1,6 +1,6 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div>
       <div class="top-info">
         <div class="info-box">
@@ -90,6 +90,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "推广赚钱";
     this.getList();
     this.init();
   },
@@ -144,6 +145,9 @@ export default {
 </script>
 
 <style scoped>
+  .confirm-rent{
+    /* overflow: hidden; */
+  }
   .van-nav-ba{
     border-bottom:.11rem solid #f5f5f5;
   }
@@ -153,7 +157,7 @@ export default {
     position: relative;
     width: 100%;
     height: 4.2rem;
-    margin-top: 1.226667rem;
+    /* margin-top: 1.226667rem; */
   }
   .top-info .info-box{
     position: absolute;

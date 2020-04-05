@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-     <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="list">
       <van-tabs color="#FFB640" v-model="active" @click="onClick" :swipe-threshold=5>
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
@@ -44,6 +44,7 @@
       }
     },
     mounted(){
+      document.title = "我的委托";
       this.queryHouseSource('all');
     },
     methods: {

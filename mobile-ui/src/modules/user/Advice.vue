@@ -1,6 +1,6 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div>
       <!-- 填写表单 -->
       <div v-if="is_show==true">
@@ -35,7 +35,9 @@ export default {
       advice: ""
     };
   },
-  mounted() {},
+  mounted() {
+    document.title = "投诉建议";
+  },
   methods: {
     onClickLeft() {
         this.$router.back(-1);

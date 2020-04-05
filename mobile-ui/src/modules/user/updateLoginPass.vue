@@ -1,6 +1,6 @@
 <template>
   <div class="login-pwd pwd">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="form-container">
       <div class="input-item">
         <label>登录密码</label>
