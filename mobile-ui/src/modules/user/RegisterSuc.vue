@@ -2,7 +2,7 @@
   <div class="register-suc">
     <div class="button-container">
       <van-button type="default" size="large" block round color="#FFB640" text="马上体验" to="home" ></van-button>
-      <van-button type="default" size="large" block round color="#FFB640" text="继续完善个人信息"  ></van-button>
+      <van-button type="default" size="large" block round color="#FFB640" text="继续完善个人信息" to="myInfo" ></van-button>
     </div>
   </div>
 </template>

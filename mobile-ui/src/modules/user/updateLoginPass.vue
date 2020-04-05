@@ -198,7 +198,7 @@
   .input-item label{
     color: #727171;
     width: 2rem;
-    font-size: .42rem;
+    font-size: 0.42rem;
     line-height: 1rem;
     text-align: right;
     display: inline-block;
@@ -218,7 +218,7 @@
   }
   #verify-btn{
     position: absolute;
-    right: 0;
+    right: 0.1rem;
     bottom: 0;
     font-size: 0.3125rem;
     width: 2rem;

@@ -218,7 +218,7 @@
   }
   #verify-btn{
     position: absolute;
-    right: 0;
+    right: 0.1rem;
     bottom: 0;
     font-size: 0.3125rem;
     width: 2rem;

@@ -2,8 +2,8 @@
   <div class="main">
     <div class="top">
       <div class="float-left">
-        <van-icon v-show="user.court" name="location" color="white"/>
-        <span>{{user.court}}</span>
+        <van-icon v-show="user.court" name="location" size="16" color="white"/>
+        <span style="font-size: 0.1rem;">{{user.court}}</span>
       </div>
     </div>
     <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />
@@ -18,7 +18,9 @@
       </van-grid>
     </van-row>
     <div class="source-list">
-      <h2>&nbsp;靓房出租&nbsp;<span style="color: #777;font-size: 0.3125rem;">为您精心挑选的家</span></h2>
+      <div>
+        <span class="t1">靓房出租</span><span class="t2">为您精心挑选的家</span>
+      </div>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
           <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
@@ -65,7 +67,8 @@ export default {
         require('../../assets/img/home/icon-weituodaili.png'),
         require('../../assets/img/home/icon-chuzudaili.png'),
         require('../../assets/img/home/icon-more.png'),
-        require('../../assets/img/home/laba.png')
+        require('../../assets/img/home/laba.png'),
+        require('../../assets/img/home/location.png')
       ],
       houseSource: [
         {
@@ -95,7 +98,6 @@ export default {
       // 获取个人信息
       var that = this;
       this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token=' + this.$store.state.global.api_token).then(res => {
-        debugger
         if(res.status == 200) {
           if(res.data.code == 200){
             that.user = res.data.data;
@@ -213,15 +215,41 @@ export default {
   .top div span{
     font-size: 0.4375rem;
   }
+  .van-notice-bar{
+    font-size: 0.14rem;
+    color: #494949;
+    text-indent: 0.1rem;
+    background-color: #FFFFFF;
+    height: 0.8rem;
+  }
+  /deep/.van-notice-bar__content{
+    padding-left: 0.2rem!important;
+  }
+  .van-grid-item__text{
+    color: #494949;
+  }
   .van-grid{
-    border-bottom: 0.125rem solid #e7e7e72b;
+    border-top: 0.1rem solid #e7e7e72b;
+    border-bottom: 0.1rem solid #e7e7e72b;
   }
   .van-grid-item ::after{
     border: none;
   }
-  .source-list h2 {
+  .source-list{
     text-align: left;
+    text-indent: 0.23rem
+  }
+  .source-list .t1 {
+    display: inline-block;
+    text-align: left;
+    font-weight: bold;
     margin: 0.3125rem;
+    font-size: 0.4rem;
+    color: #494949;
+  }
+  .source-list .t2{
+    text-align: left;
+    font-size: 0.12rem;
   }
   .van-cell{
     width: auto;
@@ -246,13 +274,15 @@ export default {
     font-weight: bolder!important;
     width: 100% !important;
     line-height: 1rem;
-    font-size: 0.4rem;
+    font-size: 0.15rem;
+    color: #494949;
   }
   .house-item-info{
     display: block!important;
     line-height: 0.625rem;
     text-align: left;
-    color: #777;
+    color: #bbbbbb;
     width: 100%!important;
+    font-size: 0.12rem;
   }
 </style>

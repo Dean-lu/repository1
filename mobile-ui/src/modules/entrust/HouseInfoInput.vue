@@ -84,13 +84,6 @@
               <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
             </div> 
         </div>
-        <!-- <div>
-          <van-field name="houseInfo.house_img">
-            <template #input>
-              <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
-            </template>
-          </van-field>
-        </div> -->
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
           增值服务<span style="font-size: 0.3rem;">(*自愿选取)</span>
@@ -195,6 +188,7 @@
     },
     methods: {
       init(){
+        document.title = '房源信息录入';
         if(this.$store.state.entrust.houseInfo && this.$store.state.entrust.houseInfo.initMark == '0x10'){
           this.houseInfo = this.$store.state.entrust.houseInfo;
         }
@@ -586,28 +580,29 @@
     background-color: #F5F5F5;
     border-radius: 0.3125rem;
   }
-  .pic-area{
-    width: 95%;
-    margin: 0 auto;
+  .id-front{
+    width: 100%;
+    overflow: hidden;
+    height: 5.25rem;
   }
-  /deep/.id-front .van-uploader__upload{
+  .id-front /deep/.van-uploader__upload{
     width: 8.75rem;
     height: 5rem;
     background-image: url("../../assets/img/entrust/id-front.png");
     background-repeat: no-repeat;
     background-size: cover; 
   }
-  /deep/.id-front .van-uploader__upload-icon{
+  .id-front /deep/.van-uploader__upload-icon{
     display: none;
   }
-  /deep/.id-back .van-uploader__upload{
+  .id-back /deep/.van-uploader__upload{
     width: 8.75rem;
     height: 5rem;
     background-image: url("../../assets/img/entrust/id-back.png");
     background-repeat: no-repeat;
     background-size: cover; 
   }
-  /deep/.id-back .van-uploader__upload-icon{
+  .id-back /deep/.van-uploader__upload-icon{
     display: none;
   }
   /deep/.house-cer .van-uploader__upload{
@@ -650,6 +645,10 @@
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;
   }
+  .pic-area{
+    width: 95%;
+    margin: 0 auto;
+  }
   .pic-area{position:relative;}
     /deep/.delte{
     position:absolute;
@@ -663,7 +662,13 @@
   .pic-area img{width:85%; margin-bottom:0.5rem;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}
-  /deep/.posting-uploader-item{position:relative;float:left;width:3rem; height:3rem;}
+  /deep/.posting-uploader-item{
+    position:relative;
+    float:left;
+    width:2.5rem;
+    height:2.5rem;
+    overflow: hidden;
+  }
   /* .add-service-cell input{
     position: absolute;
     visibility: hidden;

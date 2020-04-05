@@ -241,7 +241,7 @@
         // 底部确认弹框
         showConfirm: false,
         // 合同展示
-        showContract: false,
+        showContract: true,
         // 签名显示
         showSignature: false,
         /* */
@@ -381,9 +381,10 @@
       generateContract(){
         var that = this;
         this.generateContractBtn = false;// 隐藏生成合同按钮
-        window.pageYOffset = 0;
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        // window.pageYOffset = 0;
+        // document.documentElement.scrollTop = 0;
+        document.querySelector('#pdfDom').scrollTop = 0;
+        // document.body.scrollTop = 0;
         console.log("合同生成....")
         debugger
         var title = this.htmlTitle;
@@ -421,7 +422,7 @@
             var contentWidth = canvas.width;
             var contentHeight = canvas.height;
 
-            var pageData = canvas.toDataURL('image/jpeg', 0.4);
+            var pageData = canvas.toDataURL('image/jpeg', 1);
 
             var pdfWidth = (contentWidth + 10) / 2 * 0.75;
             var pdfHeight = (contentHeight + 200) / 2 * 0.75; // 500为底部留白
@@ -431,7 +432,7 @@
 
             var pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
             pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
-            
+            pdf.save(title + '.pdf');
             debugger
             // var datauri = pdf.output('dataurlstring');
             //调用

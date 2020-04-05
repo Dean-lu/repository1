@@ -16,15 +16,15 @@
     <van-row class="bgorange">
       <van-grid :column-num="3" :gutter="0" :border="false">
         <van-grid-item>
-          <div>{{user.balance}}</div>
+          <div>¥{{user.balance}}</div>
           <div>余额</div>
         </van-grid-item>
         <van-grid-item>
-          <div>{{user.rent}}</div>
+          <div>¥{{user.rent}}</div>
           <div>累计租金</div>
         </van-grid-item>
         <van-grid-item>
-          <div>{{user.commission}}</div>
+          <div>¥{{user.commission}}</div>
           <div>累计佣金</div>
         </van-grid-item>
       </van-grid>
@@ -33,6 +33,7 @@
     <!-- <van-row>
       <van-image src="https://yanxuan.nosdn.127.net/3d1993dbd9f84de18716944d3682d62f.jpg?_width=750&_height=343"></van-image>
     </van-row> -->
+    <div></div>
     <van-row class="mine-list">
       <ul>
         <li @click="jump('myInfo')">
@@ -98,8 +99,8 @@
             <van-icon name="arrow" />
           </div>
         </li>
-        <li>
-          <div class="float-left" @click="jump('updateloginPass')">
+        <li @click="jump('updateloginPass')">
+          <div class="float-left">
             <van-icon name="lock" />
             <span>修改登录密码</span>
           </div>
@@ -107,9 +108,9 @@
             <van-icon name="arrow" />
           </div>
         </li>
-        <li>
-          <div class="float-left" @click="jump('updatepayPass')">
-            <van-icon name="send-gift" />
+        <li @click="jump('updatepayPass')">
+          <div class="float-left">
+            <van-icon name="send-gift"/>
             <span>修改支付密码</span>
           </div>
           <div class="float-right">
@@ -139,6 +140,7 @@
     },
     methods:{
       init(){
+        document.title = '个人中心';
         // debugger
         if(!this.$store.state.global.api_token){
           this.$router.push({path : '/login'})
@@ -173,6 +175,10 @@
 </script>
 
 <style scoped lang="less">
+  .mine{
+    width: 100%;
+    height: 100%;
+  }
   .mine .header{
     min-height: 4rem;
     background:#f7b343;
@@ -227,14 +233,17 @@
     border: none !important;
   }
   .mine-list{
-    font-size: 0.4rem;
-    width: 75%;
+    font-size: 0.24rem;
+    width: 100%;
     margin: 0.5rem auto 0 auto;
-    border-radius: 0.3125rem;
-    padding-top:0.5rem;
+    margin-bottom: 0.5rem;
+    
   }
   .mine-list ul li{
     display: block;
-    min-height: 0.925rem;
+    min-height: 1rem;
+    line-height: 1rem;
+    border-bottom: 0.01rem solid #F5F5F5;
+    padding: 0 1.2rem;
   }
 </style>

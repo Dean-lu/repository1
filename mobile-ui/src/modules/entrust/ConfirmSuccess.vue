@@ -104,6 +104,6 @@
     height: 3.25rem;
   }
   .msg{
-    
+    font-size: 0.32rem;
   }
 </style>

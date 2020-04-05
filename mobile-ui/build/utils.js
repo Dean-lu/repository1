@@ -28,18 +28,10 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
-  
-  const px2remLoader = {
-    loader: 'px2rem-loader',
-    options: {
-      //一般设置75
-      remUnit: 37.5 // 37.5按照375设计图尺寸在设计，75安装750设计图尺寸设计
-    }
-  }
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader, px2remLoader] : [cssLoader]
+    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
       loaders.push({

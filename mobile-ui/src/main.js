@@ -63,7 +63,6 @@ if(localStorage.getItem('pid')){
 
 // 路由守卫：全局api_token为空，强制去登陆
 router.beforeEach((to,from,next)=>{
-  debugger
   if(to.path == '/' || to.path == '/home' || to.path == '/login' || to.path == '/register' || to.path == '/resetPassword' || to.path == '/salesLogin' 
     || to.path == '/editHouseInfo' || to.path == '/entrustHouseInfo' || to.path == '/entrustHouseSource' || store.state.global.api_token){
     next();
