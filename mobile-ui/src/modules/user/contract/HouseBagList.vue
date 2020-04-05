@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+        <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     
     <div id="listConter" v-if="houseList=='submit'">
         <h2>房屋清单描述：</h2>
@@ -46,6 +46,9 @@ export default {
             house_img:[]
                     
         }
+    },
+    mounted() {
+    	document.title = "房屋清单";
     },
     methods:{
         submitList(){
@@ -143,7 +146,7 @@ export default {
     border-bottom: .11rem solid #f5f5f5;
   }
 .main{
-    padding-top:1.2rem;
+    // padding-top:1.2rem;
     box-sizing:border-box;
     width:100%;
     #listConter{

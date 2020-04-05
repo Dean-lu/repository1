@@ -13,6 +13,7 @@
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
                 <div class="house-item-info">位置：{{item.house_position}}</div>
                 <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
+                <button v-if="item.current_status==-1" class="house-item-edit" @click="refund(item.id)">退款</button>
                 <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
                 <button v-else class="house-item-edit" @click="edit(item.id)">修改</button>               
                 </div>
@@ -99,6 +100,23 @@
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
         this.$router.push({path : '/HouseContact'});
+      },
+      // 申请退款
+      refund(houseId){
+        let that = this;
+        let params = {
+          api_token: this.$store.state.global.api_token,
+          house_id: houseId
+        }
+        this.$http.get(this.$store.state.global.baseUrl + 'entrust/refund',params).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+            }else{
+            }
+          }else{
+            
+          }
+        });
       }
     }
   }
@@ -201,6 +219,7 @@
         border:0 none;
         color:#fff;
         border-radius:0.12rem;
+        margin-left: 0.1rem;
     }
   }
 </style>

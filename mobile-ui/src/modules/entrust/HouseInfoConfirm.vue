@@ -358,12 +358,16 @@
                       if(res.err_msg == "get_brand_wcpay_request:ok" ){
                         // 使用以上方式判断前端返回,微信团队郑重提示：
                         //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                        that.showContract  = true;
+                        // that.showContract  = true;
+                        // 去vivi的签约页
+                        that.roHouseContact(that.house_id);
                       }
                     }
                 );
               }else if(res.data.is_pay == 0){// 不需要支付，直接去签约
-                that.showContract  = true;
+                // that.showContract  = true;
+                // 去vivi的签约页
+                that.roHouseContact(that.house_id);
               }
             }else{
               that.$toast(res.data.msg);
@@ -374,6 +378,11 @@
           }
         });
       },
+      roHouseContact(houseId){
+        this.$store.state.locale.houseId = houseId;
+        console.log(this.$store.state.locale.houseId)
+        this.$router.push({path : '/HouseContact'});
+      },
       closeContract(){
         this.showContract = false;
         this.showSignatureImg = false;
@@ -382,10 +391,10 @@
       generateContract(){
         var that = this;
         this.generateContractBtn = false;// 隐藏生成合同按钮
-        // window.pageYOffset = 0;
-        // document.documentElement.scrollTop = 0;
+        window.pageYOffset = 0;
+        document.documentElement.scrollTop = 0;
         document.querySelector('#pdfDom').scrollTop = 0;
-        // document.body.scrollTop = 0;
+        document.body.scrollTop = 0;
         console.log("合同生成....")
         debugger
         var title = this.htmlTitle;

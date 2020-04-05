@@ -1,6 +1,6 @@
 <template>
 <div class="main">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div id="contactMain" v-if="status=='start'">    
         <h1>房屋使用合同</h1>
         <div>
@@ -222,6 +222,9 @@ export default {
             signatureImg:'',
             showSignatureImg:false
         }
+    },
+    mounted() {
+    	document.title = "合同详情";
     },
     beforeMount(){
         this.init();

@@ -1,6 +1,6 @@
 <template>
   <div class="to-entrust">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="main" v-if="status=='edit'">  
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
@@ -149,6 +149,7 @@
       }
     },
     mounted(){
+      document.title = "修改合同信息";
       this.init();
     },
     methods: {
@@ -331,7 +332,7 @@
   }
   .to-entrust .main{
     width: 100%;
-    padding-top: 1.2rem;
+    // padding-top: 1.2rem;
   }
   .label{
     text-align: left;

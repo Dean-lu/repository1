@@ -3,29 +3,24 @@
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
       <div class="division"></div>
-      </van-form>
-      <van-field v-model="truename" label="姓名" label-align="right" :rules="[{ required: true, message: '请填写姓名' }]" label-width="2rem" />
-        <van-field v-model="idcardcode" label="身份证" label-align="right" label-width="2rem" />
-      <van-field v-model="username" label="账号" label-align="right"
-        :rules="[{ required: true, message: '请填写用户名' }]" label-width="2rem" />
-      <van-field v-model="password" type="password" label="密码" label-align="right"
-        :rules="[{ required: true, message: '请填写密码' }]" label-width="2rem" />
-      <van-field v-model="enter_password" type="password" label="确认密码" label-align="right"
-        :rules="[{ required: true, message: '请填写确认密码' }]" label-width="2rem" />
-      <van-field v-model="pay_password" type="password" label="支付密码" label-align="right"
-        :rules="[{ required: true, message: '请填写支付密码' }]" label-width="2rem" />
+      <van-field v-model="truename" label="姓名" label-align="right" label-width="2rem" />
+      <van-field v-model="idcardcode" label="身份证" label-align="right" label-width="2rem" />
+      <van-field v-model="username" label="账号" label-align="right" label-width="2rem" @blur="checkUserName" />
+      <van-field v-model="password" type="password" label="密码" label-align="right" label-width="2rem" />
+      <van-field v-model="enter_password" type="password" label="确认密码" label-align="right" label-width="2rem" />
+      <van-field v-model="pay_password" type="password" label="支付密码" label-align="right" label-width="2rem" />
       <van-field v-model="telphone" center clearable label="手机号" label-width="2rem" >
+      
         <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
           {{sendMsgBtnTxt}}&nbsp;&nbsp;
         </van-button>
       </van-field>
-      <van-field v-model="code" type="password" label="验证码" label-align="right"
-        :rules="[{ required: true, message: '验证码' }]" label-width="2rem" />
+      <van-field v-model="code" label="验证码" label-align="right" label-width="2rem" />
       <div class="link">
         <div class="float-right"><a href="javascript:;" @click="toLogin">已有账号?去登陆</a></div>
       </div>
       <div class="submit" >
-        <van-button round block size="small" color="#FFB640" native-type="submit" @click="doRegister">
+        <van-button round block size="small" color="#FFB640" native-type="submit">
           提交
         </van-button>
       </div>
@@ -60,7 +55,7 @@
         countDownNum: 60,
         // 定时器
         msgInterval:{},
-        msgBtnLock: false
+        msgBtnLock: false,
       }
     },
     mounted(){
@@ -169,13 +164,20 @@
           }
         });
       },
-      checkValid(){
-        if(!this.truename){
-          this.$toast('姓名不能为空');
-          return false;
-        }
+      checkUserName(){
         if(!this.username){
           this.$toast('账号不能为空');
+          return false;
+        }
+        if(!/^[a-zA-Z0-9]$/.test(this.username)){
+          this.$toast('账号只能包含字母和数字');
+          return false;
+        }
+      },
+      checkValid(){
+        return this.checkUserName();
+        if(!/^[a-zA-Z0-9]$/.test(this.username)){
+          this.$toast('账号只能包含字母和数字');
           return false;
         }
         if(!this.truename){
