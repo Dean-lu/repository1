@@ -188,6 +188,7 @@
   } 
   /deep/.bgorange .van-grid-item__content,.bgorange{
     background:#f7b343;    
+    font-size:0.4rem;
   }
   .header_pesonal{
     position:absolute;
@@ -238,6 +239,7 @@
     width: 100%;
     margin: 0.5rem auto 0 auto;
     margin-bottom: 0.5rem;
+    font-size:0.4rem;
     
   }
   .mine-list ul li{

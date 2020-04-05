@@ -99,26 +99,16 @@ export default {
   bottom: 3.0625rem;
 }
 .btn {
-  width: 124px;
-  height: 33.5px;
-  line-height: 33.5px;
-  color: white;
-  background: #ffb640;
-  font-size: 18px;
-  border-radius: 4px;
-  bottom: 49px;
-  display: block;
-  margin: 0 auto;
-  /* width: 7.75rem;
-  height: 2.09375rem;
-  line-height: 2.09375rem;
-  color: white;
-  background: #ffb640;
-  font-size: 18px;
-  border-radius: 4px;
-  bottom: 3.0625rem;
-  display: block;
-  margin: 0 auto;   */
+      width: 3.5rem;
+    height: 1rem;
+    line-height: 1rem;
+    color: white;
+    background: #ffb640;
+    font-size: 0.6rem;
+    bottom: 0.65333rem;
+    display: block;
+    margin: 0 auto;
+    border-radius: 0.15rem;
 }
 textarea {
   width: 90%;
@@ -128,7 +118,7 @@ textarea {
   padding: 0.375rem;
   border-radius:0.375rem;
   color: black;
-  font-size: 0.28rem;
+  font-size: 0.4rem;
   border: none;
 }
 .tips{
