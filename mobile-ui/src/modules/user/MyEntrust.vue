@@ -15,7 +15,7 @@
                 <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
                 <button v-if="item.current_status==-1" class="house-item-edit" @click="refund(item.id)">退款</button>
                 <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
-                <button v-else class="house-item-edit" @click="edit(item.id)">修改</button>               
+                <button v-if="item.rent_status==0 || item.rent_status==1" class="house-item-edit" @click="edit(item.id)">修改</button>               
                 </div>
                
             </van-cell>
@@ -103,20 +103,37 @@
       },
       // 申请退款
       refund(houseId){
-        let that = this;
-        let params = {
-          api_token: this.$store.state.global.api_token,
-          house_id: houseId
-        }
-        this.$http.get(this.$store.state.global.baseUrl + 'entrust/refund',params).then(res => {
-          if(res.status == 200) {
-            if(res.data.code == 200){
-            }else{
-            }
-          }else{
-            
+        debugger
+        var that = this;
+        this.$dialog.confirm({
+          // title: '标题',
+          message: '确定发起退款申请？',
+          cancelButtonColor: "#9fa0a0",
+          confirmButtonColor: "#f7b343"
+        }).then(() => {
+          // on confirm
+          let params = {
+            api_token: that.$store.state.global.api_token,
+            house_id: houseId
           }
+          debugger
+          that.$http.post(that.$store.state.global.baseUrl + 'entrust/refund',params).then(res => {
+            debugger
+            if(res.status == 200) {
+              if(res.data.code == 200){
+                that.$toast("发起退款成功！");
+              }else{
+                that.$toast(res.data.msg);
+              }
+            }else{
+              that.$toast(res.data.msg);
+            }
+          });
+        }).catch(() => {
+          // on cancel
+          
         });
+        
       }
     }
   }
