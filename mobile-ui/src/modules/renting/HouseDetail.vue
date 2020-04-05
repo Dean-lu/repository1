@@ -17,14 +17,14 @@
       </van-swipe>
     </div>
     <div class="house-info">
-      <van-col span="12">
+      <van-col span="14">
         <div class="text-align-left">位置:{{houseDetail.house_position}}</div>
         <div class="text-align-left">房型:{{houseDetail.house_layout}}</div>
-        <div class="text-align-left">面积:{{houseDetail.house_position}}</div>
+        <div class="text-align-left">面积:{{houseDetail.area}}</div>
         <div class="text-align-left">付款方式:{{houseDetail.pay_style_desc}}</div>
         <div class="text-align-left">租金:{{houseDetail.deposit}}</div>
       </van-col>
-      <van-col span="12">
+      <van-col span="10">
         <div class="price-title">
           ¥{{houseDetail.deposit}}
         </div>
@@ -58,7 +58,7 @@
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
       </div>
-      <div style="color: #777;">起租时间请设置为您入住的日期，实际入住时间不晚于{{actualRentTimeLimit}}</div>
+      <div style="color: #777; font-size:0.35rem; width:85%;margin:0 auto;">起租时间请设置为您入住的日期，实际入住时间不晚于{{actualRentTimeLimit}}</div>
       <div class="confirm-bottom">
         <van-button square type="info" size="small" color="#F8B729" @click="toConfirmRentInfo">下一步</van-button>
       </div>
@@ -250,19 +250,26 @@
   .van-swipe img{
     width:100%;
     }
+    /deep/.van-swipe__indicator--active{
+      background-color:#FFB640
+    }
  .house-info{
-    width: 90%;
-    height: 3.75rem;
+    width: 85%;
+    height: 4.75rem;
     margin: 0 auto;
-    line-height: 0.625rem;
+    line-height: 0.75rem;
     color: lightgrey;
     display: block;
     color: #777;
+    padding:0.5rem 0;
+    box-sizing:border-box;
+    font-size:0.38rem;
+
   }
   .price-title{
     color: #FFB640;
     font-size: 0.5rem;
-    line-height: 3.75rem;
+    line-height: 4.75rem;
   }
   .division{
     width: 100%;
@@ -270,7 +277,7 @@
     background-color: #F5F5F5;
   }
   .house-desc{
-    width: 90%;
+    width: 85%;
     margin: 0 auto;
   }
   .house-desc .title{
@@ -285,6 +292,7 @@
     margin: 0 auto;
     text-align: left;
     color:#777;
+    font-size:0.38rem;
     /* text-indent: 0.3rem; */
   }
   .sign-btn{
@@ -312,13 +320,20 @@
     line-height: 0.5rem!important;
     padding: 0.1rem 0;
   }
+  /deep/.van-action-sheet__header{
+    font-size: 0.5rem;
+  }
+  /deep/.van-cell__title,.van-cell__value{
+    font-size:0.4rem;
+    line-height: 0.6rem;
+  }
   .van-cell:not(:last-child)::after{
     border-bottom: none!important;
   }
   .confirm-bottom{
     width: 100%;
     height: 1.25rem;
-    margin-top: 1.25rem;
+    margin-top:0.6rem;
   }
   .confirm-bottom button{
     width: 3.125rem;

@@ -216,8 +216,11 @@ export default {
   .top div span{
     font-size: 0.4375rem;
   }
+  /deep/.van-grid-item__text{
+    font-size: 0.4rem;
+  }
   .van-notice-bar{
-    font-size: 0.14rem;
+    font-size: 0.35rem;
     color: #494949;
     text-indent: 0.1rem;
     background-color: #FFFFFF;
@@ -250,7 +253,7 @@ export default {
   }
   .source-list .t2{
     text-align: left;
-    font-size: 0.12rem;
+    font-size: 0.35rem;
   }
   .van-cell{
     width: auto;
@@ -275,15 +278,15 @@ export default {
     font-weight: bolder!important;
     width: 100% !important;
     line-height: 1rem;
-    font-size: 0.15rem;
+    font-size: 0.45rem;
     color: #494949;
   }
   .house-item-info{
     display: block!important;
     line-height: 0.625rem;
     text-align: left;
-    color: #bbbbbb;
+    color: #9fa0a0;
     width: 100%!important;
-    font-size: 0.12rem;
+    font-size: 0.38rem;
   }
 </style>
