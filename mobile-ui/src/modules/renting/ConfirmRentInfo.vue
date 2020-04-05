@@ -49,7 +49,7 @@
       房源信息
     </div>
     <div class="info-cell">
-      <span class="span-cell">位置:{{houseInfo.house_position}}</span>
+      位置:{{houseInfo.house_position}}
     </div>
     <div class="info-cell">
       <span class="span-cell">房型:{{houseInfo.house_layout}}</span>
@@ -70,12 +70,12 @@
         {{houseInfo.house_desc}}
       </div>
     </div>
-    <van-divider></van-divider>
+    <div style="width: 100%; height: 0.625rem;border-bottom: 0.125rem solid #F5F5F5;"></div>
     <div class="info-title">
       账单明细
     </div>
     <div class="bill-table">
-      <table>
+      <table cellpadding="0" cellspacing="0" >
         <thead>
           <tr>
             <th>次数</th>
@@ -599,6 +599,10 @@
     height: 1.3125rem;
     background-color: #F5F5F5;
   }
+  .confirm-rent{
+    font-size: 0.4rem;
+    line-height: 0.8rem;
+  }
   .info-title{
     width: 90%;
     margin: 0 auto;
@@ -750,7 +754,7 @@
      background-size: cover; 
    }
    .span-cell{
-     line-height: 0.6125rem;
+     line-height: 0.8125rem;
    }
    /deep/.van-picker__cancel, /deep/.van-picker__confirm{
      color: #F8B729;
@@ -766,25 +770,15 @@
    }
    .house-desc .desc-detail{
      width: 85%;
-     min-height: 3.0rem;
+     min-height: 2.0rem;
      margin: 0 auto;
      text-align: left;
      color:#777;
      /* text-indent: 0.3rem; */
    }
-   .bill-table{
-     
-   }
-   .bill-table table{
-     width: 90%;
-     margin: 0 auto;
-     border-collapse:collapse;
-     border-spacing:0px;
-     border: 1px solid #777;
-   }
-   .bill-table table td{
-     border-left: 1px solid #777;
-     border-top: 1px solid #777;
-     padding: 0;
-   }
+
+   .bill-table{width:90%; margin:0.2rem auto;}
+  .bill-table>table{border:1px solid #ccc; width: 100%;}
+  .bill-table th,.bill-table td{border:1px solid #ccc; padding:0.1rem;}
+  .bill-table td.tableCols{border:0 none; padding:0;}
 </style>
