@@ -1,6 +1,6 @@
 <template>
   <div class="house-detail">
-    <div class="header">
+    <!-- <div class="header">
       <van-nav-bar
         :title="title"
         left-arrow
@@ -8,7 +8,7 @@
         color="#FFB640"
         @click-left="onClickLeft"
       />
-    </div>
+    </div> -->
     <div class="swipe">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in houseDetail.house_img" :key="index">
@@ -114,7 +114,11 @@
       }
     },
     mounted(){
+      
       this.init();
+    },
+    updated() {
+    	document.title= this.title;
     },
     methods: {
       init(){

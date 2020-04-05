@@ -84,6 +84,7 @@ export default {
     }
   },
   mounted(){
+    document.title = '爆米花房管家';
     this.init();
     this.getNotice();
     this.createInterval();

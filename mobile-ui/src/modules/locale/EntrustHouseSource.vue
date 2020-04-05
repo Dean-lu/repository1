@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <HeaderBar></HeaderBar>
-    <div class="division"></div>
+    <!-- <HeaderBar></HeaderBar> -->
+    <!-- <div class="division"></div> -->
     <div class="search">
       <div style="width: 90%;margin: 0 auto;">
         <van-col span="12">
@@ -17,6 +17,7 @@
         </van-col>
       </div>
     </div>
+    <div style="width: 100%;height: 0.1rem;"></div>
     <div class="list">
       <van-tabs color="#FFB640" v-model="active" @click="onClick">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">

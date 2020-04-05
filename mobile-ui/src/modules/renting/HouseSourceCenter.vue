@@ -1,14 +1,14 @@
 <template>
   <div class="house-center">
     <!-- <HeaderBar></HeaderBar> -->
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="title"
       left-text="返回"
       left-arrow
       :fixed="true"
       color="#FFB640"
       @click-left="onClickLeft"
-    />
+    /> -->
     <div class="img-head">
       
     </div>
@@ -92,9 +92,9 @@
           room_number: ''
         },
         //上拉刷新
-        loading: false,
-        finished: false,  
-         error: false,    
+        loading: false,// 是否处于加载状态
+        finished: true,// 是否加载完毕
+        error: false,    
         PageIndex:1,
         lastPage:0,
         list:[],
@@ -111,8 +111,6 @@
         RentTypes:['整租','零租'],
         showRentType: false,
         // 列表参数
-        loading: false,// 是否处于加载状态
-        finished: true,// 是否加载完毕
         houseSource: [
           {
             id: 0,
@@ -127,6 +125,7 @@
       }
     },
     mounted(){
+      document.title="房源中心";
       this.searchHouseSource();
     },
     methods: {

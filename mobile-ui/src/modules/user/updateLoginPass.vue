@@ -57,6 +57,7 @@
       }
     },
     mounted(){
+      document.title = '重置登录密码';
       this.init();
     },
     methods:{

@@ -1,44 +1,44 @@
 <template>
   <div>
-    <HeaderBar></HeaderBar>
-    <div class="division"></div>
+    <!-- <HeaderBar></HeaderBar> -->
+    <!-- <div class="division"></div> -->
     <div class="remind">*温馨提示：请认真核对房源信息</div>
     <div class="house-info">
       <van-form>
         <van-cell>
-          <van-col span="8" class="text-align-right">所属区域：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">所属区域：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.house_position"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">小区名称：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">小区名称：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.garden_name"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">楼栋号：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">楼栋号：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.building_number"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">房号：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">房号：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.room_number"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">面积：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">面积：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.area" type="number"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">户型：</van-col>
+          <van-col span="8" class="text-align-right label">户型：</van-col>
           
-          <van-col span="16">
+          <van-col span="16" class="text">
             <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" @click="showHouseLayout = true" />
             <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
               <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
@@ -47,20 +47,20 @@
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">租金：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">租金：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.rent_price" type="number"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">押金：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">押金：</van-col>
+          <van-col span="16" class="text">
             <van-field v-model="houseInfo.deposit" type="number"/>
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">付款方式：</van-col>
-          <van-col span="16">
+          <van-col span="8" class="text-align-right label">付款方式：</van-col>
+          <van-col span="16" class="text">
             <van-field readonly clickable :value="houseInfo.pay_style_name" @click="showPayStyle = true" />
             <van-popup v-model="showPayStyle" position="bottom">
               <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
@@ -69,7 +69,7 @@
           </van-col>
         </van-cell>
         <van-cell>
-          <van-col span="8" class="text-align-right">房源描述：</van-col>
+          <van-col span="8" class="text-align-right label">房源描述：</van-col>
           <van-col span="16"></van-col>
         </van-cell>
         <van-cell>
@@ -79,7 +79,7 @@
         </van-cell>
       </van-form>
       <van-cell>
-        <van-col span="8" class="text-align-right">房源照片：</van-col>
+        <van-col span="8" class="text-align-right label">房源照片：</van-col>
         <van-col span="16"></van-col>
       </van-cell>
       <!-- <div class="img" v-for="(item,index) in houseInfo.house_img" :key="index">
@@ -222,9 +222,28 @@
     height: 1.4rem;
     background-color: #F5F5F5;
   }
+  .remind{
+    width: 100%;
+    height: 0.8rem;
+    text-align: center;
+    font-size: 14px;
+    line-height: 0.8rem;
+    color: #b5b5b6;
+  }
+  .van-cell .label{
+    color: #595757;
+  }
+  .van-cell .text{
+    color: #9fa0a0;
+  }
+  /deep/.van-field__control{
+    color: #9fa0a0;
+    font-size: 12px;
+  }
   /deep/.van-cell{
     padding: 0;
     margin: 1px auto;
+    font-size: 16px;
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none;

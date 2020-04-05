@@ -1,6 +1,6 @@
 <template>
   <div class="sales-login">
-    <HeaderBar></HeaderBar>
+    <!-- <HeaderBar></HeaderBar> -->
     <div class="button-container">
       <div class="division"></div>
       <van-field v-model="username" label="工号:" label-width="1.5rem" placeholder="输入工号" />
@@ -15,10 +15,10 @@
 </template>
 
 <script>
-  import HeaderBar from '../../components/common/HeaderBar'
+  // import HeaderBar from '../../components/common/HeaderBar'
   export default {
     name: 'SalesLogin',
-    components: {HeaderBar},
+    // components: {HeaderBar},
     data () {
       return {
         username: '',
@@ -26,7 +26,7 @@
       }
     },
     mounted(){
-      
+      document.title = '业务员登录';
     },
     methods: {
       // 业务员登录

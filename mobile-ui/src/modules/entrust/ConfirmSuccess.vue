@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
+    <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
       <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="toHome" />
-    </van-nav-bar>
+    </van-nav-bar> -->
     <div class="remind">
       <div class="title">
         <van-col span="8" offset="2">
@@ -27,6 +27,7 @@
       }
     },
     mounted(){
+      document.title = '委托合同签约';
     },
     methods: {
       toHome(){

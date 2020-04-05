@@ -15,6 +15,9 @@
         
       }
     },
+    mounted(){
+      document.title = '爆米花房管家';
+    },
     methods: {
     	toRegister() {
          alert("0")

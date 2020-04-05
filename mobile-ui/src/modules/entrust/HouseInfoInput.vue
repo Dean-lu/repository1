@@ -1,8 +1,8 @@
 <template>
   <div class="to-entrust">
-    <HeaderBar></HeaderBar>
+    <!-- <HeaderBar></HeaderBar> -->
     <div class="main">
-      <div style="width: 100%;height: 1.2rem;"></div>
+      <!-- <div style="width: 100%;height: 1.2rem;"></div> -->
       <van-notice-bar :scrollable="false" text="温馨提示：请认真填写，房屋信息不全将延长租出时间" :left-icon="noticeIcon" />
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
@@ -107,11 +107,11 @@
 </template>
 
 <script>
-  import HeaderBar from '../../components/common/HeaderBar'
+  // import HeaderBar from '../../components/common/HeaderBar'
   import areaList from '../../assets/js/area.js'
   export default {
     name: 'HouseInfoInput',
-    components: {HeaderBar},
+    // components: {HeaderBar},
     data() {
       return {
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),

@@ -1,50 +1,50 @@
 <template>
   <div>
-    <HeaderBar></HeaderBar>
-    <div class="division"></div>
+    <!-- <HeaderBar></HeaderBar> -->
+    <!-- <div class="division"></div> -->
     <div class="remind">*温馨提示：请认真核对房源信息</div>
     <div class="house-info">
       <van-cell>
-        <van-col span="8" class="text-align-right">所属区域：</van-col>
-        <van-col span="16">
+        <van-col span="8" class="text-align-right label">所属区域：</van-col>
+        <van-col span="16" class="text">
           {{houseInfo.house_position}}
         </van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">小区名称：</van-col>
-        <van-col span="16">{{houseInfo.garden_name}}</van-col>
+        <van-col span="8" class="text-align-right label">小区名称：</van-col>
+        <van-col span="16" class="text">{{houseInfo.garden_name}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">楼栋号：</van-col>
-        <van-col span="16">{{houseInfo.building_number}}</van-col>
+        <van-col span="8" class="text-align-right label">楼栋号：</van-col>
+        <van-col span="16" class="text">{{houseInfo.building_number}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">房号：</van-col>
-        <van-col span="16">{{houseInfo.room_number}}</van-col>
+        <van-col span="8" class="text-align-right label">房号：</van-col>
+        <van-col span="16" class="text">{{houseInfo.room_number}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">面积：</van-col>
-        <van-col span="16">{{houseInfo.area}}</van-col>
+        <van-col span="8" class="text-align-right label">面积：</van-col>
+        <van-col span="16" class="text">{{houseInfo.area}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">户型：</van-col>
-        <van-col span="16">{{houseInfo.house_layout}}</van-col>
+        <van-col span="8" class="text-align-right label">户型：</van-col>
+        <van-col span="16" class="text">{{houseInfo.house_layout}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">租金：</van-col>
-        <van-col span="16">{{houseInfo.rent_price}}</van-col>
+        <van-col span="8" class="text-align-right label">租金：</van-col>
+        <van-col span="16" class="text">{{houseInfo.rent_price}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">押金：</van-col>
-        <van-col span="16">{{houseInfo.deposit}}</van-col>
+        <van-col span="8" class="text-align-right label">押金：</van-col>
+        <van-col span="16" class="text">{{houseInfo.deposit}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">付款方式：</van-col>
-        <van-col span="16">{{houseInfo.pay_style_name}}</van-col>
+        <van-col span="8" class="text-align-right label">付款方式：</van-col>
+        <van-col span="16" class="text">{{houseInfo.pay_style_name}}</van-col>
       </van-cell>
       <van-cell>
-        <van-col span="8" class="text-align-right">房源描述：</van-col>
-        <van-col span="16"></van-col>
+        <van-col span="8" class="text-align-right label label">房源描述：</van-col>
+        <van-col span="16" class="text"></van-col>
       </van-cell>
       <van-cell>
         <van-field v-model="houseInfo.house_desc" rows="5" autosize label=" " type="textarea" placeholder="请输入留言"></van-field>
@@ -76,7 +76,7 @@
       </div>
       <van-divider></van-divider>
       <van-cell>
-        <van-col span="20" offset="3" class="text-align-left"><span style="font-weight: bolder;">增值服务</span></van-col>
+        <van-col span="20" offset="3" class="text-align-left"><span style="font-weight: bolder;color: #595757;font-size: 16px;">增值服务</span></van-col>
       </van-cell>
       <div class="add-serv">
          <van-cell v-for="(item,index) in houseInfo.added_service" :key="index">
@@ -142,6 +142,7 @@
       }
     },
     mounted(){
+      document.title = "房源信息";
       this.init();
     },
     methods: {
@@ -231,9 +232,30 @@
     height: 1.4rem;
     background-color: #F5F5F5;
   }
+  .remind{
+    width: 100%;
+    height: 0.8rem;
+    text-align: center;
+    font-size: 14px;
+    line-height: 0.8rem;
+    color: #b5b5b6;
+  }
+  .house-info{
+  }
   /deep/.van-cell{
     padding: 0;
     margin: 0.125rem 0;
+    font-size: 16px;
+  }
+  .van-cell .label{
+    color: #595757;
+  }
+  .van-cell .text{
+    color: #9fa0a0;
+  }
+  /deep/.van-field__control{
+    color: #9fa0a0;
+    font-size: 12px;
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none;

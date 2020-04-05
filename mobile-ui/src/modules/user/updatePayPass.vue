@@ -57,6 +57,7 @@
       }
     },
     mounted(){
+      document.title = '重置支付密码';
       this.init();
     },
     methods:{

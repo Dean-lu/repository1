@@ -136,11 +136,11 @@
       }
     },
     mounted(){
+      document.title = '个人中心';
       this.init();
     },
     methods:{
       init(){
-        document.title = '个人中心';
         // debugger
         if(!this.$store.state.global.api_token){
           this.$router.push({path : '/login'})
@@ -158,6 +158,7 @@
                   //that.$store.state.locale.editHouseInfo = res.data.data;
                   }else{
                     that.$toast(res.data.msg);
+                    this.$router.push({path : '/login'})
                   }
               }else{
                   that.$toast('获取数据失败，请重试！');

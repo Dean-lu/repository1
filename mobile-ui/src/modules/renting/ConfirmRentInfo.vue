@@ -1,13 +1,13 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="title"
       left-arrow
       :fixed="true"
       color="#FFB640"
       @click-left="onClickLeft"
-    />
-    <div class="division"></div>
+    /> -->
+    <!-- <div class="division"></div> -->
     <div class="info-title">
       租客信息
     </div>
@@ -294,6 +294,7 @@
       }
     },
     mounted(){
+      document.title = this.title;
       this.init();
     },
     updated () {

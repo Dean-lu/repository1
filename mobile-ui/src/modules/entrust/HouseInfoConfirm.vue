@@ -1,7 +1,7 @@
 <template>
   <div class="house-confirm">
-    <HeaderBar></HeaderBar>
-    <div style="color: red;margin-top: 1.2rem;"></div>
+    <!-- <HeaderBar></HeaderBar> -->
+    <!-- <div style="color: red;margin-top: 1.2rem;"></div> -->
     <div style="width: 100%;">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="#F8B729" >
         <van-swipe-item v-for="(item, index) in houseInfo.house_img" :key="index">
@@ -105,10 +105,10 @@
     </van-action-sheet>
     
     <van-popup class="pop-contract" v-model="showContract" :close-on-click-overlay="false">
-      <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
+      <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
         <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="closeContract" />
-      </van-nav-bar>
-      <div id="pdfDom" style="width: 100%;margin: 0 auto;padding-top: 1rem;">
+      </van-nav-bar> -->
+      <div id="pdfDom" style="width: 100%;margin: 0 auto;">
         <div style="width: 90%;margin: 0 auto;">
           <h2>委托出租服务协议</h2>
           <p class="text-align-left">委托方（甲方）：<span class="text-underline">&nbsp;&nbsp;&nbsp;{{user.truename}}&nbsp;&nbsp;&nbsp;</span></p>
@@ -180,12 +180,12 @@
 </template>
 
 <script>
-  import HeaderBar from '../../components/common/HeaderBar'
+  // import HeaderBar from '../../components/common/HeaderBar'
 // 使用 <dingtalk></dingtalk> 在页面中调用
   import JsPDF from 'jspdf'
   export default {
     name: 'HouseInfoConfirm',
-    components: {HeaderBar},
+    // components: {HeaderBar},
     data() {
       return {
         user: {
@@ -241,7 +241,7 @@
         // 底部确认弹框
         showConfirm: false,
         // 合同展示
-        showContract: true,
+        showContract: false,
         // 签名显示
         showSignature: false,
         /* */
@@ -261,6 +261,7 @@
     created() {},
     mounted() {
       // 接受房源信息录入参数
+      document.title = '房源信息确认';
       this.generationConfirm();
     },
     updated () {

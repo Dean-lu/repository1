@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <van-nav-bar :left-arrow="false" :fixed="true" border title="租房合同确认">
+    <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="租房合同确认">
       <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="toHouseCenter" />
-    </van-nav-bar>
+    </van-nav-bar> -->
     <div class="remind">
       <div class="">合同审核中</div>
       <div class="">请前往个人中心查看</div>
@@ -19,6 +19,7 @@
       }
     },
     mounted(){
+      document.title = "租房合同确认";
     },
     methods: {
       toHouseCenter(){
