@@ -12,12 +12,14 @@
                 <div class="house-item-info">租金：¥{{item.rent_price}}</div>
                 <div class="house-item-info">房型：{{item.house_layout}}</div>
                 <div class="house-item-info">位置：{{item.house_position}}</div>
-                <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
-                <button v-if="item.current_status==-1" class="house-item-edit" @click="refund(item.id)">退款</button>
-                <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
-                <button v-if="item.rent_status==0 || item.rent_status==1" class="house-item-edit" @click="edit(item.id)">修改</button>               
-                </div>
-               
+                <div v-if="item.refund_status==0" class="house-item-refunding">退款中</div>
+                <div v-if="item.refund_status==1" class="house-item-refundSuc">退款成功</div>
+                <div v-if="item.refund_status==2" class="house-item-refundFail">退款失败</div>
+              </div>
+              <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
+              <button v-if="item.current_status==-1" class="house-item-edit" @click="refund(item.id)">退款</button>
+              <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
+              <button v-if="item.rent_status==0 || item.rent_status==1" class="house-item-edit" @click="edit(item.id)">修改</button>
             </van-cell>
           </van-list>
         </van-tab>
@@ -238,5 +240,24 @@
         border-radius:0.12rem;
         margin-left: 0.1rem;
     }
+    &-refunding{
+      position: absolute;
+      top: 0.2rem;
+      right: -3rem;
+      color: #FFB640;
+    }
+    &-refundSuc{
+      position: absolute;
+      top: 0.2rem;
+      right: -3rem;
+      color: #FFB640;
+    }
+    &-refundFail{
+      position: absolute;
+      top: 0.2rem;
+      right: -3rem;
+      color: #FFB640;
+    }
   }
+  
 </style>

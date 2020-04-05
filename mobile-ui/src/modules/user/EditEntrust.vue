@@ -7,32 +7,37 @@
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">基本信息</div>
-        <van-field readonly clickable :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
+        <van-field readonly :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" />
         <van-popup v-model="showHousePosition" position="bottom">
           <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
         </van-popup>
         
-        <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
-        <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
-        <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
-        <van-field v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
-        <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
-        
-        <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
+        <van-field readonly v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
+        <van-field readonly v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
+        <van-field readonly v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
+        <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
+        <div class="editable">
+          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
+          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true"  />
+        </div>
         <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
           <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
         </van-popup>
-        <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
+        <van-field readonly :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" />
         <van-popup v-model="showExpireYear" position="bottom">
           <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
         </van-popup>
-        <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
-        <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
-        <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击出租类型" @click="showRentType = true" />
+        <div class="editable">
+          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
+          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
+        </div>
+        <van-field readonly :value="valueRentType" label="类型" placeholder="点击出租类型" />
         <van-popup v-model="showRentType" position="bottom">
           <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
         </van-popup>
-        <van-field readonly clickable :value="houseInfo.pay_style_name" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
+        <div class="editable">
+          <van-field readonly clickable :value="houseInfo.pay_style_name" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
+        </div>
         <van-popup v-model="showPayStyle" position="bottom">
           <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
         </van-popup>
@@ -416,13 +421,14 @@ Vue.use(Dialog);
 </script>
 
 <style scoped lang="less">
-/deep/.van-field__body {
-    border: 0.0625rem solid #e4e4e445;
+  .editable /deep/.van-field__body {
     input{
       padding:0 0.15rem;
     }
-}
- 
+  }
+  .editable /deep/.van-field__body{
+    border: 0.0625rem solid #e4e4e445;
+  }
 .to-entrust .van-nav-bar .van-icon,
   .to-entrust .van-nav-bar__title{
     color:#FFB640;
@@ -558,5 +564,8 @@ Vue.use(Dialog);
     span{
       color:#aaa
     }
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>
