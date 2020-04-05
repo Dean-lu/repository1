@@ -315,6 +315,7 @@ export default {
   position: fixed;
   left: 1.328502415rem;
   top: 3.157487923rem;
+  font-size: 0.35rem;
 }
 .moneyImg {
   width: 0.833333333rem;
