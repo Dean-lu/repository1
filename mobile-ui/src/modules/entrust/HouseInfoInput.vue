@@ -75,10 +75,10 @@
           </van-field>
         </div>
         <div class="label">房屋照片（*限8张)</div>
-        <div class="ver-code-bottom-one-right-code pic-area">            
+        <div class="ver-code-bottom-one-right-code">            
             <div class="ver-code-bottom-one-right-code manyPic">
               <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
-                <img :src="item"  alt="图片" class="imgPreview">
+                <van-image :src="item" width="2.5rem" height="2.5rem" fit="contain"  alt="图片" class="imgPreview" />
                 <van-icon name="close" @click="delImg(index)" class="delte"/>
               </div>
               <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
@@ -659,7 +659,7 @@
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
   }
-  .pic-area img{width:85%; margin-bottom:0.5rem;}
+  .pic-area img{width:85%; margin-bottom:0.5rem; height:100%;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}
   /deep/.posting-uploader-item{
