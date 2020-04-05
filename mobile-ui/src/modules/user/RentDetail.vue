@@ -1,6 +1,6 @@
 <template>
   <div class="house-detail">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="swipe">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in houseDetail.house_img" :key="index">
@@ -47,7 +47,11 @@
       }
     },
     mounted(){
+      document.title = this.title;
       this.init();
+    },
+    updated() {
+    	document.title = this.title;
     },
     methods: {
       init(){
@@ -89,7 +93,7 @@
   .swipe{
     width: 100%;
     height: 7.875rem;
-    margin-top: 1.226667rem;
+    /* margin-top: 1.226667rem; */
   }
  .house-info{
     width: 90%;

@@ -1,7 +1,7 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
-    <div style="height:1.226667rem;border-bottom: .11rem solid #f5f5f5;"></div>
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
+    <!-- <div style="height:1.226667rem;border-bottom: .11rem solid #f5f5f5;"></div> -->
     <van-list class="enstuct_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-cell class="item" v-for="(item, index) in rentlist" :key="index" @click="toDetail(item.house_id)">
         <div class="title-status">
@@ -32,6 +32,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "出租推荐";
     this.getRentlist();
   },
   methods: {

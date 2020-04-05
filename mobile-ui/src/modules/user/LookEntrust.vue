@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="division"></div>
     <!-- <div class="remind">*温馨提示：请认真核对房源信息</div> -->
     <div class="house-info">
@@ -122,6 +122,7 @@
       }
     },
     mounted(){
+      document.title = "查看委托房屋详情";
       this.init();
     },
     methods: {

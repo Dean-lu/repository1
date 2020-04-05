@@ -90,8 +90,8 @@
             <van-icon name="arrow" />
           </div>
         </li>
-        <li>
-          <div class="float-left" @click="jump('Spread')">
+        <li @click="jump('Spread')">
+          <div class="float-left">
             <van-icon name="gold-coin" />
             <span>推广赚钱</span>
           </div>

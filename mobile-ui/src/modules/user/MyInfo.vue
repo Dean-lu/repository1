@@ -1,6 +1,6 @@
 <template>
   <div class="login-pwd pwd myinfo">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="form-container">
       <div class="input-item">
         <label>账号</label>
@@ -56,6 +56,7 @@
       }
     },
     mounted(){
+      document.title = "完善个人信息";
       this.init();
     },
     methods:{
@@ -189,7 +190,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.3125rem;
-    padding-top: 0.6125rem;
+    /* padding-top: 0.6125rem; */
     color: #959595;
   }
   .input-item{

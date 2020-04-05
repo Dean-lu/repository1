@@ -1,6 +1,6 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
      <div class="bindConter" >
         <p class="bindcard">请绑定本人的银行卡</p>  
        <van-form>           
@@ -29,6 +29,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "绑定银行卡";
    // this.init()
   },
   methods: {

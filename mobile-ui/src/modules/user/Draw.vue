@@ -1,9 +1,10 @@
 <template>
   <div class="confirm-rent">
-    <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" />
+    <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <!-- 提现初始页面 -->
     <div v-if="status=='init'">
       <!-- 到账银行卡 -->
+      <div class="card-cr"></div>
       <div class="card">
         <span class="info">到账银行卡</span>
         <!-- <span class="bank">{{bank}}</span> -->
@@ -109,6 +110,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "提现";
     this.init();
   },
   methods: {
@@ -251,7 +253,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 0.3125rem;
-  padding-top: 0.6125rem;
+  // padding-top: 0.6125rem;
   color: #959595;
 }
 
@@ -271,11 +273,15 @@ export default {
 /deep/.van-field__control{
     color:red
   }
+  .card-cr{
+    width: 100%;
+    height: 1.573913043rem;
+  }
 .card {
   width: 9.034rem;
   height: 1.769323671rem;
   margin-left: 0.483091787rem;
-  margin-top: 1.573913043rem;
+  // padding-top: 1.573913043rem;
   background: rgb(247, 248, 248);
   position: relative;
 }
