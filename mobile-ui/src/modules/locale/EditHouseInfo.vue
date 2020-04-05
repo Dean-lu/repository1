@@ -87,7 +87,7 @@
       </div> -->
       <div class="ver-code-bottom-one-right-code manyPic">
         <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
-          <img :src="item"  alt="图片" class="imgPreview">
+          <van-image width="2.5rem" height="2.5rem" fit="contain" :src="item"  alt="图片" class="imgPreview"/>
           <van-icon name="close" @click="delImg(index)" class="delte"/>
         </div>
         <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
@@ -258,6 +258,14 @@
   /deep/.van-field__control{
     color: #777!important;
   }
+  /deep/.posting-uploader-item{
+    position:relative;
+    float:left;
+    width:2.5rem;
+    height:2.5rem;
+    margin-bottom:0.35rem;
+    overflow: hidden;
+  }
   .house-info{
     width: 80%;
     margin: 0 auto;
@@ -283,11 +291,12 @@
     width:100%;
     margin-bottom:0.35rem;
   }
+  
   /deep/.delte{
     position:absolute;
     right:8%;
     top: 2%;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     color:#fff;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
