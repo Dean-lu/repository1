@@ -259,6 +259,9 @@
     display: inline-block;
     width: 40%;
     margin: 0.25rem auto 0 auto;
+    font-size:0.4rem;
+    padding:0.1rem;
+    height:0.7rem;
 //     position: relative;
 //     left: 0.6125rem;
 //     top: 0.25rem;
@@ -278,6 +281,10 @@
     font-size: 0.5rem;
     line-height: 1rem;
     color: #FFB640;
+  }
+  /deep/.van-cell {
+    font-size:0.4rem;
+    line-height:0.7rem;
   }
   .van-cell .van-image{
     display: inline-block;
