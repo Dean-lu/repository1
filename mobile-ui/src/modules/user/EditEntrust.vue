@@ -17,7 +17,7 @@
         <van-field readonly v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
         <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
         <div class="editable">
-          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
+          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
           <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true"  />
         </div>
         <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >

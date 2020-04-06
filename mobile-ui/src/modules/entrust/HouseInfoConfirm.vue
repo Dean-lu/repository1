@@ -389,6 +389,7 @@
         });
       },
       onBridgeReady(params){
+        var that = this;
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', params,
             function(res){

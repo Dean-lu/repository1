@@ -310,6 +310,7 @@ export default {
            
         },
         onBridgeReady(params){
+            var that = this;
             //const pay_params = JSON.parse(params);
             WeixinJSBridge.invoke(
                 'getBrandWCPayRequest', params,

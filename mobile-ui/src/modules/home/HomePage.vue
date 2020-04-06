@@ -23,7 +23,7 @@
       </div>
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
+          <van-image :src="item.house_img" fit="fill" width="3.8rem" height="2rem" class="float-left" />
           <div class="float-left">
             <div class="house-item-title">{{item.garden_name}}</div>
             <div class="house-item-info">租金：{{item.rent_price}}</div>
@@ -113,6 +113,7 @@ export default {
           
         }
       });
+      this.$store.state.entrust.houseInfo = {};
     },
     // 获取首页公告数组
     getNotice(){
