@@ -4,9 +4,9 @@
     <div class="form-container">
       <div class="division"></div>
       <van-field v-model="username" label="账号" label-align="right" label-width="2rem" />
-      <van-field v-model="password" type="password" label="密码" label-align="right" label-width="2rem" />
-      <van-field v-model="enter_password" type="password" label="确认密码" label-align="right" label-width="2rem" />
-      <van-field v-model="telphone" center clearable label="手机号" label-width="2rem" >
+      <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem" @blur="checkPwd" />
+      <van-field v-model="enter_password" type="password" label="确认密码" maxlength="18" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
+      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >
         <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
           {{sendMsgBtnTxt}}&nbsp;&nbsp;
         </van-button>
@@ -76,9 +76,8 @@
       },
       // 获取短信验证码
       sendMsg(){
-        if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
-          this.$toast('手机号格式不正确');
-          return; 
+        if(!this.chenckTel()){
+          return;
         }
         var that = this;
         console.log("sendMsg")
@@ -101,6 +100,9 @@
         });
       },
       doResetPwd(){
+        if(!this.checkValid()){
+          return;
+        }
         var that = this;
         let param = {};
         param.password = this.password;
@@ -123,22 +125,56 @@
           }
         });
       },
-      checkValid(){
+      checkPwd(){
         if(!this.password){
           this.$toast('密码不能为空');
           return false;
         }
+        if(!/^\w{6,18}$/.test(this.password)){
+          this.$toast('请输入6-18位密码(由字母及数字组成)');
+          return false;
+        }
+        if(this.password && this.enter_password && this.password != this.enter_password){
+          this.$toast('密码与确认密码不一致');
+          return false;
+        }
+        return true;
+      },
+      checkEnterPwd(){
         if(!this.enter_password){
           this.$toast('确认密码不能为空');
           return false;
         }
-        if(!this.telphone){
-          this.$toast('手机号不能为空');
+        if(!/^\w{6,18}$/.test(this.enter_password)){
+          this.$toast('请输入6-18位确认密码(由字母及数字组成)');
           return false;
         }
-         if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
+        if(this.password && this.enter_password && this.password != this.enter_password){
+          this.$toast('密码与确认密码不一致');
+          return false;
+        }
+        return true;
+      },
+      chenckTel(){
+        if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
           this.$toast('手机号格式不正确');
           return false; 
+        }
+        return true;
+      },
+      checkValid(){
+        if(!this.username){
+          this.$toast('账号不能为空');
+          return false; 
+        }
+        if(!this.checkPwd()){
+          return false;
+        }
+        if(!this.checkEnterPwd()){
+          return false;
+        }
+        if(!this.chenckTel()){
+          return false;
         }
         if(!this.code){
           this.$toast('验证码不能为空');

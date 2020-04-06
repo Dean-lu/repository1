@@ -408,7 +408,8 @@ export default {
         this.btnstatus="submit";
         this.showSignature=false;
         this.showSignatureImg=true;       
-        console.log('保存签名成功' + imgBase64);       
+        // console.log('保存签名成功' + imgBase64);    
+        console.log('保存签名成功')
       },
        // 合同生成
       submitSign(){

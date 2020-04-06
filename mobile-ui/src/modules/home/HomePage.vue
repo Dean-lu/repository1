@@ -3,7 +3,7 @@
     <div class="top">
       <div class="float-left">
         <van-icon v-show="user.court" name="location" size="16" color="white"/>
-        <span style="font-size: 0.1rem;">{{user.court}}</span>
+        <span style="font-size: 0.38rem;">{{user.court}}</span>
       </div>
     </div>
     <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />

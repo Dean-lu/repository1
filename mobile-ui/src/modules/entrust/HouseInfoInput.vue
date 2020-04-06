@@ -580,11 +580,11 @@
     background-color: #F5F5F5;
     border-radius: 0.3125rem;
   }
-  .id-front{
-    width: 100%;
-    overflow: hidden;
-    height: 5.25rem;
-  }
+//   .id-front{
+//     width: 100%;
+//     // overflow: hidden;
+//     height: 5.25rem;
+//   }
   .id-front /deep/.van-uploader__upload{
     width: 8.75rem;
     height: 5rem;

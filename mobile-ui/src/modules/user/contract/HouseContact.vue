@@ -168,7 +168,8 @@ export default {
         },
         // 签名成功
         signSuc(){
-          this.$router.push({path:'/MyEntrust'});
+          // this.$router.push({path:'/MyEntrust'});
+          this.$router.push({path:'/home'});
         },
         draw() {
         // debugger
@@ -254,7 +255,8 @@ export default {
         this.generateContractBtn = true;
        this.showSignature=false;
         this.showSignatureImg=true;        
-        console.log('保存签名成功' + imgBase64);   
+        // console.log('保存签名成功' + imgBase64);  
+         console.log('保存签名成功')
         // document.removeEventListener('touchmove', e => e.preventDefault(), {
         //   passive: true
         // })

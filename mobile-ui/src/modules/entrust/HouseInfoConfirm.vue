@@ -351,19 +351,29 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               if(res.data.is_pay == 1){// 需要支付
-                WeixinJSBridge.invoke(
-                    'getBrandWCPayRequest', res.data.data,
-                    function(res){
-                      debugger
-                      if(res.err_msg == "get_brand_wcpay_request:ok" ){
-                        // 使用以上方式判断前端返回,微信团队郑重提示：
-                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                        // that.showContract  = true;
-                        // 去vivi的签约页
-                        that.roHouseContact(that.house_id);
-                      }
-                    }
-                );
+                if (typeof WeixinJSBridge == "undefined"){
+                   if( document.addEventListener ){
+                       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                   }else if (document.attachEvent){
+                       document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                   }
+                }else{
+                   that.onBridgeReady(res.data.data);
+                }
+//                 WeixinJSBridge.invoke(
+//                     'getBrandWCPayRequest', res.data.data,
+//                     function(res){
+//                       debugger
+//                       if(res.err_msg == "get_brand_wcpay_request:ok" ){
+//                         // 使用以上方式判断前端返回,微信团队郑重提示：
+//                         //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+//                         // that.showContract  = true;
+//                         // 去vivi的签约页
+//                         that.roHouseContact(that.house_id);
+//                       }
+//                     }
+//                 );
               }else if(res.data.is_pay == 0){// 不需要支付，直接去签约
                 // that.showContract  = true;
                 // 去vivi的签约页
@@ -377,6 +387,22 @@
             return;
           }
         });
+      },
+      onBridgeReady(params){
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', params,
+            function(res){
+              debugger
+              if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                // 使用以上方式判断前端返回,微信团队郑重提示：
+                //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                // that.showContract  = true;
+                that.$toast("支付成功，去签约");
+                // 去vivi的签约页
+                that.roHouseContact(that.house_id);
+              }
+            }
+        );
       },
       roHouseContact(houseId){
         this.$store.state.locale.houseId = houseId;

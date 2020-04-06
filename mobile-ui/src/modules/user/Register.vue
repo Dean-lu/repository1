@@ -3,13 +3,13 @@
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
       <div class="division"></div>
-      <van-field v-model="truename" label="姓名" label-align="right" label-width="2rem" />
-      <van-field v-model="idcardcode" label="身份证" label-align="right" label-width="2rem" />
-      <van-field v-model="username" label="账号" label-align="right" label-width="2rem" @blur="checkUserName" />
-      <van-field v-model="password" type="password" label="密码" label-align="right" label-width="2rem" />
-      <van-field v-model="enter_password" type="password" label="确认密码" label-align="right" label-width="2rem" />
-      <van-field v-model="pay_password" type="password" label="支付密码" label-align="right" label-width="2rem" />
-      <van-field v-model="telphone" center clearable label="手机号" label-width="2rem" >
+      <van-field v-model="truename" label="姓名" label-align="right" maxlength="20" label-width="2rem" />
+      <van-field v-model="idcardcode" label="身份证" label-align="right" maxlength="18" label-width="2rem" />
+      <van-field v-model="username" label="账号" label-align="right" maxlength="20" label-width="2rem" @blur="checkUserName" />
+      <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem"  @blur="checkPwd" />
+      <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
+      <van-field v-model="pay_password" type="password" label="支付密码" maxlength="18" label-align="right" label-width="2rem" />
+      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >
       
         <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
           {{sendMsgBtnTxt}}&nbsp;&nbsp;
@@ -20,7 +20,7 @@
         <div class="float-right"><a href="javascript:;" @click="toLogin">已有账号?去登陆</a></div>
       </div>
       <div class="submit" >
-        <van-button round block size="small" color="#FFB640" native-type="submit">
+        <van-button round block size="small" color="#FFB640" native-type="submit" @click="doRegister" >
           提交
         </van-button>
       </div>
@@ -105,9 +105,8 @@
       sendMsg(){
         var that = this;
         console.log("sendMsg")
-        if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
-          this.$toast('手机号格式不正确');
-          return; 
+        if(!this.chenckTel()){
+          return;
         }
         let param = {};
         param.telphone = this.telphone;
@@ -130,7 +129,6 @@
       },
       // 注册
       doRegister() {
-        debugger
         var that = this;
         // 校验
         if(!this.checkValid()){
@@ -148,12 +146,11 @@
         param.pay_password = this.pay_password;
         param.code = this.code;
         this.$http.post(this.$store.state.global.baseUrl + 'user/register_post',param).then(res => {
-          debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$store.state.global.api_token = res.data.api_token;
               that.$store.state.global.loginStatus = true;
-              that.$toast('发送成功!');
+              that.$toast('注册成功!');
               that.$router.push({path : '/registerSuc'});
             }else{
               that.$toast(res.data.msg);
@@ -169,31 +166,80 @@
           this.$toast('账号不能为空');
           return false;
         }
-        if(!/^[a-zA-Z0-9]$/.test(this.username)){
+        if(!/^\w{1,20}$/.test(this.username)){
           this.$toast('账号只能包含字母和数字');
           return false;
         }
+        return true;
       },
-      checkValid(){
-        return this.checkUserName();
-        if(!/^[a-zA-Z0-9]$/.test(this.username)){
-          this.$toast('账号只能包含字母和数字');
-          return false;
-        }
-        if(!this.truename){
-          this.$toast('真实姓名不能为空');
-          return false;
-        }
+      checkPwd(){
         if(!this.password){
           this.$toast('密码不能为空');
           return false;
         }
+        if(!/^\w{6,18}$/.test(this.password)){
+          this.$toast('请输入6-18位密码(由字母及数字组成)');
+          return false;
+        }
+        if(this.password && this.enter_password && this.password != this.enter_password){
+          this.$toast('密码与确认密码不一致');
+          return false;
+        }
+        return true;
+      },
+      checkEnterPwd(){
         if(!this.enter_password){
           this.$toast('确认密码不能为空');
           return false;
         }
-        if(this.password != this.enter_password){
-          this.$toast('确认密码与密码不一致');
+        if(!/^\w{6,18}$/.test(this.enter_password)){
+          this.$toast('请输入6-18位确认密码(由字母及数字组成)');
+          return false;
+        }
+        if(this.password && this.enter_password && this.password != this.enter_password){
+          this.$toast('密码与确认密码不一致');
+          return false;
+        }
+        return true;
+      },
+      checkIdcard(){
+        if(!this.idcardcode){
+          this.$toast('身份证不能为空');
+          return false;
+        }
+        if(!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcardcode)
+         && !/^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/.test(this.idcardcode)){
+          this.$toast('身份证不合法');
+          return false;
+        }
+        return true;
+      },
+      chenckTel(){
+        if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
+          this.$toast('手机号格式不正确');
+          return false; 
+        }
+        return true;
+      },
+      checkValid(){
+        debugger
+        if(!this.truename){
+          this.$toast('真实姓名不能为空');
+          return false;
+        }
+        if(!this.checkIdcard()){
+          return false;
+        }
+        if(!this.checkUserName()){
+          return false;
+        }
+        if(!this.checkPwd()){
+          return false;
+        }
+        if(!this.checkEnterPwd()){
+          return false;
+        }
+        if(!this.chenckTel()){
           return false;
         }
         if(!this.pay_password){
@@ -203,10 +249,6 @@
         if(!this.telphone){
           this.$toast('手机号不能为空');
           return false;
-        }
-         if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
-          this.$toast('手机号格式不正确');
-          return false; 
         }
         if(!this.code){
           this.$toast('验证码不能为空');
