@@ -735,6 +735,7 @@
   .add-serv{
     width: 100%;
     color: #F8B729;
+    font-size:0.35rem;
   }
   .add-serv span{
     color: #777;
@@ -788,5 +789,8 @@
   }
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;
+  }
+  /deep/.van-cell{
+    font-size:0.4rem;
   }
 </style>
