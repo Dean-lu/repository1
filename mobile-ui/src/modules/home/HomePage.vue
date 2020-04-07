@@ -21,10 +21,10 @@
       <div>
         <span class="t1">靓房出租</span><span class="t2">为您精心挑选的家</span>
       </div>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"  class="listMain">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.house_img" fit="fill" width="3.8rem" height="2rem" class="float-left" />
-          <div class="float-left">
+          <van-image :src="item.house_img" fit="fill" width="3.8rem" height="2rem" class="position_img" />
+          <div>
             <div class="house-item-title">{{item.garden_name}}</div>
             <div class="house-item-info">租金：{{item.rent_price}}</div>
             <div class="house-item-info">房型：{{item.house_layout}}</div>
@@ -240,6 +240,14 @@ export default {
   .van-grid-item ::after{
     border: none;
   }
+  .list-item .van-cell__value{position:relative; min-height:2.3rem; padding-left:4rem; box-sizing:border-box;}
+  
+  /deep/.position_img{
+    position:absolute;
+     left:0; top:0; 
+     width:3.8rem;
+     height:2rem;
+     }
   .source-list{
     text-align: left;
     text-indent: 0.23rem
@@ -255,6 +263,8 @@ export default {
   .source-list .t2{
     text-align: left;
     font-size: 0.35rem;
+    color:#acabab;
+    padding-left:0.2rem;
   }
   .van-cell{
     width: auto;
@@ -267,12 +277,11 @@ export default {
     margin-right: 0.3125rem;
     // box-shadow: 2px 2px 2px #E4E4E4,2px -2px 2px #E4E4E4,-2px 2px 2px #E4E4E4,-2px -2px 2px #E4E4E4;
     border: 0.03125rem solid #e4e4e445;
-    border-radius: 0.625rem;
+    // border-radius: 0.625rem;
     overflow: hidden;
   }
   .list-item div{
     display: inline-block;
-    width: 45%;
   }
   .house-item-title{
     display: block!important;

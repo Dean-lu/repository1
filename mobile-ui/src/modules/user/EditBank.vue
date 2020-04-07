@@ -6,7 +6,7 @@
        <van-form>           
         <van-field type="text"  label="卡号" label-align="right"  v-model="form.bank_card_no" />
         <van-field type="text" label="电话号码" label-align="right" v-model="form.bind_tel" />
-        <div class="btn" @click="save">
+        <div class="btn" @click="bindcheck">
               保 存
           </div>
        </van-form>
@@ -21,6 +21,7 @@ export default {
     return {
       is_show: "none",
       title: "绑定银行卡",
+      person:false,
       form:{
           bank_card_no:'',
           bind_tel:'',
@@ -33,28 +34,29 @@ export default {
    // this.init()
   },
   methods: {
-    init(){
-        var that=this
-         this.$http.post(this.$store.state.global.baseUrl + "user/bind_card",{
-           api_token:this.$store.state.global.api_token
-         })
-        .then(res => {
-          if (res.status == 200) {
-            if (res.data.code == 200) {
-              //todo 
-              this.is_show='none'
-            } else {
-              that.$toast(res.data.msg);
-            }
-          } else {
-            that.$toast("系统异常！");
+    bindcheck(){
+        const that=this;
+        this.$http.post(this.$store.state.global.baseUrl + 'base/pre_solve', {
+          api_token: this.$store.state.global.api_token
+        }).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 400){
+              //去完善个人信息
+              that.$toast('请先完善个人信息');
+              setTimeout(()=>{
+                 that.$router.push({path : '/myInfo'});
+              },1000); 
+            }else{
+              that.save();
+            }            
+          }else{
+            that.$toast('获取个人信息失败，请刷新重试！');
+            return;
           }
         });
-    },
-     onClickLeft() {
-        this.$router.back(-1);
       },
-    save(){
+    save(){ 
       var that = this;
       console.log(that.form.bank_card_no)
       if (!that.form.bank_card_no || !that.form.bind_tel) {
@@ -65,6 +67,7 @@ export default {
         that.$toast('填写的手机号格式不正确');
         return false; 
       }
+      
       // if(that.form.bank_card_no.length!=19 || that.form.bank_card_no.length!=16){
       //   that.$toast('请填写正确的银行卡号！');
       //   return false;

@@ -39,7 +39,7 @@
         {{houseDetail.house_desc}}
       </div>
       <div class="sign-btn">
-        <van-button block size="small" color="#FFB640" native-type="submit" @click="signhouse">
+        <van-button block size="small" color="#FFB640" native-type="submit" @click="signcheck">
           马上签约
         </van-button>
       </div>
@@ -152,9 +152,31 @@
         }
         this.actualRentTimeLimit = this.dateAddFormat(new Date(),3);
       },
+      //签约之前判断个人信息是否完善
+      signcheck(){
+        const that=this;
+        this.$http.post(this.$store.state.global.baseUrl + 'base/pre_solve', {
+          api_token: this.$store.state.global.api_token
+        }).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 400){
+              //去完善个人信息
+              that.$toast('请先完善个人信息');
+              setTimeout(()=>{
+                 that.$router.push({path : '/myInfo'});
+              },1000);  
+            }else{
+              that.signhouse();
+            }            
+          }else{
+            that.$toast('获取个人信息失败，请刷新重试！');
+            return;
+          }
+        });
+      },
       //马上签约按钮
-      signhouse(){
-        
+      signhouse(){        
         // 获取房源详情
         let that = this;
         let param = {

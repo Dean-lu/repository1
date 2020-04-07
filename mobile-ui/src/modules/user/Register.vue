@@ -143,7 +143,7 @@
         param.password = this.password;
         param.enter_password = this.enter_password;
         param.telphone = this.telphone;
-        param.openid = this.openid;
+        param.openid =this.openid;
         param.pid = this.pid;        
         param.code = this.code;
         this.$http.post(this.$store.state.global.baseUrl + 'user/register_post',param).then(res => {
