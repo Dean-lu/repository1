@@ -4,7 +4,7 @@
     <div class="button-container">
       <div class="division"></div>
       <van-field v-model="username" label="工号:" label-width="1.5rem" placeholder="输入工号" />
-      <van-field v-model="password" type="password" label="密码:" label-width="1.5rem" placeholder="输入密码" />
+      <van-field v-model="password" type="password" label="密码:" label-width="1.5rem" placeholder="输入密码" />      
     </div>
     <div class="submit" @click="onSubmit">
       <van-button block size="small" color="#FFB640" native-type="submit">
@@ -70,7 +70,7 @@
   }
   .button-container{
     position: relative;
-    width: 60%;
+    width: 75%;
     height: 20%;
     position: absolute;
     top: 40%;
@@ -79,14 +79,21 @@
     color: #959595;
   }
   .van-cell{
-    background-color: #F5F5F5;
+    color: #959595;
+    background-color: #e9e9e9;
+    border-radius: 0.625rem;
+    width: 90%;
+    height: 1rem;
+    margin: 0.5rem auto;
+    line-height: 0.6rem;
+    font-size:0.4rem;
   }
   .van-cell input{
     background-color: #666;
   }
-  /deep/.van-field__control{
-    background-color: #E4E4E4;
-  }
+  // /deep/.van-field__control{
+  //   background-color: #E4E4E4;
+  // }
   .submit{
     position: relative;
     width: 100%;
@@ -94,11 +101,12 @@
     top: 65%;
   }
   .submit button{
-    width: 35%;
+    width: 4.375rem;
     height: 1rem;
     margin: 0 auto;
     font-size: 0.5rem;
     line-height: 0.5rem;
-    border-radius: 0.125rem;
+    border-radius: 0.125rem;   
+   
   }
 </style>

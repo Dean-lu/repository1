@@ -77,7 +77,7 @@
             </template>
           </van-field>
         </div>
-        <div class="label">房屋照片（*限8张)</div>
+        <div class="label">房屋照片<span style="color: #acabab;">（*限8张)</span></div>
         <div class="ver-code-bottom-one-right-code">            
             <div class="ver-code-bottom-one-right-code manyPic">
               <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
+        <div style="color: #acabab;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
         <van-button style="margin: 0.625rem auto;width: 95%;border-radius: 0.3125rem;" type="primary" block color="#F8B729"
           size="small" @click="toConfirm">提交</van-button>
       </div>

@@ -7,6 +7,7 @@
       </div>
     </div>
     <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />
+    <!-- <marquee behavior="scroll">我单方向循环滚动</marquee> -->
     <van-row>
       <van-grid :column-num="4">
         <van-grid-item :icon="icons[0]" text="我要委托" @click="toHouseInfoInput" />
@@ -21,14 +22,16 @@
       <div>
         <span class="t1">靓房出租</span><span class="t2">为您精心挑选的家</span>
       </div>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"  class="listMain">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.house_img" fit="fill" width="3.8rem" height="2rem" class="position_img" />
+          <van-image :src="item.house_img" fit="fill" width="3.8rem" height="3rem" class="position_img" />
           <div>
-            <div class="house-item-title">{{item.garden_name}}</div>
-            <div class="house-item-info">租金：{{item.rent_price}}</div>
-            <div class="house-item-info">房型：{{item.house_layout}}</div>
+            <div class="house-item-title">
+              <span>{{item.garden_name}}靓房出租</span>
+            </div>
+            <div class="house-item-info">房型：{{item.house_layout}}</div>        
             <div class="house-item-info">位置：{{item.house_position}}</div>
+            <div class="house-item-price"><span>{{item.rent_price}}</span>元/月</div>
           </div>
         </van-cell>
       </van-list>
@@ -49,6 +52,10 @@ export default {
         {
         id: -1,
         title: "五一佳节将至，维修大礼"
+        },
+        {
+        id: 1,
+        title: "佳节促销大礼"
         }
       ],
       noticeItem: {
@@ -128,26 +135,30 @@ export default {
     },
     // 创建公告循环定时器
     createInterval(){
+      const that=this;
+      for(let i=0,len=that.noticeList.length;i<len;i++){      
+        that.noticeItem.title+= that.noticeList[i].title
+      }
       // clearInterval(this.noticeInterval);
-      this.noticeInterval = setInterval(() => {
-        let that = this;
-        that.isInterval = true;
-        if(that.noticeItem.id == that.noticeList[that.noticeList.length - 1].id){
-          that.noticeItem = that.noticeList[0];
-          console.log(that.noticeItem.id)
-          console.log(that.noticeItem.title)
-          return;
-        }else{
-          for(let i = 0; i < that.noticeList.length; i ++){
-            if(that.noticeItem.id == that.noticeList[i].id){
-              that.noticeItem = that.noticeList[i + 1];
-              console.log(that.noticeItem.id)
-              console.log(that.noticeItem.title)
-              return;
-            }
-          }
-        }
-      },3000);
+      // this.noticeInterval = setInterval(() => {
+      //   let that = this;
+      //   that.isInterval = true;
+      //   if(that.noticeItem.id == that.noticeList[that.noticeList.length - 1].id){
+      //     that.noticeItem = that.noticeList[0];
+      //     console.log(that.noticeItem.id)
+      //     console.log(that.noticeItem.title)
+      //     return;
+      //   }else{
+      //     for(let i = 0; i < that.noticeList.length; i ++){
+      //       if(that.noticeItem.id == that.noticeList[i].id){
+      //         that.noticeItem = that.noticeList[i + 1];
+      //         console.log(that.noticeItem.id)
+      //         console.log(that.noticeItem.title)
+      //         return;
+      //       }
+      //     }
+      //   }
+      // },3000);
     },
     // 获取首页优质房源
     getHouseSource(){
@@ -215,7 +226,7 @@ export default {
     font-size: 0.625rem;
   }
   .top div span{
-    font-size: 0.4375rem;
+    font-size: 0.4rem;
   }
   /deep/.van-grid-item__text{
     font-size: 0.4rem;
@@ -240,17 +251,17 @@ export default {
   .van-grid-item ::after{
     border: none;
   }
-  .list-item .van-cell__value{position:relative; min-height:2.3rem; padding-left:4rem; box-sizing:border-box;}
+  .list-item .van-cell__value{position:relative; min-height:3.3rem; padding-left:4.23rem; box-sizing:border-box;}
   
   /deep/.position_img{
     position:absolute;
      left:0; top:0; 
      width:3.8rem;
-     height:2rem;
+     height:3rem;
      }
   .source-list{
     text-align: left;
-    text-indent: 0.23rem
+    // text-indent: 0.23rem
   }
   .source-list .t1 {
     display: inline-block;
@@ -286,17 +297,41 @@ export default {
   .house-item-title{
     display: block!important;
     font-weight: bolder!important;
-    width: 100% !important;
-    line-height: 1rem;
+    width: 100% !important;    
+    height:1.2rem;
     font-size: 0.45rem;
     color: #494949;
+    line-height:0.6rem;
+    display:flex;
+    align-items:center;
+    span{
+      font-size: 0.45rem;
+      overflow:hidden;
+      text-overflow:-o-ellipsis-lastline;
+      text-overflow:ellipsis;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      line-clamp:2;
+      -webkit-box-orient:vertical;
+    }
   }
   .house-item-info{
     display: block!important;
-    line-height: 0.625rem;
+    line-height: 0.6rem;
     text-align: left;
     color: #9fa0a0;
     width: 100%!important;
     font-size: 0.38rem;
+  }
+  .house-item-price{
+    line-height: 0.6rem;
+    text-align: left;
+    color: #f00;
+    width: 100%!important;
+    font-size: 0.35rem;
+    font-weight:bold;
+    span{
+      font-size: 0.4rem;
+    }
   }
 </style>

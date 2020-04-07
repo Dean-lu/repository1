@@ -59,14 +59,14 @@
       <div class="title">
         好房推荐
       </div>
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载"  >
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
-          <van-image :src="item.house_img" fill width="3.8rem" height="2rem" class="float-left" />
-          <div class="float-left">
-            <div class="house-item-title">{{item.garden_name}}</div>
-            <div class="house-item-info">租金：{{item.rent_price}}</div>
+          <van-image :src="item.house_img" fill width="3.8rem" height="3rem" class="position_img" />
+          <div>
+            <div class="house-item-title"><span>{{item.garden_name}}</span></div>            
             <div class="house-item-info">房型：{{item.house_layout}}</div>
             <div class="house-item-info">位置：{{item.house_position}}</div>
+            <div class="house-item-price"><span>{{item.rent_price}}</span>元/月</div>
           </div>
         </van-cell>
         
@@ -272,19 +272,19 @@
     background-color: #F5F5F5;
   }
   .list{
-    width: 90%;
+   
     min-height: 3rem;
-    margin: 0 auto;
   }
   .list .title{
     text-align:  left;
     font-size: 0.5rem;
     line-height: 1rem;
     color: #FFB640;
+    padding:0 0.5rem;
   }
   /deep/.van-cell {
     font-size:0.4rem;
-    line-height:0.7rem;
+    line-height:0.6rem;
   }
   .van-cell .van-image{
     display: inline-block;
@@ -292,26 +292,60 @@
     min-height: 3rem;
     margin-right: 0.3125rem;
     border: 0.03125rem solid #e4e4e445;
-    border-radius: 0.625rem;
+    // border-radius: 0.625rem;
     overflow: hidden;
   }
   .list-item div{
     display: inline-block;
-    width: 45%;
+   
   }
+  .list-item .van-cell__value{position:relative; min-height:3.3rem; padding-left:4.23rem; box-sizing:border-box;}
+  
+  /deep/.position_img{
+    position:absolute;
+     left:0; top:0; 
+     width:3.8rem;
+     height:3rem;
+     }
   .house-item-title{
     display: block!important;
     font-weight: bolder!important;
     width: 100% !important;
-    line-height: 1rem;
-    font-size: 0.4rem;
+    height:1.2rem;
+    font-size: 0.45rem;
+    color: #494949;
+    line-height:0.6rem;
+    display:flex;
+    align-items:center;
+    span{
+      font-size: 0.45rem;
+      overflow:hidden;
+      text-overflow:-o-ellipsis-lastline;
+      text-overflow:ellipsis;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      line-clamp:2;
+      -webkit-box-orient:vertical;
+    }
   }
   .house-item-info{
     display: block!important;
-    line-height: 0.625rem;
+    line-height: 0.6rem;
     text-align: left;
-    color: #777;
+    color: #9fa0a0;
     width: 100%!important;
+    font-size: 0.38rem;
+  }
+  .house-item-price{
+    line-height: 0.6rem;
+    text-align: left;
+    color: #f00;
+    width: 100%!important;
+    font-size: 0.35rem;
+    font-weight:bold;
+    span{
+      font-size: 0.4rem;
+    }
   }
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;

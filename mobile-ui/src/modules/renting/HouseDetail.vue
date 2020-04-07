@@ -17,18 +17,30 @@
       </van-swipe>
     </div>
     <div class="house-info">
-      <van-col span="14">
-        <div class="text-align-left">位置:{{houseDetail.house_position}}</div>
-        <div class="text-align-left">房型:{{houseDetail.house_layout}}</div>
-        <div class="text-align-left">面积:{{houseDetail.area}}</div>
-        <div class="text-align-left">付款方式:{{houseDetail.pay_style_desc}}</div>
-        <div class="text-align-left">租金:{{houseDetail.deposit}}</div>
-      </van-col>
-      <van-col span="10">
-        <div class="price-title">
-          ¥{{houseDetail.deposit}}
-        </div>
-      </van-col>
+      <div class="house-Main clearfix">
+        <div class="float-left house-price">{{houseDetail.deposit}}元/月</div>
+        <div class="float-right">{{houseDetail.pay_style_desc}}</div>
+      </div>
+      <div class="text-align-left black-text house-title">
+        {{houseDetail.house_position}}{{houseDetail.garden_name}}
+        {{houseDetail.building_number}}栋{{houseDetail.room_number}}号
+      </div>
+       <div class="house-introduce">
+        <van-col span="6">
+          <div>            
+              <span class="black-text">{{houseDetail.house_layout}}</span><br/>
+              房型    
+          </div>     
+        </van-col>
+        <van-col span="12">
+          <span class="black-text">{{houseDetail.area}}㎡</span><br/>
+          面积         
+        </van-col>
+        <van-col span="6">          
+          <span class="black-text">￥{{houseDetail.deposit}}</span><br/>
+          押金         
+        </van-col>
+      </div>      
     </div>
     <div class="division"></div>
     <div class="house-desc">
@@ -127,7 +139,7 @@
         let that = this;
         let param = {house_id: this.$store.state.renting.id};
         this.$http.post(this.$store.state.global.baseUrl + 'house/house_details', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseDetail = res.data.data;
@@ -184,7 +196,7 @@
           house_id: this.$store.state.renting.id
         };
         this.$http.post(this.$store.state.global.baseUrl + 'lease/pre_sign', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.showSignPopup = true;
@@ -251,6 +263,7 @@
 </script>
 
 <style scoped lang="less">
+
   .van-nav-bar__text{
     color: #FFB640;
   }
@@ -283,10 +296,22 @@
     color: lightgrey;
     display: block;
     color: #777;
-    padding:0.5rem 0;
+    padding:0.3rem 0;
     box-sizing:border-box;
     font-size:0.38rem;
-
+    .house-price{
+      color:#f00;
+      font-weight:bold;
+      font-size:0.4rem;
+    }
+    .black-text{
+      font-weight:bold;      
+      color:#000;
+    }
+    .house-title{
+      padding:0.3rem 0;
+      font-size:0.4rem;
+    }
   }
   .price-title{
     color: #FFB640;
@@ -301,16 +326,18 @@
   .house-desc{
     width: 85%;
     margin: 0 auto;
+    padding-top:0.2rem;
   }
   .house-desc .title{
     text-align:  left;
-    font-size: 0.5rem;
+    font-size: 0.4rem;
     line-height: 1rem;
-    color: #FFB640;
+    color: #000;
+    font-weight: bold;
   }
   .house-desc .desc-detail{
     width: 85%;
-    min-height: 3.0rem;
+    min-height: 2.0rem;
     margin: 0 auto;
     text-align: left;
     color:#777;
@@ -351,6 +378,16 @@
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none!important;
+  }
+  .house-Main{
+    width:100%;
+  }
+  .clearfix:after{
+    content: "." ;
+    display: block ;
+    height: 0 ;
+    clear: both ;
+    visibility: hidden ;
   }
   .confirm-bottom{
     width: 100%;

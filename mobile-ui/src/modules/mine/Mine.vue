@@ -8,7 +8,7 @@
           <van-image :src="user.headimgurl"></van-image>
         </div>     
         <div class="float-left header_txt">  
-          <span>{{user.truename}} （{{user.court}}）</span>
+          <span>{{user.truename}}</span>
           <div><span class="bg-white" @click="jump('Spread')">立即推广赚钱</span></div>
         </div>
       </div>
@@ -247,6 +247,6 @@
     min-height: 1rem;
     line-height: 1rem;
     border-bottom: 0.01rem solid #F5F5F5;
-    padding: 0 1.2rem;
+    padding: 0 0.7rem;
   }
 </style>
