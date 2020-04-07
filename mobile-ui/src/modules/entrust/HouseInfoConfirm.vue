@@ -56,6 +56,9 @@
         <van-col span="12">
           <van-field readonly v-model="houseInfo.house_number" label="产权编号:" label-width="2rem" label-align="left" />
         </van-col>
+        <van-col span="12">
+          <van-field readonly v-model="houseInfo.trimStatusDesc" label="装修状态:" label-width="2rem" label-align="left" />
+        </van-col>
       </van-cell>
       <!-- <van-field readonly v-model="houseInfo.rent_price" label="租金" /> -->
       <div class="label">房源描述</div>
@@ -298,6 +301,7 @@
           rent_price:this.houseInfo.rent_price,
           deposit:this.houseInfo.deposit,
           pay_style:this.houseInfo.pay_style,
+          trim_status:this.houseInfo.trim_status,
           house_desc:this.houseInfo.house_desc,
           house_img:JSON.stringify(this.houseInfo.house_img),
           certifi_info:this.houseInfo.certifi_info,

@@ -2,8 +2,8 @@
   <div class="login">
     <div class="button-container">
       <div class="division"></div>
-      <van-field v-model="user.username" name="用户名" label="账号" label-width="1.5rem"/>
-      <van-field v-model="user.password" type="password" name="密码" label="密码" label-width="1.5rem" />
+      <van-field v-model="user.telphone" center clearable label="手机号" maxlength="11" label-width="2rem" /> 
+      <van-field v-model="user.password" type="password" name="密码" label="密码" label-width="2rem" />
       <div class="link">
         <div class="float-left"><a href="javascript:;" @click="findPwd">忘记密码?</a></div>
         <div class="float-right"><a href="javascript:;" @click="toRegister">去注册</a></div>
@@ -23,7 +23,7 @@
     data () {
       return {
         user: {
-          username:'',
+          telphone:'',
           password: '',
           code:''
         },
@@ -44,6 +44,17 @@
 //         this.$toast('登陆成功');
 //         this.$store.state.global.loginStatus = true;
 //         this.$router.push({path : '/home'});
+        if(!this.user.telphone){
+          this.$toast('手机号不能为空');
+          return false;
+        }
+        if(!this.chenckTel()){         
+          return false;
+        }
+        if(!this.user.password){
+          this.$toast('密码不能为空');
+          return false;
+        }   
         this.$http.post(this.$store.state.global.baseUrl + 'user/login_post',this.user).then(res => {
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -58,6 +69,14 @@
             that.$toast('系统异常！');
           }
         });
+      },
+      //验证手机号
+      chenckTel(){
+        if(!(/^1[3456789]\d{9}$/.test(this.user.telphone))){ 
+          this.$toast('手机号格式不正确');
+          return false; 
+        }
+        return true;
       },
       findPwd(){
         this.$router.push({path : '/resetPassword'});
@@ -94,10 +113,8 @@
     width: 80%;
     margin: 0 auto;
     margin-top: 0.4125rem;
-  }
-  .link div{
-    
-  }
+    font-size:0.35rem;
+  }  
   a:link {
     color: #959595;
     text-decoration: underline;
@@ -107,9 +124,10 @@
     background-color: #F5F5F5;
     border-radius: 0.625rem;
     width: 90%;
-    height: 0.8rem;
-    margin: 0.125rem auto;
-    line-height: 0.4rem;
+    height: 1rem;
+    margin: 0.5rem auto;
+    line-height: 0.6rem;
+    font-size:0.4rem;
   }
   .division{
     position: absolute;

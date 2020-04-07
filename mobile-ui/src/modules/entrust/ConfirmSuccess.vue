@@ -13,7 +13,7 @@
         </van-col>
       </div>
       <div class="division"></div>
-      <div class="msg">恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。</div>
+      <div class="msg">您的委托已经提交，工作人员将联系您实地勘查房源，审核通过后即可免费上架推广出租</div>
     </div>
   </div>
 </template>

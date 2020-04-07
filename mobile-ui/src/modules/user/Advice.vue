@@ -2,8 +2,16 @@
   <div class="confirm-rent">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div>
+     
+      
       <!-- 填写表单 -->
       <div v-if="is_show==true">
+        <div class="adviceMain">
+         <van-field readonly clickable name="advice_title" :value="code_name" label="投诉类型:" placeholder="选择投诉类型" @click="showcodeLayout = true" />
+        <van-popup class="popup-select" v-model="showcodeLayout" position="bottom" >
+          <van-picker show-toolbar title="选择投诉类型" :columns="codeLayouts" @cancel="showcodeLayout = false" @confirm="confirmcodeLayout" />
+        </van-popup>
+      
         <textarea
           name="advice"
           v-model="advice"
@@ -14,6 +22,7 @@
         ></textarea>
         <div class="cont">
           <div class="btn" @click="onSubmit()">提交</div>
+        </div>
         </div>
       </div>
       <!-- 提交成功呈现 -->
@@ -32,7 +41,12 @@ export default {
     return {
       is_show: true,
       title: "投诉建议",
-      advice: ""
+      advice: "",
+      code:'',
+      code_name:'',
+      code_choice:['entrust','lease','service_advice'],
+      codeLayouts:['委托投诉','出租投诉','服务与建议'],
+      showcodeLayout:false
     };
   },
   mounted() {
@@ -42,17 +56,28 @@ export default {
     onClickLeft() {
         this.$router.back(-1);
       },
+      //投诉建议选择
+    confirmcodeLayout(value,index){
+         this.code_name = value;
+        this.code = this.code_choice[index];       
+        this.showcodeLayout = false;
+    },
     onSubmit() {
       var that = this;
+      if(!that.code){
+        that.$toast("请选择建议类型");
+        return false;
+      }
       if (that.advice == "" || that.advice == undefined) {
         that.$toast("填写投诉建议后才能提交");
+        return false;
       }
       this.$http
         .post(this.$store.state.global.baseUrl + "user/advice",
         {
           api_token:this.$store.state.global.api_token,
           desc:this.advice,
-          code:'service_advice'
+          code:this.code
         } )
         .then(res => {
           if (res.status == 200) {
@@ -82,6 +107,7 @@ export default {
 .confirm-rent .van-nav-bar{
     border-bottom: .11rem solid #f5f5f5;
   }
+  .van-cell{font-size:0.4rem;}
 .submit {
   width: 4.375rem;
   height: 0.9375rem;
@@ -110,11 +136,15 @@ export default {
     margin: 0 auto;
     border-radius: 0.15rem;
 }
+.adviceMain{
+  padding-top:1.5rem;
+  box-sizing:border-box;
+  font-size:0.4rem;
+}
 textarea {
   width: 90%;
   height: 6.5rem;
   background: #f3f3f3;
-  margin-top: 2.25rem;
   padding: 0.375rem;
   border-radius:0.375rem;
   color: black;

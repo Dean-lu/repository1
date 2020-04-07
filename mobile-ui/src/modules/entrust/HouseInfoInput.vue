@@ -37,7 +37,10 @@
           <van-popup v-model="showPayStyle" position="bottom">
             <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
           </van-popup>
-          
+           <van-field readonly clickable :value="valuetrimStatus" label="装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
+          <van-popup v-model="showrtrimStatus" position="bottom">
+            <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
+          </van-popup>
           <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
           <van-popup v-model="showExpireYear" position="bottom">
             <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
@@ -129,6 +132,8 @@
           rent_type: null,
           rentTypeDesc: '',
           rent_price: null,
+          trim_status:null,
+          trimStatusDesc:null,
           deposit: null,
           pay_style: null,
           payStyleDesc: '',
@@ -172,7 +177,11 @@
         // 付款方式
         showRentType: false,
         valueRentType: '',
-        rentTypeDesc: ['整租', '合租', '转租'],
+        rentTypeDesc: ['整租', '合租'],
+        // 装修状态       
+        showrtrimStatus: false,
+        valuetrimStatus: '',
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装'],
         // 委托时间
         showExpireYear: false,
         valueExpireYear: '',
@@ -228,6 +237,13 @@
         this.houseInfo.payStyleDesc = value;
         this.showPayStyle = false;
       },
+      //装修状态选择
+       trimStatusChoice(value,index) {
+        this.valuetrimStatus = value;
+        this.houseInfo.trim_status = index + 1;
+        this.houseInfo.trimStatusDesc = value;
+        this.showrtrimStatus = false;
+      },      
       // 确认委托时间
       confirmExpireYear(value,index){
         this.valueExpireYear = value;
@@ -517,6 +533,10 @@
         }
         if(!this.houseInfo.pay_style){
           this.$toast("请选择付款方式");
+          return;
+        }
+        if(!this.houseInfo.trim_status){
+          this.$toast("请选择装修状态");
           return;
         }
         if(!this.houseInfo.expire_year){

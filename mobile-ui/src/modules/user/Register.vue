@@ -3,19 +3,21 @@
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
       <div class="division"></div>
-      <van-field v-model="truename" label="姓名" label-align="right" maxlength="20" label-width="2rem" />
-      <van-field v-model="idcardcode" label="身份证" label-align="right" maxlength="18" label-width="2rem" />
-      <van-field v-model="username" label="账号" label-align="right" maxlength="20" label-width="2rem" @blur="checkUserName" />
-      <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem"  @blur="checkPwd" />
-      <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
-      <van-field v-model="pay_password" type="password" label="支付密码" maxlength="18" label-align="right" label-width="2rem" />
-      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >
-      
-        <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
-          {{sendMsgBtnTxt}}&nbsp;&nbsp;
-        </van-button>
+      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >      
+      <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
+        {{sendMsgBtnTxt}}&nbsp;&nbsp;
+      </van-button>
       </van-field>
       <van-field v-model="code" label="验证码" label-align="right" label-width="2rem" />
+      <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem"  @blur="checkPwd" />
+      <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
+      <!-- <van-field v-model="truename" label="姓名" label-align="right" maxlength="20" label-width="2rem" />
+      <van-field v-model="idcardcode" label="身份证" label-align="right" maxlength="18" label-width="2rem" />
+      <van-field v-model="username" label="账号" label-align="right" maxlength="20" label-width="2rem" @blur="checkUserName" />
+      
+      <van-field v-model="pay_password" type="password" label="支付密码" maxlength="18" label-align="right" label-width="2rem" />
+      
+      </van-field> -->      
       <div class="link">
         <div class="float-right"><a href="javascript:;" @click="toLogin">已有账号?去登陆</a></div>
       </div>
@@ -135,15 +137,14 @@
           return;
         }
         let param = {};
-        param.truename = this.truename;
-        param.idcardcode = this.idcardcode;
-        param.username = this.username;
+        // param.truename = this.truename;
+        // param.idcardcode = this.idcardcode;
+        // param.username = this.username;
         param.password = this.password;
         param.enter_password = this.enter_password;
         param.telphone = this.telphone;
         param.openid = this.openid;
-        param.pid = this.pid;
-        param.pay_password = this.pay_password;
+        param.pid = this.pid;        
         param.code = this.code;
         this.$http.post(this.$store.state.global.baseUrl + 'user/register_post',param).then(res => {
           if(res.status == 200) {
@@ -161,17 +162,17 @@
           }
         });
       },
-      checkUserName(){
-        if(!this.username){
-          this.$toast('账号不能为空');
-          return false;
-        }
-        if(!/^\w{1,20}$/.test(this.username)){
-          this.$toast('账号只能包含字母和数字');
-          return false;
-        }
-        return true;
-      },
+      // checkUserName(){
+      //   if(!this.username){
+      //     this.$toast('账号不能为空');
+      //     return false;
+      //   }
+      //   if(!/^\w{1,20}$/.test(this.username)){
+      //     this.$toast('账号只能包含字母和数字');
+      //     return false;
+      //   }
+      //   return true;
+      // },
       checkPwd(){
         if(!this.password){
           this.$toast('密码不能为空');
@@ -202,18 +203,18 @@
         }
         return true;
       },
-      checkIdcard(){
-        if(!this.idcardcode){
-          this.$toast('身份证不能为空');
-          return false;
-        }
-        if(!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcardcode)
-         && !/^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/.test(this.idcardcode)){
-          this.$toast('身份证不合法');
-          return false;
-        }
-        return true;
-      },
+      // checkIdcard(){
+      //   if(!this.idcardcode){
+      //     this.$toast('身份证不能为空');
+      //     return false;
+      //   }
+      //   if(!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcardcode)
+      //    && !/^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/.test(this.idcardcode)){
+      //     this.$toast('身份证不合法');
+      //     return false;
+      //   }
+      //   return true;
+      // },
       chenckTel(){
         if(!(/^1[3456789]\d{9}$/.test(this.telphone))){ 
           this.$toast('手机号格式不正确');
@@ -222,15 +223,16 @@
         return true;
       },
       checkValid(){
-        debugger
-        if(!this.truename){
-          this.$toast('真实姓名不能为空');
+        
+        if(!this.telphone){
+          this.$toast('手机号不能为空');
           return false;
         }
-        if(!this.checkIdcard()){
+        if(!this.code){
+          this.$toast('验证码不能为空');
           return false;
-        }
-        if(!this.checkUserName()){
+        }        
+        if(!this.chenckTel()){
           return false;
         }
         if(!this.checkPwd()){
@@ -239,22 +241,12 @@
         if(!this.checkEnterPwd()){
           return false;
         }
-        if(!this.chenckTel()){
-          return false;
-        }
-        if(!this.pay_password){
-          this.$toast('支付密码不能为空');
-          return false;
-        }
-        if(!this.telphone){
-          this.$toast('手机号不能为空');
-          return false;
-        }
-        if(!this.code){
-          this.$toast('验证码不能为空');
-          return false;
-        }
         return true;
+        // if(!this.pay_password){
+        //   this.$toast('支付密码不能为空');
+        //   return false;
+        // }        
+        
       },
       toLogin(){
         this.$router.push({path : '/login'});
@@ -285,7 +277,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.3125rem;
-    padding-top: 0.6125rem;
+    padding-top: 1.2125rem;
     color: #959595;
   }
   .van-cell{
@@ -293,9 +285,10 @@
     background-color: #F5F5F5;
     border-radius: 0.625rem;
     width: 90%;
-    height: 0.8rem;
-    margin: 0.125rem auto;
-    line-height: 0.4rem;
+    height: 1rem;
+    margin: 0.5rem auto;
+    line-height: 0.6rem;
+    font-size:0.4rem;
   }
   #verify-btn{
     position: relative;
@@ -317,6 +310,7 @@
     width: 80%;
     margin: 0 auto;
     margin-top: 0.4125rem;
+    font-size:0.35rem;
   }
   a:link {
     color: #959595;
