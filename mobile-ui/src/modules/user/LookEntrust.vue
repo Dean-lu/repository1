@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
-    <div class="division"></div>
+    <!-- <div class="division"></div> -->
     <!-- <div class="remind">*温馨提示：请认真核对房源信息</div> -->
     <div class="house-info">
       <van-cell>
@@ -40,7 +40,7 @@
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">出租类型：</van-col>
-        <van-col span="16">{{}}</van-col>
+        <van-col span="16">{{valueRentType}}</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">租金：</van-col>
@@ -53,6 +53,10 @@
       <van-cell>
         <van-col span="8" class="text-align-right">付款方式：</van-col>
         <van-col span="16">{{houseInfo.pay_style_name}}</van-col>
+      </van-cell>
+      <van-cell>
+        <van-col span="8" class="text-align-right">装修状态：</van-col>
+        <van-col span="16">{{valuetrimStatus}}</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right">房源描述：</van-col>
@@ -99,7 +103,7 @@
               <div>{{item.service_name}}:<span> ￥ {{item.price}} 元</span></div>                        
             </div> 
         </div>
-        <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
+        <div style="color: #acabab;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
     </div>
   </div>
 </template>
@@ -118,7 +122,10 @@
         expireYearDesc: ['三年', '四年', '五年'],
         //出租类型
         valueRentType: '',
-        rentTypeDesc: ['整租', '合租', '转租'], 
+        rentTypeDesc: ['整租', '合租', '转租'],
+        //装修状态
+        valuetrimStatus: '',
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装'] 
       }
     },
     mounted(){
@@ -142,6 +149,7 @@
               that.houseInfo = res.data.data;
               that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
               that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
+              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];
               //that.$store.state.locale.editHouseInfo = res.data.data;
             }else{
               that.$toast(res.data.msg);
@@ -164,6 +172,10 @@
 </script>
 
 <style scoped lang="less">
+.main{
+  padding:0.5rem 0;
+  box-sizing: border-box;
+}
 .main .van-nav-bar .van-icon,
   .main .van-nav-bar__title{
     color:#FFB640;

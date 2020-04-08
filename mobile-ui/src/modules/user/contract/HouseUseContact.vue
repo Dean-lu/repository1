@@ -169,7 +169,7 @@
         <div class="cavas">
       <canvas ref="signHandle" class="canvas" id="canvas" />
       </div>
-      <div >
+      <div class="cancvas-btn">
         <van-button size="mini" @touchstart="clearHandle">清空</van-button>
         <van-button type="info" size="mini" @touchstart="saveImg">确认</van-button>
       </div>
@@ -590,5 +590,11 @@ export default {
   }
  .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem; width:80%;margin:0 auto;}
-
+ .cancvas-btn button{
+      margin-bottom: 20px;
+      font-size: 0.4rem;
+      padding: 0 0.4rem;
+      line-height: 0.8rem;
+      height: 0.8rem;
+  }
 </style>

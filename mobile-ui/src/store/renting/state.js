@@ -8,6 +8,8 @@ export default {
   rentTerm: 0,
   // 期望交房时间
   expectHandingTime: '',
+  //期望入住时间
+  EnterRentTime:'',
   // 用户信息
   userInfo: {
     truename: '',

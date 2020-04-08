@@ -17,6 +17,7 @@
       <span class="span-cell">身份证号:{{tenant.idcardcode}}</span>
       <span class="span-cell">起租时间:{{tenant.start_time}}</span>
       <span class="span-cell">租期:{{tenant.rent_time}}</span>
+      <!-- <span class="span-cell">期望交房时间:{{tenant.hope_time}}</span> -->
       <span class="span-cell">身份证照片:(*请上传清晰完整照片，否则无法通过审核)</span>
       <div style="width: 100%; height: 0.625rem;"></div>
       <div class="label">正面：</div>
@@ -309,7 +310,8 @@
           api_token: this.$store.state.global.api_token,
           house_id: this.$store.state.renting.id,
           start_time: this.$store.state.renting.startRentTime,
-          rent_time: this.$store.state.renting.rentTerm + ''
+          rent_time: this.$store.state.renting.rentTerm + '',
+          hope_time: this.$store.state.renting.EnterRentTime
         };
         // 我要租房--确认租房方式后的数据渲染
         this.$http.post(this.$store.state.global.baseUrl + 'lease/enter_lease', param).then(res => {
@@ -426,6 +428,7 @@
         param.append("start_time",that.$store.state.renting.startRentTime);
         param.append("rent_time",that.$store.state.renting.rentTerm);// 租期 1一年 2半年
         param.append("end_time",that.$store.state.renting.expectHandingTime);// 交房时间
+        param.append("hope_time",that.$store.state.renting.EnterRentTime);// 交房时间
         param.append("cardimg1",that.cardimg1);// 身份证正面
         param.append("cardimg2",that.cardimg2);// 身份证反面
         param.append("cardimg3",that.cardimg3);// 身份证手持照

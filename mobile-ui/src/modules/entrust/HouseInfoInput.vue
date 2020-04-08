@@ -89,7 +89,7 @@
         </div>
         <van-divider />
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
-          增值服务<span style="font-size: 0.3rem;">(*自愿选取)</span>
+          增值服务<span style="font-size: 0.3rem;color: #acabab;">(*自愿选取)</span>
           <div class="ques-icon"></div>
         </div>
         <div class="add-service">
@@ -419,7 +419,7 @@
             }
           }
           // 但还需检查其他item
-          debugger
+          //debugger
           for(let e = 0; e < indexArr.length; e++){
             for(let c = 0; c < this.addedService.length; c++){
               if(c == clickIndex){
@@ -572,15 +572,15 @@
     }
   }
 </script>
-
 <style scoped lang="less">
   .to-entrust .main{
     width: 100%;
   }
-  .label{
+  /deep/.label{
     text-align: left;
     text-indent: 0.45rem;
     color: #323233;
+    font-size:0.4rem;
   }
   .data-form{
     width: 95%;

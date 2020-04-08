@@ -43,6 +43,10 @@
         <van-col span="16" class="text">{{houseInfo.pay_style_name}}</van-col>
       </van-cell>
       <van-cell>
+        <van-col span="8" class="text-align-right label">装修状态：</van-col>
+        <van-col span="16" class="text">{{valuetrimStatus}}</van-col>
+      </van-cell>
+      <van-cell>
         <van-col span="8" class="text-align-right label label">房源描述：</van-col>
         <van-col span="16" class="text"></van-col>
       </van-cell>
@@ -139,6 +143,8 @@
         },
         rejectConfirm: false,
         rejectReason: '',
+        valuetrimStatus: '',
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装']
       }
     },
     mounted(){
@@ -148,7 +154,7 @@
     methods: {
       init(){
         console.log(this.$store.state.locale.houseId)
-        debugger
+        //debugger
         // 获取房源详情
         let that = this;
         let param = {
@@ -156,11 +162,12 @@
           house_id: this.$store.state.locale.houseId
         };
         this.$http.post(this.$store.state.global.baseUrl + 'scene/house_details', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseInfo = res.data.data;
               that.$store.state.locale.editHouseInfo = res.data.data;
+              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];
             }else{
               that.$toast(res.data.msg);
             }
@@ -237,11 +244,9 @@
     width: 100%;
     height: 0.8rem;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.35rem;
     line-height: 0.8rem;
     color: #b5b5b6;
-  }
-  .house-info{
   }
   /deep/.van-cell{
     padding: 0;
@@ -256,13 +261,13 @@
   }
   /deep/.van-field__control{
     color: #9fa0a0;
-    font-size: 12px;
+    font-size:0.38rem;
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none;
   }
   .img{
-    width: 100%;
+    width: 90%;
     // height: 3.125rem;
     margin: 0.3125rem auto;
   }

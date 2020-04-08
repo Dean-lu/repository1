@@ -205,8 +205,7 @@
     width: 50%;
     min-height: 3.125rem;
     margin-right: 0.3125rem;
-    border: 0.03125rem solid #e4e4e445;
-    border-radius: 0.625rem;
+    border: 0.03125rem solid #e4e4e445;   
     overflow: hidden;
   }
   .list-item div{

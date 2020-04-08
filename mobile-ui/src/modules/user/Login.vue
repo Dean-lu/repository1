@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="button-container">
-      <div class="division"></div>
+      <!-- <div class="division"></div> -->
       <van-field v-model="user.telphone" center clearable label="手机号" maxlength="11" label-width="2rem" /> 
       <van-field v-model="user.password" type="password" name="密码" label="密码" label-width="2rem" />
       <div class="link">

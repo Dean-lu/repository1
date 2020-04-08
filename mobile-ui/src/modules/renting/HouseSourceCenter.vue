@@ -9,56 +9,61 @@
       color="#FFB640"
       @click-left="onClickLeft"
     /> -->
-    <div class="img-head">
+    <!-- <div class="img-head">
       
-    </div>
+    </div> -->
     <div class="search-area">
-      <van-col span="12">
+      <form action="/">
+      <van-col span="8">
         <div class="popup-select">
-          <van-field readonly clickable name="search.house_position" :value="search.house_position" label="区域:" label-width="1rem" placeholder="区域" @click="showHousePosition = true" />
+          <van-field readonly clickable name="house_positionshow" :value="house_positionshow" placeholder="区域" @click="showHousePosition = true" />
           <van-popup class="popup-select" v-model="showHousePosition" position="bottom" >
             <van-area :area-list="areaList" title="选择区域" @confirm="confirmHousePosition" @cancel="showHousePosition = false" />
           </van-popup>
         </div>
       </van-col>
-      <van-col span="12">
+      <van-col span="8">
          <div class="popup-select">
-          <van-field readonly clickable name="search.house_layout" :value="search.house_layout" label="户型:" label-width="1rem" placeholder="户型" @click="showHouseLayout = true" />
+          <van-field readonly clickable name="search.house_layout" :value="search.house_layout" placeholder="户型" @click="showHouseLayout = true" />
           <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
             <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
           </van-popup>
         </div>
       </van-col>
-      <van-col span="12">
+      <van-col span="8">
         <div class="popup-select">
-          <van-field readonly clickable name="search.rent_type" :value="valueRentType" label="类型:" label-width="1rem" placeholder="类型" @click="showRentType = true" />
+          <van-field readonly clickable name="search.rent_type" :value="valueRentType"  placeholder="类型" @click="showRentType = true" />
           <van-popup class="popup-select" v-model="showRentType" position="bottom" >
             <van-picker show-toolbar title="选择类型" :columns="RentTypes" @cancel="showRentType = false" @confirm="confirmRentType" />
           </van-popup>
         </div>
-      </van-col>
-      <van-col span="12">
-        <div class="popup-input">
-          <van-field v-model="search.garden_name" label="小区:" label-width="1rem" placeholder="输入小区名称" />
-        </div>
-      </van-col>
-      <van-col span="12">
+      </van-col>      
+      <!-- <van-col span="12">
         <div class="popup-input">
           <van-field v-model="search.room_number" label="房号:" label-width="1rem" placeholder="输入房间号" />
         </div>
+      </van-col> -->      
+      <van-col span="24">
+       <van-search
+          v-model="search.garden_name"
+          show-action     
+          left-icon=''    
+          placeholder="请输入小区名称"
+          @search="searchHouseSource">
+          <template #action>
+            <div @click="searchHouseSource" class="search_btn">
+              <img src="../../assets/img/renting/search_inco.jpg"/>
+            </div>
+          </template>
+        </van-search>
       </van-col>
-      <van-col span="12">
-        <div class="button-submit">
-          <van-button block size="mini" color="#FFB640" native-type="submit" @click="resetSearch">重置</van-button>
-          <van-button block size="mini" color="#FFB640" native-type="submit" @click="searchHouseSource">搜索</van-button>
-        </div>
-      </van-col>
+      </form>      
     </div>
     <div class="divisiodaxian"></div>
     <div class="list">
-      <div class="title">
+      <!-- <div class="title">
         好房推荐
-      </div>
+      </div> -->
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载"  >
         <van-cell class="list-item" v-for="(item, index) in houseSource" :key="index" @click="toDetail(item.id)">
           <van-image :src="item.house_img" fill width="3.8rem" height="3rem" class="position_img" />
@@ -97,6 +102,7 @@
         error: false,    
         PageIndex:1,
         lastPage:0,
+        house_positionshow:'',
         list:[],
         // 区域列表
         areaList: areaList,
@@ -131,6 +137,8 @@
     methods: {
       // 组件：确认区域选择
       confirmHousePosition(values) {
+        console.log(values);
+        this.house_positionshow=values[2].name;
         this.search.house_position = values.map(item => item.name).join('');
         this.showHousePosition = false;
       },
@@ -242,13 +250,14 @@
   }
   .search-area{
     width: 100%;
-    height: 4rem;
+    // height: 4rem;
   }
   /deep/.popup-select .van-field__control{
-    background: url('../../assets/img/renting/arrow.png') no-repeat scroll right center #E5E5E5;
+    background: url('../../assets/img/renting/arrow.png') no-repeat scroll right center ;
     text-align: left;
     text-indent: 0.2rem;
     padding-right: 0.5rem;
+    color:#000;
   }
   /deep/ .popup-input .van-field__control{
     background: #E5E5E5;
@@ -265,6 +274,29 @@
 //     position: relative;
 //     left: 0.6125rem;
 //     top: 0.25rem;
+  }
+  /deep/.van-search__content{
+    background:#dcdcdc;
+    .van-cell{
+      padding:6px 10px;
+    }
+  }
+  // /deep/.van-search{
+  //    background: #f5f5f5;
+  // }
+  /deep/.van-search__action{
+    padding:0 8px 0 0;   
+       
+  }
+
+  .search_btn{
+    // padding:10px 0;
+    background: #f5f5f5;
+    // line-height:32px;
+    vertical-align: middle;
+    img{
+       vertical-align: middle;
+    }
   }
   .division{
     width: 100%;
@@ -285,6 +317,7 @@
   /deep/.van-cell {
     font-size:0.4rem;
     line-height:0.6rem;
+    padding: 10px;
   }
   .van-cell .van-image{
     display: inline-block;

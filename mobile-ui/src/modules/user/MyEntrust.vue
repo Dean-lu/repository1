@@ -19,7 +19,7 @@
               <button v-if="item.current_status==4" class="house-item-edit" @click="look(item.id)">查看</button>
               <button v-if="item.current_status==-1" class="house-item-edit" @click="refund(item.id)">退款</button>
               <button v-if="item.current_status==-1" class="house-item-edit" @click="sign(item.id)">签约</button>
-              <button v-if="(item.rent_status==0 || item.rent_status==1) && item.current_status == 2" class="house-item-edit" @click="edit(item.id)">修改</button>
+              <button v-if="(item.rent_status==0 || item.rent_status==1) && (item.current_status == 2 || item.current_status==0 || item.current_status==1 || item.current_status==3)" class="house-item-edit" @click="edit(item.id)">修改</button>
             </van-cell>
           </van-list>
         </van-tab>

@@ -15,10 +15,12 @@
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
           </van-popup> 
+           <van-cell title="期望交房时间:" :value="ContractInfo.tenant.hope_time" @click="showEndTimeSelect = true" />
+           <van-calendar v-model="showEndTimeSelect" color="#FFB640" @confirm="onConfirmEndTime"/>
         <!-- <van-field v-model="ContractInfo.tenant.use_time" label="租期:" placeholder="1年" /> -->
-        <van-field  v-bind:disabled="diasabledInput" v-model="ContractInfo.tenant.end_time" label="结束时间:" placeholder="请输结束时间"  />
-        <p>身份证照片:（*请上传清晰完整照片，否则无法通过审核）</p>
-            <div class="label">正面：{{statTime}}</div>
+        <!-- <van-field  v-bind:disabled="diasabledInput" v-model="ContractInfo.tenant.end_time" label="结束时间:" placeholder="请输结束时间"  /> -->
+        <p style="font-size:0.4rem">身份证照片:<span style="font-size: 0.35rem;color: #acabab;">（*请上传清晰完整照片，否则无法通过审核）</span></p>
+            <div class="label">正面：</div>
             <div class="cardImg">
               <van-uploader :max-count="1" :after-read="onread1">
                   <img :src="ContractInfo.tenant.cardimg1" ref="goodsImg_1" />
@@ -100,10 +102,16 @@
         rentTerm: '',
         rentTermList: ['一年','两年','三年'],
         diasabledInput:true,
+        //起租时间
+        minstart_time:"",
         showRentTimeSelect: false,
         userent:'',
         choiceStartTime:'',
         statTime:"",
+        //期望交房时间
+        minhope_time:"",
+        choiceEndTime:'',
+        showEndTimeSelect: false,
         ContractInfo: {
           tenant:{
             truename: "",
@@ -169,7 +177,7 @@
             if(res.data.code == 200){
               that.ContractInfo = res.data.data;
               that.userent=that.rentTermList[parseInt(res.data.data.tenant.rent_time)-1];
-              that.choiceStartTime=res.data.data.tenant.rent_time;
+              that.choiceStartTime=parseInt(res.data.data.tenant.rent_time);
               let time=res.data.data.tenant.start_time;              
               that.statTime=that.getTimestamp(time);              
               //that.$store.state.locale.editHouseInfo = res.data.data;
@@ -197,6 +205,17 @@
         this.startTime=date;
         this.ContractInfo.tenant.end_time= this.formatDate(date,this.choiceStartTime);
       },
+      // 确认入住时间
+      onConfirmEndTime(date) {
+        let endTimeCode=this.getTimestamp(date);
+        let startTimeCode=this.getTimestamp(this.ContractInfo.tenant.start_time);
+        if(endTimeCode<startTimeCode){
+          this.$toast("期望入住时间不能早于起租时间");
+          return;
+        };
+        this.showEndTimeSelect = false;
+        this.ContractInfo.tenant.hope_time = this.formatDate(date,0);        
+      },
       // 确认租期
       confirmRentTerm(value,index){
         console.log(index);
@@ -209,7 +228,7 @@
       },
       //日期转换成时间戳用来计算结束日期
       getTimestamp(time) { //把时间日期转成时间戳
-      console.log(time+"time");
+        // console.log(time+"time");
         return (new Date(time)).getTime() / 1000
         },
 
@@ -303,7 +322,7 @@
                  that.ContractInfo.tenant.imgcard2=src;
                  that.$refs.goodsImg_3.src=src;
               }
-              console.log("a:"+that.ContractInfo.tenant.imgcard1);            
+              // console.log("a:"+that.ContractInfo.tenant.imgcard1);            
             }else{
               that.$toast(res.data.msg);
             }
@@ -342,6 +361,7 @@
   .data-form{
     width: 95%;
     margin: 0 auto;
+    font-size:0.4rem;
   }
   .text-left{text-align: left; width:85%; margin:0.3rem auto;}
   .order_list{width:90%; margin:0.2rem auto;}
@@ -375,6 +395,7 @@
   .pic-area{
     width: 95%;
     margin: 0 auto;
+    font-size:0.4rem;
   }
   /deep/.id-front .van-uploader__upload{
     width: 8.75rem;

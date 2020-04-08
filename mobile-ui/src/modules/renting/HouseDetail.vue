@@ -66,9 +66,10 @@
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
           </van-popup>
         </van-cell>
-        <van-cell title="期望交房时间:" :value="expectHandingTime" />
+        <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
+        <van-cell title="期望交房时间:" :value="EnterRentTime" @click="showEndTimeSelect = true" />
       </div>
       <div style="color: #777; font-size:0.35rem; width:85%;margin:0 auto;">起租时间请设置为您入住的日期，实际入住时间不晚于{{actualRentTimeLimit}}</div>
       <div class="confirm-bottom">
@@ -77,6 +78,9 @@
     </van-action-sheet>
     <div style="position：absolute;z-index:9999;">
       <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
+    </div>
+     <div style="position：absolute;z-index:9999;">
+      <van-calendar v-model="showEndTimeSelect" color="#FFB640" @confirm="onConfirmEndTime" />
     </div>
   </div>
 </template>
@@ -123,6 +127,10 @@
         // 期望交房时间
         showHandingTimeSelect: false,
         expectHandingTime: '',
+        //入住时间
+        EnterRentTime:'选择期望交房时间',
+        endRentDate: new Date(),
+        showEndTimeSelect: false,
       }
     },
     mounted(){
@@ -153,19 +161,29 @@
           }
         });
         // 检查vuex
-        if(this.$store.state.renting.startRentTime){
-          this.startRentTime = this.$store.state.renting.startRentTime;
-        }
-        if(this.$store.state.renting.rentTerm){
-          this.rentTerm = this.$store.state.renting.rentTerm;
-        }
-        if(this.$store.state.renting.expectHandingTime){
-          this.expectHandingTime = this.$store.state.renting.expectHandingTime;
-        }
+        // if(this.$store.state.renting.startRentTime){
+        //   this.startRentTime = this.$store.state.renting.startRentTime;
+        // }
+        // if(this.$store.state.renting.rentTerm){
+        //   this.rentTerm = this.$store.state.renting.rentTerm;
+        // }
+        // if(this.$store.state.renting.expectHandingTime){
+        //   this.expectHandingTime = this.$store.state.renting.expectHandingTime;
+        // }
+        // if(this.$store.state.renting.EnterRentTime){
+        //   this.EnterRentTime = this.$store.state.renting.EnterRentTime;
+        // }
         this.actualRentTimeLimit = this.dateAddFormat(new Date(),3);
       },
       //签约之前判断个人信息是否完善
       signcheck(){
+        if(!this.$store.state.global.api_token){
+          this.$toast('您还没有登录，请先登录');          
+          setTimeout(()=>{
+              this.$router.push({path : '/login'});
+          },1000);
+          return false;
+        }  
         const that=this;
         this.$http.post(this.$store.state.global.baseUrl + 'base/pre_solve', {
           api_token: this.$store.state.global.api_token
@@ -223,6 +241,7 @@
       onConfirmRentTime(date) {
         this.showRentTimeSelect = false;
         this.startRentDate = date;
+        this.endRentDate=date;
         this.startRentTime = this.formatDate(date);
         this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
         this.expectHandingTime = `${this.startRentDate.getFullYear() + 1 + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
@@ -241,18 +260,29 @@
         this.showHandingTimeSelect = false;
         this.expectHandingTime = this.formatDate(date);
       },
+      // 确认入住时间
+      onConfirmEndTime(date) {
+        this.showEndTimeSelect = false;
+        this.endRentDate = date;
+        this.EnterRentTime = this.formatDate(date);
+      },
       toConfirmRentInfo(){
         if(!this.startRentTime){
           this.$toast("请选择起租时间！");
-          return;
+          return false;
         }
         if(!this.rentTerm){
           this.$toast("请选择租期！");
-          return;
+          return false;
+        }
+        if(!this.EnterRentTime){
+          this.$toast("请选择期望交房时间！");
+          return false;
         }
         this.$store.state.renting.startRentTime = this.startRentTime;
         this.$store.state.renting.rentTerm = this.rentTerm;
         this.$store.state.renting.expectHandingTime = this.expectHandingTime;
+        this.$store.state.renting.EnterRentTime = this.EnterRentTime;
         this.$router.push({path : '/confirmRentInfo'})
       },
       onClickLeft() {

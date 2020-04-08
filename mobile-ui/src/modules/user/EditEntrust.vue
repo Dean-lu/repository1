@@ -35,6 +35,13 @@
         <van-popup v-model="showRentType" position="bottom">
           <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
         </van-popup>
+         <div class="editable">
+        <van-field readonly clickable :value="valuetrimStatus" label="装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
+        </div>
+          <van-popup v-model="showrtrimStatus" position="bottom">
+            <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
+          </van-popup>
+         
         <div class="editable">
           <van-field readonly clickable :value="houseInfo.pay_style_name" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
         </div>
@@ -87,7 +94,7 @@
               <div>{{item.service_name}}:<span> ￥ {{item.price}} 元</span></div>                        
             </div> 
         </div>
-        <div style="color: red;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
+        <div style="color: #acabab;">*管理服务费从委托合同签约成功起生效，平台将提供对应价格的服务，服务费从房屋出租的租金中扣除</div>
         <van-button style="margin: 0.625rem auto;width: 95%;border-radius: 0.3125rem;" type="primary" block color="#F8B729"
           size="small" @click="ifsubmit">点击确认修改</van-button>
       </div>
@@ -136,11 +143,15 @@ Vue.use(Dialog);
          // 委托时间
         showExpireYear: false,
         valueExpireYear: '',
-        expireYearDesc: ['三年', '四年', '五年'],   
+        expireYearDesc: ['三年', '四年', '五年'],  
+         // 装修状态       
+        showrtrimStatus: false,
+        valuetrimStatus: '',
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装'], 
         // 出租类型
         showRentType: false,
         valueRentType: '',
-        rentTypeDesc: ['整租', '合租', '转租'],  
+        rentTypeDesc: ['整租', '合租'],  
         addhouse:[],
         houseImgcout:[]
       }
@@ -169,7 +180,7 @@ Vue.use(Dialog);
               that.house_showImg=res.data.data.house_img;
               that.valueExpireYear=that.expireYearDesc[res.data.data.expire_year-3];
               that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1];
-              
+              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];
             }else{
               that.$toast(res.data.msg);
             }
@@ -195,6 +206,13 @@ Vue.use(Dialog);
         this.houseInfo.house_layout = this.valueHouseLayout;
         this.showHouseLayout = false;
       },
+       //装修状态选择
+       trimStatusChoice(value,index) {
+        this.valuetrimStatus = value;
+        this.houseInfo.trim_status = index + 1;
+        this.houseInfo.trimStatusDesc = value;
+        this.showrtrimStatus = false;
+      },      
       // 确认类型
       confirmRentType(value, index){
         this.valueRentType = value;
@@ -344,6 +362,10 @@ Vue.use(Dialog);
             this.$toast("请选择付款方式");
             return;
           }
+           if(!this.houseInfo.trim_status){
+          this.$toast("请选择装修状态");
+          return;
+        }
           if(!this.houseInfo.expire_year){
             this.$toast("请选择委托时间");
             return;
@@ -392,8 +414,7 @@ Vue.use(Dialog);
         };
         this.houseInfo.api_token=this.$store.state.global.api_token;
         this.houseInfo.house_id=this.houseInfo.id;
-        this.$http.post(this.$store.state.global.baseUrl + 'user/edit_myentrust', this.houseInfo).then(res => {
-          console.log(this.addhouse);
+        this.$http.post(this.$store.state.global.baseUrl + 'user/edit_myentrust', this.houseInfo).then(res => {          
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -438,6 +459,8 @@ Vue.use(Dialog);
   }
   .to-entrust .main{
     width: 100%;
+    padding-top:0.4rem;
+    box-sizing: border-box;
   }
   .label{
     color:#000;

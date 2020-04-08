@@ -3,14 +3,17 @@
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
       <div class="division"></div>
-      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >      
-      <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
+      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2.2rem" >
+      <template #button>
+          <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
         {{sendMsgBtnTxt}}&nbsp;&nbsp;
       </van-button>
+      </template>      
+      
       </van-field>
-      <van-field v-model="code" label="验证码" label-align="right" label-width="2rem" />
+      <van-field v-model="code" label="验证码" label-align="right" label-width="2.2rem" />
       <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem"  @blur="checkPwd" />
-      <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
+      <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2/2rem" @blur="checkEnterPwd" />
       <!-- <van-field v-model="truename" label="姓名" label-align="right" maxlength="20" label-width="2rem" />
       <van-field v-model="idcardcode" label="身份证" label-align="right" maxlength="18" label-width="2rem" />
       <van-field v-model="username" label="账号" label-align="right" maxlength="20" label-width="2rem" @blur="checkUserName" />
@@ -116,7 +119,7 @@
         this.sendMsgBtnTxt = this.countDownNum +"s后重发";
         this.msgBtnLock = true;
         this.$http.post(this.$store.state.global.baseUrl + 'base/set_code',param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.$toast('发送成功!');
@@ -288,7 +291,11 @@
     height: 1rem;
     margin: 0.5rem auto;
     line-height: 0.6rem;
-    font-size:0.4rem;
+    font-size:0.38rem;
+    padding:10px;
+  }
+  .van-field__label--right{
+    padding-right:0;
   }
   #verify-btn{
     position: relative;

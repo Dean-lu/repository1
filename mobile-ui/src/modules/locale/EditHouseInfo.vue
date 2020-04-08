@@ -69,6 +69,15 @@
           </van-col>
         </van-cell>
         <van-cell>
+          <van-col span="8" class="text-align-right label">装修状态：</van-col>
+          <van-col span="16" class="text">
+        <van-field readonly clickable :value="valuetrimStatus" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
+          <van-popup v-model="showrtrimStatus" position="bottom">
+            <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
+          </van-popup>
+          </van-col>
+        </van-cell>
+        <van-cell>
           <van-col span="8" class="text-align-right label">房源描述：</van-col>
           <van-col span="16"></van-col>
         </van-cell>
@@ -113,7 +122,11 @@
         showHouseLayout: false,
         houseLayouts:['公寓','一室一厅','二室一厅','二室二厅','三室一厅','三室二厅','四室二厅','五室及以上'],
         payStyleDesc: ['年付', '半年付', '季付', '月付'],
-        showPayStyle: false
+        showPayStyle: false,
+         // 装修状态       
+        showrtrimStatus: false,
+        valuetrimStatus: '',
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装'],
       }
     },
     mounted(){
@@ -140,6 +153,7 @@
           deposit: this.houseInfo.deposit,
           pay_style: this.houseInfo.pay_style,
           house_desc: this.houseInfo.house_desc,
+          trim_status:this.houseInfo.trim_status,
           expire_year: this.houseInfo.expire_year,
           house_img: this.houseInfo.house_img
         }
@@ -158,6 +172,13 @@
           }
         });
       },
+      //装修状态选择
+       trimStatusChoice(value,index) {
+        this.valuetrimStatus = value;
+        this.houseInfo.trim_status = index + 1;
+        this.houseInfo.trimStatusDesc = value;
+        this.showrtrimStatus = false;
+      },      
       // 户型选择
       confirmHouseLayout(value){
         this.valueHouseLayout = value;
@@ -188,7 +209,7 @@
       afterZRead(file){
           //this.house_showImg=this.house_showImg;
           let param=new FormData;
-          param.append("api_token", this.$store.state.global.api_token),
+          param.append("api_token", this.$store.state.locale.api_token),
           param.append("file",(file.file));         
           let that=this;
           this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
@@ -226,7 +247,7 @@
     width: 100%;
     height: 0.8rem;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.35rem;
     line-height: 0.8rem;
     color: #b5b5b6;
   }
@@ -238,12 +259,12 @@
   }
   /deep/.van-field__control{
     color: #9fa0a0;
-    font-size: 12px;
+    font-size: 0.38rem;
   }
   /deep/.van-cell{
     padding: 0;
     margin: 1px auto;
-    font-size: 16px;
+    font-size:0.4rem;
   }
   .van-cell:not(:last-child)::after{
     border-bottom: none;
@@ -284,6 +305,9 @@
   }
   .edit-btn{
     margin: 0.625rem auto;
+  }
+  /deep/.van-button--small{
+    font-size:0.4rem;
   }
   .remind{padding:0.2rem 0;}
   .manyPic,.img_are{width:85%; margin:0.5rem auto; position:relative;}
