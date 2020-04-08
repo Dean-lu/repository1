@@ -2,6 +2,9 @@
   <div class="login-pwd pwd myinfo">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="form-container">
+      <iframe id="geoPage" width=0 height=0 frameborder=0  style="display:none;" scrolling="no"
+              src="https://apis.map.qq.com/tools/geolocation?key=BKVBZ-HZDW3-CFA3H-YGEZW-NUX47-5UFNS&referer=bianmin">
+      </iframe>
       <div class="input-item">
         <label>账号</label>
         <input type="text" name="truename" id="truename" v-model="truename"/>
@@ -14,11 +17,28 @@
         <label>身份证号</label>
         <input type="text" name="idcardcode" id="idcardcode" v-model="idcardcode" />
       </div>
+      <!-- <div class="input-item">
+         <label>小区</label>
+         <input type="text" name="court" id="court" v-model="court" />
+       </div>-->
       <div class="input-item">
         <label>小区</label>
-        <input type="text" name="court" id="court" v-model="court" />
+        <input type="text" name="area" id="area" v-model="gardenName" readonly="readonly"/>
+        <input type="hidden" v-model="court"/>
       </div>
-
+      <div class="garden">
+        <div class="bm-header-search-box" style="background-color:#fff">
+          <input type="text" name="keyword" placeholder="请输入关键字搜索小区" class="bm-header-search" v-model="keyword">
+          <button type="button" id="sub" class="sub" @click="getGardenInfo">
+            <i class="bm-icon bm-icon-small-search"></i>
+          </button>
+        </div>
+        <div class="garden_list" v-if="gardenList && gardenList.length > 0">
+          <ul>
+            <li v-for="garden in gardenList" @click="selectGarden(garden.id,garden.garden_name)"><span v-text="garden.garden_name"></span></li>
+          </ul>
+        </div>
+      </div>
       <div class="submit" >
         <van-button round block size="middle" color="#FFB640" native-type="submit" @click="doUpdateInfo">
           提交
@@ -53,11 +73,21 @@
         idcardcode:'',
         telphone:'',
         court:'',
+        gardenList:[],
+        keyword:'',
+        gardenName:''
       }
     },
     mounted(){
       document.title = "完善个人信息";
       this.init();
+      var adcode = '';
+      window.addEventListener('message', function(event) {
+        // 接收位置信息
+        var loc = event.data;
+        adcode = loc.adcode;
+      }, false);
+      this.getGardenInfo(adcode);
     },
     methods:{
       onClickLeft() {
@@ -65,6 +95,24 @@
       },
       delTip(){
         this.is_show=false;
+      },
+      getGardenInfo: function (adcode) {
+        var that = this;
+        let param = {};
+        param.district_id = adcode;
+        param.keyword = that.keyword;
+        this.$http.post(this.$store.state.global.baseUrl + 'user/get_user_info',param).then(res => {
+          if(res.status == 200){
+            if(res.data.code == 200){
+              var res_data = res.data.data;
+              that.gardenList = res_data;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('系统异常！');
+          }
+        });
       },
       init(){
         var that = this;

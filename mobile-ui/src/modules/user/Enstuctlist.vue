@@ -3,7 +3,7 @@
   <div class="confirm-rent">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <!-- <div style="height:1.226667rem;border-bottom: .11rem solid #f5f5f5;"></div> -->
-    <van-list class="enstuct_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list class="enstuct_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
       <van-cell class="item" v-for="(item, index) in enstuctList" :key="index">
         <div class="title-status">
           <span class="title" v-text="item.garden_name"></span>
@@ -20,47 +20,83 @@
 </template>
 
 <script>
-export default {
-  name: "Enstuctlist",
-  data() {
-    return {
-      is_show: true,
-      title: "委托推荐",
-      enstuctList:[],
-      loading: false,
-      finished: true
-    };
-  },
-  mounted() {
-    document.title = "委托推荐";
-    this.getEnstuctList();
-  },
-  methods: {
-    onClickLeft() {
-        this.$router.back(-1);
-      },
-    getEnstuctList(){
-      var that=this;
-      var p={api_token:this.$store.state.global.api_token};
-      this.$http.post(this.$store.state.global.baseUrl + 'spread/enstuct_list',p).then(res => {
-        if(res.status == 200) {
-          if(res.data.code == 200){
-            that.enstuctList = res.data.data.data;
-          }else{
-            that.$toast(res.data.msg);
-          }
-        }else{
-          that.$toast('获取我的委托推荐失败，请刷新重试！');
-          return;
-        }
-      });
+  export default {
+    name: "Rentlist",
+    data() {
+      return {
+        is_show: true,
+        title: "委托推荐",
+        //上拉刷新
+        loading: false,// 是否处于加载状态
+        finished: true,// 是否加载完毕
+        error: false,
+        PageIndex:1,
+        lastPage:0,
+        enstuctList:[],
+      };
     },
-    onLoad() {
-      // 异步更新数据
+    mounted() {
+      document.title = "委托推荐";
       this.getEnstuctList();
     },
-  }
-};
+    methods: {
+      onClickLeft() {
+        this.$router.back(-1);
+      },
+      getEnstuctList(){
+        var that=this;
+        var p={api_token:this.$store.state.global.api_token};
+        this.$http.post(this.$store.state.global.baseUrl + 'spread/enstuct_list',p).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.enstuctList = res.data.data.data;
+              that.lastPage=res.data.data.last_page;
+              // 加载状态结束
+              that.loading = false;
+              that.finished = false;
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取我的出租推荐失败，请刷新重试！');
+            return;
+          }
+        });
+      },
+      onLoad() {
+        if(this.PageIndex >= this.lastPage){
+          this.loading = true;
+          this.finished = true;
+          return false;
+        }
+        this.PageIndex++;
+        let that = this;
+        this.$http.post(this.$store.state.global.baseUrl + 'spread/enstuct_list',{
+          api_token:this.$store.state.global.api_token,
+          page: that.PageIndex,
+          PageSize: 10,
+        }).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              for(let j=0,len=res.data.data.data.length;j<len;j++){
+                that.enstuctList.push(res.data.data.data[j]);
+              }
+              // 加载状态结束
+              that.loading = false;
+              if(!res.data.data.data ){
+                that.finished = true;
+              }
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取我的出租推荐失败，请刷新重试！');
+            return;
+          }
+        });
+      },
+    }
+  };
 </script>
 
 <style scoped  lang="less">

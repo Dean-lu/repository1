@@ -2,7 +2,7 @@
   <div class="confirm-rent">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <!-- <div style="height:1.226667rem;border-bottom: .11rem solid #f5f5f5;"></div> -->
-    <van-list class="enstuct_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list class="enstuct_list" v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
       <van-cell class="item" v-for="(item, index) in rentlist" :key="index" @click="toDetail(item.house_id)">
         <div class="title-status">
           <span class="title" v-text="item.garden_name"></span>
@@ -24,11 +24,13 @@ export default {
     return {
       is_show: true,
       title: "出租推荐",
+      //上拉刷新
+      loading: false,// 是否处于加载状态
+      finished: true,// 是否加载完毕
+      error: false,
+      PageIndex:1,
+      lastPage:0,
       rentlist:[],
-      page:1,
-      lastpage:1,
-      loading: false,
-      finished: true
     };
   },
   mounted() {
@@ -41,15 +43,15 @@ export default {
       },
     getRentlist(){
       var that=this;
-      if(that.loading)return;
-      that.loading = true;//开启加载开关
-      var p={api_token:this.$store.state.global.api_token,page:that.page};
+      var p={api_token:this.$store.state.global.api_token};
       this.$http.post(this.$store.state.global.baseUrl + 'spread/rent_list',p).then(res => {
         if(res.status == 200) {
           if(res.data.code == 200){
             that.rentlist = res.data.data.data;
-            that.lastpage = res.data.data.last_page;
-            if(res.data.data.last_page !== that.page)that.page++;//如果不是最后一页当前页码加1
+            that.lastPage=res.data.data.last_page;
+            // 加载状态结束
+            that.loading = false;
+            that.finished = false;
           }else{
             that.$toast(res.data.msg);
           }
@@ -60,8 +62,36 @@ export default {
       });
     },
     onLoad() {
-      // 异步更新数据
-      this.getRentlist();
+      if(this.PageIndex >= this.lastPage){
+        this.loading = true;
+        this.finished = true;
+        return false;
+      }
+      this.PageIndex++;
+      let that = this;
+      this.$http.post(this.$store.state.global.baseUrl + 'spread/rent_list',{
+        api_token:this.$store.state.global.api_token,
+        page: that.PageIndex,
+        PageSize: 10,
+      }).then(res => {
+        if(res.status == 200) {
+          if(res.data.code == 200){
+            for(let j=0,len=res.data.data.data.length;j<len;j++){
+              that.rentlist.push(res.data.data.data[j]);
+            }
+            // 加载状态结束
+            that.loading = false;
+            if(!res.data.data.data ){
+              that.finished = true;
+            }
+          }else{
+            that.$toast(res.data.msg);
+          }
+        }else{
+          that.$toast('获取我的出租推荐失败，请刷新重试！');
+          return;
+        }
+      });
     },
     // 房源详情
     toDetail(id){

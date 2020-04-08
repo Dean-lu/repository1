@@ -46,10 +46,11 @@
           </ul>
         </van-row>
       </div>
-          <div class="info-list" ref="bsDom">
+      <div class="info-list" ref="bsDom">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
           <div style="-webkit-overflow-scrolling : touch; position: relative;">
             <ul>
-              <li class="border-1px flex" v-for="item in group.list" v-cloak="">
+              <li class="border-1px flex" v-for="item in list" v-cloak="">
                 <div class="txt-content">
                   <p class="float-left" v-if="item.type == 1">提现</p>
                   <p class="float-left" v-if="item.type == 2">分佣</p>
@@ -59,10 +60,8 @@
 
               </li>
             </ul>
-            <p class="loading-line" v-show="loading == true"><i></i><span>正在加载中</span><i></i></p>
-            <p class="loading-line" v-show="loading == false && group.loaded == false" v-cloak=""><i></i><span>加载更多</span><i></i></p>
-            <p class="loading-line" v-show="loading == false && group.loaded == true" v-cloak=""><i></i><span>没有更多了</span><i></i></p>
           </div>
+        </van-list>
       </div>
 
 
@@ -71,77 +70,102 @@
 </template>
 
 <script>
-export default {
-  name: "Spread",
-  data() {
-    return {
-      is_show: true,
-      title: "推广赚钱",
-      balance:'0.00',
-      group:{
-        page:1,
-        lastpage: 0,
-        limit: 15,
+  export default {
+    name: "Spread",
+    data() {
+      return {
+        is_show: true,
+        title: "推广赚钱",
+        balance:'0.00',
+        //上拉刷新
+        loading: false,// 是否处于加载状态
+        finished: true,// 是否加载完毕
+        error: false,
+        PageIndex:1,
+        lastPage:0,
         list:[],
-        loaded:false
-      },
-      loading: false,
-      scroll:null,
-    };
-  },
-  mounted() {
-    document.title = "推广赚钱";
-    this.getList();
-    this.init();
-  },
-  methods: {
-    onClickLeft() {
+      };
+    },
+    mounted() {
+      document.title = "推广赚钱";
+      this.getList();
+      this.init();
+    },
+    methods: {
+      onClickLeft() {
         this.$router.back(-1);
       },
-    init(){
-      var that = this;
-      var api_token = this.$store.state.global.api_token;
-      this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token='+api_token).then(res => {
-        if(res.status == 200) {
-          if(res.data.code == 200){
-            that.balance = res.data.data.balance;
-          }else{
-            that.$toast(res.data.msg);
+      init(){
+        var that = this;
+        var api_token = this.$store.state.global.api_token;
+        this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token='+api_token).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              that.balance = res.data.data.balance;
+            }else{
+              that.$toast(res.data.msg);
+            }
           }
-        }
-      });
-    },
-    getList(){
-      var that = this,group = that.group;
-      if(that.loading || that.lastpage)return;
-      if(group.loaded) return ;
-      this.loading = true;
-      var p={api_token:this.$store.state.global.api_token,page:group.page,};
-      this.$http.post(this.$store.state.global.baseUrl + 'spread/spread_center',p).then(res => {
-        if(res.status == 200) {
-          that.loading = false;
-          if(res.data.code == 200){
-            var list = res.data.data.data,groupLength = group.list.length;
-            that.group.lastpage = res.data.data.last_page;
-            if(res.data.data.last_page != res.data.data.page)that.group.page++;//如果不是最后一页当前页码加1
-            group.loaded = list.length < group.limit;
-            group.list = group.list.concat(list);
-            that.loading = false;
+        });
+      },
+      getList(){
+        var that = this;
+        var p={api_token:this.$store.state.global.api_token};
+        this.$http.post(this.$store.state.global.baseUrl + 'spread/spread_center',p).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              var list = res.data.data.data;
+              that.lastPage=res.data.data.last_page;
+              // 加载状态结束
+              that.loading = false;
+              that.finished = false;
+            }else{
+              that.$toast(res.data.msg);
+            }
           }else{
-            that.$toast(res.data.msg);
+            that.$toast('获取资金明细失败，请刷新重试！');
+            return;
           }
-        }else{
-          that.$toast('获取我的委托推荐失败，请刷新重试！');
-          return;
+        });
+      },
+      onLoad() {
+        if(this.PageIndex >= this.lastPage){
+          this.loading = true;
+          this.finished = true;
+          return false;
         }
-      });
-    },
-    jump(type){
-      this.$router.push({path:'/'+type})
-    }
+        this.PageIndex++;
+        let that = this;
+        this.$http.post(this.$store.state.global.baseUrl + 'spread/spread_center',{
+          api_token:this.$store.state.global.api_token,
+          page: that.PageIndex,
+          PageSize: 10,
+        }).then(res => {
+          if(res.status == 200) {
+            if(res.data.code == 200){
+              for(let j=0,len=res.data.data.data.length;j<len;j++){
+                that.list.push(res.data.data.data[j]);
+              }
+              // 加载状态结束
+              that.loading = false;
+              if(!res.data.data.data ){
+                that.finished = true;
+              }
+            }else{
+              that.$toast(res.data.msg);
+            }
+          }else{
+            that.$toast('获取资金明细失败，请刷新重试！');
+            return;
+          }
+        });
+      },
+      jump(type){
+        this.$router.push({path:'/'+type})
+      }
 
-  }
-};
+    }
+  };
 </script>
 
 <style scoped>
