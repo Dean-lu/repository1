@@ -23,9 +23,12 @@
        </div>-->
       <div class="input-item">
         <label>小区</label>
-        <input type="text" name="area" id="area" v-model="gardenName" readonly="readonly"/>
-        <input type="hidden" v-model="court"/>
+        <input type="text" name="area" id="area" v-model="court" readonly="readonly"/>
       </div>
+      <van-field readonly clickable :value="my_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
+      <van-popup v-model="showHousePosition" position="bottom">
+        <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
+      </van-popup>
       <div class="garden">
         <div class="bm-header-search-box" style="background-color:#fff">
           <input type="text" name="keyword" placeholder="请输入关键字搜索小区" class="bm-header-search" v-model="keyword">
@@ -63,6 +66,7 @@
 </template>
 
 <script>
+  import areaList from '../../assets/js/area.js'
   export default {
     name: 'myInfo',
     data () {
@@ -75,19 +79,25 @@
         court:'',
         gardenList:[],
         keyword:'',
-        gardenName:''
+        my_position:'',
+        showHousePosition: false,
+        areaList: areaList,
+        adcode:'',
       }
     },
     mounted(){
       document.title = "完善个人信息";
       this.init();
-      var adcode = '';
+      var that = this;
       window.addEventListener('message', function(event) {
         // 接收位置信息
         var loc = event.data;
-        adcode = loc.adcode;
+        if(loc.adcode){
+          that.adcode = loc.adcode;
+          that.my_position = loc.province + loc.city+loc.district;
+        }
       }, false);
-      this.getGardenInfo(adcode);
+      this.getGardenInfo();
     },
     methods:{
       onClickLeft() {
@@ -96,10 +106,10 @@
       delTip(){
         this.is_show=false;
       },
-      getGardenInfo: function (adcode) {
+      getGardenInfo: function () {
         var that = this;
         let param = {};
-        param.district_id = adcode;
+        param.district_id = that.adcode;
         param.keyword = that.keyword;
         this.$http.post(this.$store.state.global.baseUrl + 'base/get_garden_info',param).then(res => {
           if(res.status == 200){
@@ -115,8 +125,16 @@
         });
       },
       selectGarden:function(id,name){
-        this.court = id;
-        this.gardenName = name;
+        //this.court = id;
+        this.court = name;
+      },
+      // 组件：确认区域选择
+      confirmArea(values) {
+        this.valueHousePosition = values.map(item => item.name).join('');
+        this.adcode = '';
+        this.getGardenInfo();
+        this.my_position = this.valueHousePosition;
+        this.showHousePosition = false;
       },
       init(){
         var that = this;
