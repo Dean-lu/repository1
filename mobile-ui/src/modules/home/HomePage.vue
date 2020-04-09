@@ -6,8 +6,17 @@
         <span style="font-size: 0.38rem;">{{user.court}}</span>
       </div>
     </div>
-    <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />
-    <!-- <marquee behavior="scroll">我单方向循环滚动</marquee> -->
+    <div class="notice">
+       <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />  
+      <div class="notice_swipe">
+        <van-swipe  :duration="8000" :autoplay="9000" :touchable="false" :show-indicators="false">
+          <van-swipe-item  v-for="(item ,index ) in noticeList" :key="index" >
+          <p style="text-align:left;">{{item.title}}</p>
+          </van-swipe-item>
+        </van-swipe>  
+      </div>
+       
+    </div>
     <van-row>
       <van-grid :column-num="4">
         <van-grid-item :icon="icons[0]" text="我要委托" @click="toHouseInfoInput" />
@@ -48,20 +57,20 @@ export default {
   data () {
     return {
       location: "XXX小区",
-      noticeList: [
+      noticeList: [],
+      noticeItem: {
+        
+      },
+       noticeListMain: [
         {
-        id: -1,
+        id: 1,
         title: "五一佳节将至，维修大礼"
         },
         {
-        id: 1,
+        id: 2,
         title: "佳节促销大礼"
         }
       ],
-      noticeItem: {
-        id: 1,
-        title: "五一佳节将至，维修大礼"
-      },
       isInterval: false,
       noticeInterval: {},
       user: {
@@ -79,11 +88,11 @@ export default {
       ],
       houseSource: [
         {
-          garden_name:'房源1',
-          rent_price:3200,
-          house_layout:'三室一厅',
-          house_position:'深圳市碧海湾...',
-          mutet_ids:require('../../assets/img/demo/house-demo.png')
+          // garden_name:'房源1',
+          // rent_price:3200,
+          // house_layout:'三室一厅',
+          // house_position:'深圳市碧海湾...',
+          // mutet_ids:require('../../assets/img/demo/house-demo.png')
         }
       ],
       loading: false,
@@ -127,7 +136,7 @@ export default {
       var that = this;
       this.$http.post(this.$store.state.global.baseUrl + 'house/get_message').then(res => {
         if(res.status == 200 && res.data.code == 200) {
-          that.noticeList = res.data.data;
+          that.noticeList = res.data.data;          
         }else{
           return;
         }
@@ -136,29 +145,29 @@ export default {
     // 创建公告循环定时器
     createInterval(){
       const that=this;
-      for(let i=0,len=that.noticeList.length;i<len;i++){      
-        that.noticeItem.title+= that.noticeList[i].title
-      }
-      // clearInterval(this.noticeInterval);
-      // this.noticeInterval = setInterval(() => {
-      //   let that = this;
-      //   that.isInterval = true;
-      //   if(that.noticeItem.id == that.noticeList[that.noticeList.length - 1].id){
-      //     that.noticeItem = that.noticeList[0];
-      //     console.log(that.noticeItem.id)
-      //     console.log(that.noticeItem.title)
-      //     return;
-      //   }else{
-      //     for(let i = 0; i < that.noticeList.length; i ++){
-      //       if(that.noticeItem.id == that.noticeList[i].id){
-      //         that.noticeItem = that.noticeList[i + 1];
-      //         console.log(that.noticeItem.id)
-      //         console.log(that.noticeItem.title)
-      //         return;
-      //       }
-      //     }
-      //   }
-      // },3000);
+      // for(let i=0,len=that.noticeList.length;i<len;i++){      
+      //   that.noticeItem.title+= that.noticeList[i].title
+      // }
+      clearInterval(this.noticeInterval);
+      this.noticeInterval = setInterval(() => {
+        let that = this;
+        that.isInterval = true;
+        if(that.noticeItem.id == that.noticeList[that.noticeList.length - 1].id){
+          that.noticeItem = that.noticeList[0];
+          console.log(that.noticeItem.id)
+          console.log(that.noticeItem.title)
+          return;
+        }else{
+          for(let i = 0; i < that.noticeList.length; i ++){
+            if(that.noticeItem.id == that.noticeList[i].id){
+              that.noticeItem = that.noticeList[i + 1];
+              console.log(that.noticeItem.id)
+              console.log(that.noticeItem.title)
+              return;
+            }
+          }
+        }
+      },3000);
     },
     // 获取首页优质房源
     getHouseSource(){
@@ -183,7 +192,33 @@ export default {
     },
     // 点击我的委托
     toHouseInfoInput(){
-      this.$router.push({path : '/houseInfoInput'})
+      if(!this.$store.state.global.api_token){
+          this.$toast('您还没有登录，请先登录');          
+          setTimeout(()=>{
+              this.$router.push({path : '/login'});
+          },1000);
+          return false;
+        }  
+        const that=this;
+        this.$http.post(this.$store.state.global.baseUrl + 'base/pre_solve', {
+          api_token: this.$store.state.global.api_token
+        }).then(res => {
+          //debugger
+          if(res.status == 200) {
+            if(res.data.code == 400){
+              //去完善个人信息
+              that.$toast('请先完善个人信息');
+              setTimeout(()=>{
+                 that.$router.push({path : '/myInfo'});
+              },1000);  
+            }else{
+              that.$router.push({path : '/houseInfoInput'})
+            }            
+          }else{
+            that.$toast('获取个人信息失败，请刷新重试！');
+            return;
+          }
+        });      
     },
     // 点击我要租房
     toHouseSourceCenter(){
@@ -280,6 +315,18 @@ export default {
   .van-cell{
     width: auto;
     border-radius: 0.3125rem;
+  }
+  .notice{
+    position:relative;
+    width:100%;
+  }
+  .notice_swipe{
+    position: absolute;
+    width:88%;
+    top:-0.2rem; 
+    height:0.8rem;
+    bottom:0;
+    left:12%;
   }
   .list-item .van-image{
     display: inline-block;
