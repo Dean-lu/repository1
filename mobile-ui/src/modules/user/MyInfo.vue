@@ -46,7 +46,7 @@
         </div>
         <div class="garden_list" v-if="gardenList && gardenList.length > 0">
           <ul>
-            <li v-for="garden in gardenList" @click="selectGarden(garden.id,garden.garden_name)"><span v-text="garden.garden_name"></span></li>
+            <li v-for="garden in gardenList" @click="selectGarden(garden.garden_name)"><span v-text="garden.garden_name"></span></li>
           </ul>
         </div>
       </div>
@@ -97,13 +97,15 @@
     mounted(){
       document.title = "完善个人信息";
       this.init();
-      var adcode = '';
       window.addEventListener('message', function(event) {
         // 接收位置信息
         var loc = event.data;
-        adcode = loc.adcode;
+        if(loc && loc.adcode){
+          that.adcode = loc.adcode;
+          that.position = loc.province + loc.city+loc.district;
+        }
       }, false);
-      this.getGardenInfo(adcode);
+      this.getGardenInfo();
     },
     methods:{
       onClickLeft() {
@@ -112,10 +114,10 @@
       delTip(){
         this.is_show=false;
       },
-      getGardenInfo: function (adcode) {
+      getGardenInfo: function () {
         var that = this;
         let param = {};
-        param.district_id = adcode;
+        param.district_id = that.adcode;
         param.keyword = that.keyword;
         this.$http.post(this.$store.state.global.baseUrl + 'base/get_garden_info',param).then(res => {
           if(res.status == 200){
@@ -130,9 +132,8 @@
           }
         });
       },
-      selectGarden:function(id,name){
-        this.court = id;
-        this.gardenName = name;
+      selectGarden:function(name){
+        this.court = name;
       },
       init(){
         var that = this;
@@ -238,7 +239,6 @@
       },
       // 组件：区域确认
       confirmPosition(values){
-        debugger
         // 省
         let provinceCode = values[0].code;
         let provinceText = values[0].name;
@@ -250,7 +250,9 @@
         let regionText = values[2].name;
         // this.position = values.map(item => item.name).join('');// 地区级联
         this.adcode = values[2].code;
-        this.position = values[2].name;
+        //this.position = values[2].name;
+        this.position = values.map(item => item.name).join('');
+        this.getGardenInfo();
         // 隐藏弹框
         this.showPositionSelect = false;
       }
@@ -408,7 +410,7 @@
     background-size: 100%;
     position: absolute;
     right: 0.15rem;
-    bottom: .13rem;
+    bottom: .2rem;
   }
   .form-container .garden{
     border:.03rem solid #dddddd;
