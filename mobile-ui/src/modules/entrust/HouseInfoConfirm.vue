@@ -247,6 +247,7 @@
         showContract: false,
         // 签名显示
         showSignature: false,
+        clickif:false,
         /* */
         el: '', // canvas dom
         ctx: '', // canvas context
@@ -266,6 +267,7 @@
       // 接受房源信息录入参数
       document.title = '房源信息确认';
       this.generationConfirm();
+      this.clickif=false;
     },
     updated () {
         this.draw()
@@ -280,6 +282,10 @@
       showConfirmF(){
         
         var that = this;
+        if(that.clickif){
+          return false;
+        }
+        that.clickif=true;
         // 提交房源确认信息，成功->去支付
         
 //         let houseImg = [];
@@ -325,9 +331,11 @@
               that.showConfirm = true;
             }else{
               that.$toast(res.data.msg);
+              that.clickif=false;
             }
           }else{
             that.$toast('提交房源确认信息失败！');
+            that.clickif=false;
             return;
           }
         });
@@ -337,7 +345,7 @@
       },
       // 检查支付
       checkPay(){
-        debugger
+        //debugger
         var that = this;
         let param = {
           api_token: this.$store.state.global.api_token,
@@ -350,7 +358,7 @@
 //           house_id: 10
 //         };
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/pay_entrust', param).then(res => {
-          debugger
+          //debugger
           console.log(res.data)
           if(res.status == 200) {
             if(res.data.code == 200){
@@ -397,7 +405,7 @@
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', params,
             function(res){
-              debugger
+              //debugger
               if(res.err_msg == "get_brand_wcpay_request:ok" ){
                 // 使用以上方式判断前端返回,微信团队郑重提示：
                 //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -427,13 +435,13 @@
         document.querySelector('#pdfDom').scrollTop = 0;
         document.body.scrollTop = 0;
         console.log("合同生成....")
-        debugger
+        //debugger
         var title = this.htmlTitle;
         this.$html2Canvas(document.querySelector('#pdfDom'), {
           allowTaint: true,
           useCORS: true
         }).then(function(canvas) {
-    debugger
+    //debugger
 //           let contentWidth = canvas.width;
 //           let contentHeight = canvas.height;
 //           //一页pdf显示html页面生成的canvas高度;
@@ -474,7 +482,7 @@
             var pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
             pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
             pdf.save(title + '.pdf');
-            debugger
+            //debugger
             // var datauri = pdf.output('dataurlstring');
             //调用
             var blob = that.dataURLtoBlob(pageData);
@@ -488,7 +496,7 @@
               headers:{'Content-Type':'multipart/form-data'}
             }; 
             that.$http.post(that.$store.state.global.baseUrl + 'entrust/signing', param, config).then(res => {
-              debugger
+              //debugger
               if(res.status == 200) {
                 if(res.data.code == 200){
                   console.log("合同上传成功！");

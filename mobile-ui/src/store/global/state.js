@@ -1,5 +1,5 @@
 export default {
-  baseUrl: 'http://house.growingsale.cn/api/',
+  baseUrl: 'https://house.growingsale.cn/api/',
   // baseUrl: 'http://testweb123.natapp1.cc/basic',
   // 登录状态
   loginStatus: false,
