@@ -30,8 +30,7 @@
        </div>-->
       <div class="input-item">
         <label>小区</label>
-        <input type="text" name="area" id="area" v-model="gardenName" readonly="readonly"/>
-        <input type="hidden" v-model="court"/>
+        <input type="text" name="area" id="area" v-model="court" readonly="readonly"/>
       </div>
       <!-- input显示区域-->
       <div>
