@@ -1,6 +1,13 @@
 <template>
   <div class="login-pwd pwd myinfo">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
+    <!-- 写外面才能保证下拉框样式 -->
+    <div>
+       <!-- <van-field readonly clickable :value="position" label="所属区域:" placeholder="点击选择省市区" @click="showPositionSelect = true" /> -->
+       <van-popup v-model="showPositionSelect" position="bottom">
+         <van-area :area-list="areaList" title="选择省市区" @confirm="confirmPosition" @cancel="showPositionSelect = false" />
+       </van-popup>
+    </div>
     <div class="form-container">
       <iframe id="geoPage" width=0 height=0 frameborder=0  style="display:none;" scrolling="no"
               src="https://apis.map.qq.com/tools/geolocation?key=BKVBZ-HZDW3-CFA3H-YGEZW-NUX47-5UFNS&referer=bianmin">
@@ -23,12 +30,13 @@
        </div>-->
       <div class="input-item">
         <label>小区</label>
-        <input type="text" name="area" id="area" v-model="court" readonly="readonly"/>
+        <input type="text" name="area" id="area" v-model="gardenName" readonly="readonly"/>
+        <input type="hidden" v-model="court"/>
       </div>
-      <van-field readonly clickable :value="my_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
-      <van-popup v-model="showHousePosition" position="bottom">
-        <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
-      </van-popup>
+      <!-- input显示区域-->
+      <div>
+         <van-field readonly clickable :value="position" label="所属区域" placeholder="点击选择省市区" @click="showPositionSelect = true" />
+      </div>
       <div class="garden">
         <div class="bm-header-search-box" style="background-color:#fff">
           <input type="text" name="keyword" placeholder="请输入关键字搜索小区" class="bm-header-search" v-model="keyword">
@@ -79,25 +87,23 @@
         court:'',
         gardenList:[],
         keyword:'',
-        my_position:'',
-        showHousePosition: false,
+        gardenName:'',
+        adcode: '',
+        position:'',
+        showPositionSelect: false,
         areaList: areaList,
-        adcode:'',
       }
     },
     mounted(){
       document.title = "完善个人信息";
       this.init();
-      var that = this;
+      var adcode = '';
       window.addEventListener('message', function(event) {
         // 接收位置信息
         var loc = event.data;
-        if(loc.adcode){
-          that.adcode = loc.adcode;
-          that.my_position = loc.province + loc.city+loc.district;
-        }
+        adcode = loc.adcode;
       }, false);
-      this.getGardenInfo();
+      this.getGardenInfo(adcode);
     },
     methods:{
       onClickLeft() {
@@ -106,10 +112,10 @@
       delTip(){
         this.is_show=false;
       },
-      getGardenInfo: function () {
+      getGardenInfo: function (adcode) {
         var that = this;
         let param = {};
-        param.district_id = that.adcode;
+        param.district_id = adcode;
         param.keyword = that.keyword;
         this.$http.post(this.$store.state.global.baseUrl + 'base/get_garden_info',param).then(res => {
           if(res.status == 200){
@@ -125,16 +131,8 @@
         });
       },
       selectGarden:function(id,name){
-        //this.court = id;
-        this.court = name;
-      },
-      // 组件：确认区域选择
-      confirmArea(values) {
-        this.valueHousePosition = values.map(item => item.name).join('');
-        this.adcode = '';
-        this.getGardenInfo();
-        this.my_position = this.valueHousePosition;
-        this.showHousePosition = false;
+        this.court = id;
+        this.gardenName = name;
       },
       init(){
         var that = this;
@@ -238,11 +236,29 @@
         if(!pass) return false;/* 身份证格式错误*/
         return true;/* 身份证格式正确*/
       },
+      // 组件：区域确认
+      confirmPosition(values){
+        debugger
+        // 省
+        let provinceCode = values[0].code;
+        let provinceText = values[0].name;
+         // 市
+        let cityCode = values[1].code;
+        let cityText = values[1].name;
+         // 区
+        let regionCode = values[2].code;
+        let regionText = values[2].name;
+        // this.position = values.map(item => item.name).join('');// 地区级联
+        this.adcode = values[2].code;
+        this.position = values[2].name;
+        // 隐藏弹框
+        this.showPositionSelect = false;
+      }
     },
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
   .pwd .van-nav-bar .van-icon,
   .pwd .van-nav-bar__title{
     color:#FFB640;
@@ -413,5 +429,8 @@
   .form-container .garden .garden_list ul li{
     padding: .1rem 0.1rem;
     border-bottom:0.01rem dotted #e6e6e6;
+  }
+  /deep/.van-picker__cancel, /deep/.van-picker__confirm{
+    color: #F8B729;
   }
 </style>
