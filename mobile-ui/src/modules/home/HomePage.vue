@@ -9,7 +9,7 @@
     <div class="notice">
        <van-notice-bar :text="noticeItem.title" :left-icon="icons[6]" />  
       <div class="notice_swipe">
-        <van-swipe  :duration="8000" :autoplay="9000" :touchable="false" :show-indicators="false">
+        <van-swipe style="height: 0.8rem;overflow: hidden;line-height: 0.8rem;" :duration="1000" :autoplay="3000" :touchable="false" :show-indicators="false" vertical>
           <van-swipe-item  v-for="(item ,index ) in noticeList" :key="index" >
           <p style="text-align:left;">{{item.title}}</p>
           </van-swipe-item>
@@ -103,7 +103,7 @@ export default {
     document.title = '爆米花房管家';
     this.init();
     this.getNotice();
-    this.createInterval();
+    //this.createInterval();
     this.getHouseSource();
   },
   methods: {
@@ -136,7 +136,8 @@ export default {
       var that = this;
       this.$http.post(this.$store.state.global.baseUrl + 'house/get_message').then(res => {
         if(res.status == 200 && res.data.code == 200) {
-          that.noticeList = res.data.data;          
+          that.noticeList = res.data.data; 
+          //that.noticeList =that.noticeListMain         
         }else{
           return;
         }
@@ -323,10 +324,16 @@ export default {
   .notice_swipe{
     position: absolute;
     width:88%;
-    top:-0.2rem; 
+    top:0; 
     height:0.8rem;
     bottom:0;
     left:12%;
+    overflow:hidden;
+  }
+  .notice_swipe p{
+    padding:0;
+    margin:0;
+    font-size:0.35rem;
   }
   .list-item .van-image{
     display: inline-block;

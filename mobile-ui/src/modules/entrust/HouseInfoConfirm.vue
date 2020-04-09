@@ -329,6 +329,7 @@
               that.safe_package = res.data.data.safe_package;// 支付时需要
               // 弹出支付确认框
               that.showConfirm = true;
+              that.clickif=false;
             }else{
               that.$toast(res.data.msg);
               that.clickif=false;
