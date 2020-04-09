@@ -6,7 +6,7 @@
               src="https://apis.map.qq.com/tools/geolocation?key=BKVBZ-HZDW3-CFA3H-YGEZW-NUX47-5UFNS&referer=bianmin">
       </iframe>
       <div class="input-item">
-        <label>账号</label>
+        <label>姓名</label>
         <input type="text" name="truename" id="truename" v-model="truename"/>
       </div>
       <div class="input-item">
@@ -101,7 +101,7 @@
         let param = {};
         param.district_id = adcode;
         param.keyword = that.keyword;
-        this.$http.post(this.$store.state.global.baseUrl + 'user/get_user_info',param).then(res => {
+        this.$http.post(this.$store.state.global.baseUrl + 'base/get_garden_info',param).then(res => {
           if(res.status == 200){
             if(res.data.code == 200){
               var res_data = res.data.data;
@@ -113,6 +113,10 @@
             that.$toast('系统异常！');
           }
         });
+      },
+      selectGarden:function(id,name){
+        this.court = id;
+        this.gardenName = name;
       },
       init(){
         var that = this;
@@ -334,5 +338,62 @@
   .notice .tip-content .text{
     color: #9fa0a0;
     font-size: .4rem;
+  }
+  .bm-header-search-box{
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: .1rem;
+    position: relative;
+  }
+  .bm-header-search-box input.bm-header-search{
+    line-height: .6rem;
+    padding: .15rem;
+    font-size: 0.24rem;
+    height: .6rem;
+    width: 83%;
+    border: 0;
+  }
+  .bm-header-search-box .sub {
+    float: right;
+    width: 12%;
+    height: .9rem;
+    overflow: hidden;
+    line-height: .6rem;
+    background: #fff;
+    border-top-right-radius: .1rem;
+    border-bottom-right-radius: .1rem;
+    border: 0;
+    padding: 0;
+    box-sizing: content-box;
+  }
+  .bm-header-search-box .bm-icon-small-search{
+    width: .37rem;
+    height: .36rem;
+    background: url(../../assets/img/user/search.png) no-repeat;
+    background-size: 100%;
+    position: absolute;
+    right: 0.15rem;
+    bottom: .13rem;
+  }
+  .form-container .garden{
+    border:.03rem solid #dddddd;
+    border-radius:10px;
+    padding: .15rem .25rem;
+  }
+  .form-container .garden .bm-header-search-box{
+    border: .03rem solid #dddddd;
+    border-radius: 5px;
+    margin-bottom:.2rem;
+  }
+  .form-container .garden .garden_list{
+    max-height: 4rem;
+    overflow: scroll;
+    text-align: left;
+    font-size: .35rem;
+  }
+  .form-container .garden .garden_list ul li{
+    padding: .1rem 0.1rem;
+    border-bottom:0.01rem dotted #e6e6e6;
   }
 </style>
