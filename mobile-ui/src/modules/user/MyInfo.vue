@@ -142,7 +142,7 @@
         });
       },
       selectGarden:function(id,name){
-        thia.garden_id = id;
+        this.garden_id = id;
         this.court = name;
       },
       init(){
