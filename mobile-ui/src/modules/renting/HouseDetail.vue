@@ -62,8 +62,8 @@
         <van-cell>
           <van-field readonly clickable name="rentTerm" :value="valueRentTerm" label="租期:" label-width="4.2rem"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
-          <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
-            <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" />
+          <van-popup class="popup-select" v-model="showRentTerm" position="bottom"  style="z-index:9999">
+            <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" style="z-index:9999"/>
           </van-popup>
         </van-cell>
         <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
@@ -193,9 +193,7 @@
             if(res.data.code == 400){
               //去完善个人信息
               that.$toast('请先完善个人信息');
-              setTimeout(()=>{
-                 that.$router.push({path : '/myInfo'});
-              },1000);  
+              that.$router.push({path : '/myInfo'});  
             }else{
               that.signhouse();
             }            

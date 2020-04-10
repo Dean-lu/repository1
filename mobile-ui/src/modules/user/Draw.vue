@@ -199,8 +199,16 @@ export default {
          })
       .then(res => {
         if (res.status == 200) {
-          if (res.data.code == 200) {
-            //todo
+          if(res.data.code==401){
+            that.$toast("您还没绑定银行卡，请去绑定银行卡");
+            that.$router.push({path:'/EditBank'});
+            return;
+          }else if(res.data.code==402){
+            that.$toast("您还没设置支付密码，请设置支付密码");
+            that.$router.push({path:'/updatepayPass'});
+            return;
+          }else if(res.data.code == 200) {            
+            //todo            
             for(let i=0,len=res.data.data.length; i<len;i++){
               that.bank.push(res.data.data[i].bank_card_no);              
             }

@@ -315,7 +315,7 @@
         };
         // 我要租房--确认租房方式后的数据渲染
         this.$http.post(this.$store.state.global.baseUrl + 'lease/enter_lease', param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               that.tenant = res.data.data.tenant;

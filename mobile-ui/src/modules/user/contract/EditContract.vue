@@ -68,7 +68,13 @@
                   <td rowspan="2"> {{item.total_price}}</td>
                 </tr>
                 <tr>
-                  <td colspan="2">{{item.pay_price}}</td>
+                  <td v-if="index!=0" colspan="2">                    
+                    付款金额：{{item.pay_price}} <br/>
+                    服务费：{{item.service}} 保险费：{{item.insurance}}
+                  </td>
+                  <td v-else colspan="2">
+                    付款金额：{{item.pay_price}}
+                  </td>
                 </tr>               
               </tbody>
             </table>
@@ -251,9 +257,9 @@
           cardimg3:this.ContractInfo.tenant.cardimg3,
           start_time:this.ContractInfo.tenant.start_time,
           end_time:this.ContractInfo.tenant.end_time,
-          rent_time:this.ContractInfo.tenant.rent_time+''
-        };
-        
+          hope_time:this.ContractInfo.tenant.hope_time,
+          rent_time:parseInt(this.ContractInfo.tenant.rent_time)+''
+        };        
         this.$http.post(this.$store.state.global.baseUrl + 'lease/again_post', param).then(res => {
           //debugger
           if(res.status == 200) {
