@@ -29,7 +29,6 @@
           提交
         </van-button>
       </div>
-      </div>
     </div>
   </div>
 </template>
@@ -268,7 +267,7 @@
     height: 100%;
     background-image: url('../../assets/img/user/register-b.png');
     background-repeat: no-repeat;
-    background-size: 100%; 
+    background-size: 100% auto; 
     background-color: #f5f5f5;
   }
   .form-container{
