@@ -409,7 +409,7 @@
           let indexArr = [];
           if(exclusionIds && exclusionIds.length > 0){
             for(let a = 0; a < exclusionIds.length; a++){
-              debugger
+              //debugger
               for(let b = 0; b < checkboxs.length; b++){
                 if(checkboxs[b].value == exclusionIds[a]){// 当前item对应的mutexid解禁
                   checkboxs[b].disabled = false;

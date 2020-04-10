@@ -66,7 +66,7 @@
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" style="z-index:9999"/>
           </van-popup>
         </van-cell>
-        <van-cell title="期望交房时间:" :value="expectHandingTime" />
+        <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
         <van-cell title="期望交房时间:" :value="EnterRentTime" @click="showEndTimeSelect = true" />

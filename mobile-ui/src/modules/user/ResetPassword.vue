@@ -2,8 +2,7 @@
   <div class="reset-pwd">
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
-      <div class="division"></div>
-      <van-field v-model="username" label="账号" label-align="right" label-width="2rem" />
+      <div class="division"></div>      
       <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem" @blur="checkPwd" />
       <van-field v-model="enter_password" type="password" label="确认密码" maxlength="18" label-align="right" label-width="2rem" @blur="checkEnterPwd" />
       <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2rem" >
@@ -56,9 +55,9 @@
       countDown(){
         // 设置倒计时
         this.msgInterval = setInterval(() => {
-          debugger
+          //debugger
             if(this.countDownNum <= 0) {
-              debugger
+              //debugger
               // 重置btn提示信息
               this.sendMsgBtnTxt = "发送验证码";
               // 重置倒计时状态
@@ -87,7 +86,7 @@
         this.sendMsgBtnTxt = this.countDownNum +"s后重发";
         this.msgBtnLock = true;
         this.$http.post(this.$store.state.global.baseUrl + 'base/set_code',param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200){
             if(res.data.code == 200){
               that.$toast('验证码已发送');
@@ -110,7 +109,7 @@
         param.telphone = this.telphone;
         param.code = this.code;
         this.$http.post(this.$store.state.global.baseUrl + 'user/forget_post',param).then(res => {
-          debugger
+          //debugger
           if(res.status == 200){
             if(res.data.code == 200){
               that.$toast('重置密码成功');
@@ -162,11 +161,7 @@
         }
         return true;
       },
-      checkValid(){
-        if(!this.username){
-          this.$toast('账号不能为空');
-          return false; 
-        }
+      checkValid(){       
         if(!this.checkPwd()){
           return false;
         }

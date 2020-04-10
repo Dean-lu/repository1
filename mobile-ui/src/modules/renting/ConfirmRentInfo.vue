@@ -437,7 +437,7 @@
           headers:{'Content-Type':'multipart/form-data'}
         }; 
         that.$http.post(that.$store.state.global.baseUrl + 'lease/enter_post', param, config).then(res => {
-          debugger
+          //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
               console.log("提交租房申请成功！");
@@ -461,13 +461,13 @@
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
         console.log("合同生成....")
-        debugger
+        //debugger
         var title = this.htmlTitle;
         this.$html2Canvas(document.querySelector('#pdfDom'), {
           allowTaint: true,
           useCORS: true
         }).then(function(canvas) {
-          debugger
+          //debugger
           var contentWidth = canvas.width;
           var contentHeight = canvas.height;
 
@@ -482,7 +482,7 @@
           var pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
           pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
         
-          debugger
+          //debugger
           // var datauri = pdf.output('dataurlstring');
           //调用
           var blob = that.dataURLtoBlob(pageData);
