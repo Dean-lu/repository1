@@ -31,6 +31,7 @@
       <div class="input-item">
         <label>小区</label>
         <input type="text" name="area" id="area" v-model="court" readonly="readonly"/>
+        <input type="hidden" v-model="garden_id"/>
       </div>
       <!-- input显示区域-->
       <div>
@@ -45,7 +46,7 @@
         </div>
         <div class="garden_list" v-if="gardenList && gardenList.length > 0">
           <ul>
-            <li v-for="garden in gardenList" @click="selectGarden(garden.garden_name)"><span v-text="garden.garden_name"></span></li>
+            <li v-for="garden in gardenList" @click="selectGarden(garden.id,garden.garden_name)"><span v-text="garden.garden_name"></span></li>
           </ul>
         </div>
       </div>
@@ -86,9 +87,9 @@
         court:'',
         gardenList:[],
         keyword:'',
-        gardenName:'',
+        garden_id:'',
         adcode: '',
-        position:'',
+        position:'湖南省长沙市岳麓区',
         showPositionSelect: false,
         areaList: areaList,
       }
@@ -96,15 +97,6 @@
     mounted(){
       document.title = "完善个人信息";
       this.init();
-      window.addEventListener('message', function(event) {
-        // 接收位置信息
-        var loc = event.data;
-        if(loc && loc.adcode){
-          that.adcode = loc.adcode;
-          that.position = loc.province + loc.city+loc.district;
-        }
-      }, false);
-      this.getGardenInfo();
     },
     methods:{
       onClickLeft() {
@@ -112,6 +104,18 @@
       },
       delTip(){
         this.is_show=false;
+      },
+      getposition:function(){
+        var that = this;
+        window.addEventListener('message', function(event) {
+          // 接收位置信息
+          var loc = event.data;
+          if(loc && loc.adcode){
+            that.adcode = loc.adcode;
+            that.position = loc.province + loc.city+loc.district;
+          }
+        }, false);
+        this.getGardenInfo();
       },
       getGardenInfo: function () {
         var that = this;
@@ -131,7 +135,8 @@
           }
         });
       },
-      selectGarden:function(name){
+      selectGarden:function(id,name){
+        thia.garden_id = id;
         this.court = name;
       },
       init(){
@@ -144,6 +149,15 @@
               that.truename = res.data.data.truename;
               that.idcardcode = res.data.data.idcardcode;
               that.court = res.data.data.court;
+              that.garden_id = res.data.data.garden_id;
+              that.adcode = res.data.data.adcode;
+              if(!that.adcode){
+                that.getposition();
+              }else{
+                //areaList
+                that.position = '';
+                that.getGardenInfo();
+              }
             }else{
               that.$toast(res.data.msg);
             }
@@ -161,6 +175,7 @@
         param.truename = this.truename;
         param.idcardcode = this.idcardcode;
         param.court = this.court;
+        param.garden_id = this.garden_id;
         this.$http.post(this.$store.state.global.baseUrl + 'user/edit_user',param).then(res => {
           if(res.status == 200){
             if(res.data.code == 200){
