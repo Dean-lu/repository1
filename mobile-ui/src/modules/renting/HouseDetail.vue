@@ -66,7 +66,7 @@
             <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" style="z-index:9999"/>
           </van-popup>
         </van-cell>
-        <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
+        <van-cell title="期望交房时间:" :value="expectHandingTime" />
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
         <van-cell title="期望交房时间:" :value="EnterRentTime" @click="showEndTimeSelect = true" />
@@ -123,7 +123,7 @@
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
         rentTerm: '',
-        rentTermList: ['一年','两年','三年'],
+        rentTermList: ['一年','半年'],
         // 期望交房时间
         showHandingTimeSelect: false,
         expectHandingTime: '',
@@ -226,14 +226,14 @@
         });
       },
       formatDate(date) {
-        return `${date.getFullYear() + 1}-${date.getMonth() + 1}-${date.getDate()}`;
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
       },
       // 返回date+3day后的日期
       dateAddFormat(date,day){
         let seconds = date.getTime();
         console.log(seconds)
         let newDate = new Date(seconds + day * 1000 * 60 * 60 * 24);
-        return `${newDate.getFullYear() + 1}年${newDate.getMonth() + 1}月${newDate.getDate()}日`;
+        return `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`;
       },
       // 确认起租时间
       onConfirmRentTime(date) {
@@ -242,7 +242,18 @@
         this.endRentDate=date;
         this.startRentTime = this.formatDate(date);
         this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
-        this.expectHandingTime = `${this.startRentDate.getFullYear() + 1 + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+        if(this.rentTerm==1){
+          this.expectHandingTime = `${this.startRentDate.getFullYear() + 1}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+        }else if(this.rentTerm==2){
+          if(this.startRentDate.getMonth()>5){
+            this.expectHandingTime = `${this.startRentDate.getFullYear()+1}-${this.startRentDate.getMonth() -5}-${this.startRentDate.getDate()}`;
+          }else{
+            this.expectHandingTime = `${this.startRentDate.getFullYear()}-${this.startRentDate.getMonth()+7}-${this.startRentDate.getDate()}`;
+          }         
+        }else{
+          this.expectHandingTime = this.formatDate(date);
+        }
+        
       },
       // 确认租期
       confirmRentTerm(value,index){
@@ -250,8 +261,18 @@
         this.rentTerm = index + 1;
         this.showRentTerm = false;
         // 计算交房时间（退房时间）
-        console.log(this.startRentDate)
-        this.expectHandingTime = `${this.startRentDate.getFullYear() + 1 + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+        console.log("index:"+index)
+        if(index==0){
+          this.expectHandingTime = `${this.startRentDate.getFullYear() + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+        }else if(index==1){         
+          if(this.startRentDate.getMonth()>5){
+            this.expectHandingTime = `${this.startRentDate.getFullYear()+1}-${this.startRentDate.getMonth() -5}-${this.startRentDate.getDate()}`;
+          }else{
+            this.expectHandingTime = `${this.startRentDate.getFullYear()}-${this.startRentDate.getMonth()+7}-${this.startRentDate.getDate()}`;
+          }
+          
+        }
+        
       },
       // 期望交房时间
       onConfirmHandingTime(date){

@@ -19,7 +19,7 @@
                 <!-- <input type="text" v-model="contact.name" class="long" v-bind:disabled="diasabledInput"/> -->
                 1、甲方将位于<span>{{contact.house_position}}{{contact.garden_name}}</span>
                 小区<span>{{contact.building_number}}</span>栋<span>{{contact.room_number}}</span>号房住房（以下简称该房屋）代房东转租给乙方使用；<br/>
-                2、房屋使用期为<span>{{contact.use_time}}</span>年，自<span>{{contact.end_time}}</span>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；
+                2、房屋使用期为<span v-if="contact.use_time==1">1年</span><span v-if="contact.use_time==2">半年</span>，自<span>{{contact.end_time}}</span>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；
                 <br/>
                 3、该房屋每月房屋使用费为人民币大写）<span>{{contact.price}}</span>（其中<span>{{contact.other_price}}</span>，剩余部分为房屋租金）；支付方式为：预付押金为人民币（大写）<span>{{contact.deposit}}</span><br/>
                 4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每<span>{{contact.pay_style}}</span>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。                 

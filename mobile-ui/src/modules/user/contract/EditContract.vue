@@ -106,7 +106,7 @@
         date:'',
         alueRentTerm: '',// 临时变量
         rentTerm: '',
-        rentTermList: ['一年','两年','三年'],
+        rentTermList: ['一年','半年'],
         diasabledInput:true,
         //起租时间
         minstart_time:"",
@@ -201,14 +201,24 @@
         
       },   
       formatDate(date,addy) {
-        return `${date.getFullYear()+addy}-${date.getMonth() + 1}-${date.getDate()}`;
+        console.log(date)
+        if(addy==2){
+          if(date.getMonth()>5){
+              return `${date.getFullYear()+1}-${date.getMonth()-5}-${date.getDate()}`;
+          }else{
+             return `${date.getFullYear()}-${date.getMonth()+7}-${date.getDate()}`;
+          }          
+        }else{
+           return `${date.getFullYear()+addy}-${date.getMonth() + 1}-${date.getDate()}`;
+        }
+        
       },      
       // 确认起租时间
       onConfirmRentTime(date) {
         console.log(date);
         this.showRentTimeSelect = false;
         this.ContractInfo.tenant.start_time = this.formatDate(date,0);
-        this.startTime=date;
+        this.statTime=this.getTimestamp(date);
         this.ContractInfo.tenant.end_time= this.formatDate(date,this.choiceStartTime);
       },
       // 确认入住时间
@@ -228,7 +238,7 @@
         this.userent=value;
         this.ContractInfo.tenant.rent_time = index+1;
         this.choiceStartTime=index+1;
-        let data= new Date(this.startTime);
+        let data= new Date(this.statTime*1000);        
         this.ContractInfo.tenant.end_time= this.formatDate(data,this.choiceStartTime)
         this.showRentTerm = false;        
       },
