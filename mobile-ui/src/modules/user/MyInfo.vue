@@ -92,6 +92,9 @@
         position:'湖南省长沙市岳麓区',
         showPositionSelect: false,
         areaList: areaList,
+        province_name:'',
+        city_name:'',
+        district_name:''
       }
     },
     mounted(){
@@ -113,6 +116,9 @@
           if(loc && loc.adcode){
             that.adcode = loc.adcode;
             that.position = loc.province + loc.city+loc.district;
+            that.province_name = loc.province;
+            that.city_name = loc.city;
+            that.district_name = loc.district;
           }
         }, false);
         this.getGardenInfo();
@@ -145,17 +151,20 @@
         this.$http.get(this.$store.state.global.baseUrl + 'user/edit_user?api_token='+api_token).then(res => {
           if(res.status == 200) {
             if(res.data.code == 200){
-              that.telphone = res.data.data.telphone;
-              that.truename = res.data.data.truename;
-              that.idcardcode = res.data.data.idcardcode;
-              that.court = res.data.data.court;
-              that.garden_id = res.data.data.garden_id;
-              that.adcode = res.data.data.adcode;
+              let re_data = res.data.data;
+              that.telphone = re_data.telphone;
+              that.truename = re_data.truename;
+              that.idcardcode = re_data.idcardcode;
+              that.court = re_data.court;
+              that.garden_id = re_data.garden_id;
+              that.adcode = re_data.adcode;
+              that.province_name = re_data.province_name;
+              that.city_name = re_data.city_name;
+              that.district_name = re_data.district_name;
               if(!that.adcode){
                 that.getposition();
               }else{
-                //areaList
-                that.position = '';
+                that.position = that.province_name+that.city_name+that.district_name;
                 that.getGardenInfo();
               }
             }else{
@@ -176,6 +185,9 @@
         param.idcardcode = this.idcardcode;
         param.court = this.court;
         param.garden_id = this.garden_id;
+        param.province_name = this.province_name;
+        param.city_name = this.city_name;
+        param.district_name = this.district_name;
         this.$http.post(this.$store.state.global.baseUrl + 'user/edit_user',param).then(res => {
           if(res.status == 200){
             if(res.data.code == 200){
@@ -265,6 +277,9 @@
         // this.position = values.map(item => item.name).join('');// 地区级联
         this.adcode = values[2].code;
         //this.position = values[2].name;
+        this.province_name = provinceText;
+        this.city_name = cityText;
+        this.district_name = regionText;
         this.position = values.map(item => item.name).join('');
         this.getGardenInfo();
         // 隐藏弹框
