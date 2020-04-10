@@ -268,7 +268,8 @@
     height: 100%;
     background-image: url('../../assets/img/user/register-b.png');
     background-repeat: no-repeat;
-    background-size: cover; 
+    background-size: 100%; 
+    background-color: #f5f5f5;
   }
   .form-container{
     position: relative;
