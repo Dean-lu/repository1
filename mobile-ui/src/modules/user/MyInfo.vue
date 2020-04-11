@@ -210,10 +210,10 @@
           this.$toast('身份证号不能为空');
           return false;
         }
-        if(!this.court){
+       /* if(!this.court){
           this.$toast('小区名不能为空');
           return false;
-        }
+        }*/
         if(!this.isCard(this.idcardcode)){
           this.$toast('请输入正确的身份证号');
           return false;
