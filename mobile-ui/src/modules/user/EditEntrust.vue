@@ -87,7 +87,7 @@
         </div>
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
           增值服务
-          <div class="ques-icon"></div>
+          <div class="ques-icon" @click="showserver"></div>
         </div>
         <div class="add-service">          
             <div class="add-service-cell"  v-for="(item,index) in houseInfo.added_service" :key="index">
@@ -104,6 +104,97 @@
            <p class="tips">您的修改已经完成，我们会尽快为您审核！</p>
        
     </div>
+    <van-popup class="pop-contract" v-model="showServerMain" style="width:90%; height:85%"  closeable>
+      <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
+        <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="closeContract" />
+      </van-nav-bar> -->
+      <div style="width: 100%;margin: 0 auto;">
+        <div style="width: 90%;margin: 0 auto; font-size:0.35rem">
+          <h2>爆米花房管家增值服务</h2>          
+          <p class="text-align-left" style="text-indent: 0.5rem;">1、<span style="font-weight:bold">1元维修巡查服务：</span><span style="color:#f00">“1元/天·（间）套”（合租房按间计）</span>，提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损及提出解决方案，但维修的人工费和材料费由甲方承担（人为损坏的，协助甲方要求损坏人赔偿）。</p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">2、<span style="font-weight:bold">5元出租无忧服务：</span><span style="color:#f00">“5元/天·（间）套”（合租房按间计）</span>，提供出租带看、交房和收房服务；退租后保洁服务；各项费用代缴服务；提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损、提出解决方案并承担维修人工费（但材料费和设施设备更换费用由甲方承担，人为损坏的，协助甲方要求损坏人赔偿）；购买该套房的房屋财产保险及租客人身意外伤害保险（受益人为甲方）；协调各方关系与问题处理；代为签署房屋使用过程中所有相关法律文件等。</p>
+           <p class="text-align-left" style="text-indent: 0.5rem;">3、<span style="font-weight:bold">出租房安全包——无忧版：</span><span style="color:#f00">“1980元/套”</span>，一包解决出租房屋所有后顾之忧，规避所有隐藏风险。</p>
+         <p class="text-align-left" style="text-indent: 0.5rem;">4、<span style="font-weight:bold">出租房安全包——安心版：</span><span style="color:#f00">“1050元/套”</span>，包安装，为只想安装智能门锁的业主提供便捷服务。</p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">5、<span style="font-weight:bold">太平洋《租房全能险》：</span><span style="color:#f00">“15元/月·套”</span>，以甲方为受益人购买的房屋出租保险，最高可获得36万以上的理赔金。</p>
+          <div class="order_list">
+          
+         <table cellpadding="0" cellspacing="0" >
+              <thead>
+                <tr>
+                  <th width="20%">险种类型</th>
+                  <th width="20%">家庭财产保险项目</th>
+                  <th width="20%">有效时限财产赔偿限额</th>
+                  <th width="40%">保障项目解析</th></tr>
+              </thead>
+              <tbody>
+                <tr> 
+                  <td rowspan="5">家庭财产保险</td>
+                  <td>房屋主体</td>
+                  <td>180000</td>
+                  <td>因①、火灾、爆炸造成家庭财产的损失；② 雷击、台风、暴风、暴雨、龙卷风、洪水、雪灾、雹灾、冰凌、泥石流、崖崩、滑坡、地面突然塌陷造成家庭财产的损失；③飞行物体及其他空中运行物体坠落造成家庭财产的损失；④不属于被保险人所有或使用的建筑物、其他固定物体发生倒塌造成家庭财产的损失。保险事故发生后，为抢救保险财产或防止灾害蔓延，采取必要、合理的措施而造成保险财产的损失，及所支付的必要、合理的施救费用，也负责赔偿。</td>
+                </tr>
+                 <tr>                  
+                  <td>室内财产</td>
+                  <td>10000</td>
+                  <td></td>
+                </tr>
+                <tr>                  
+                  <td>室内装潢</td>
+                  <td>30000</td>
+                  <td></td>
+                </tr>
+                <tr>                  
+                  <td>附加室内盗抢保险-A</td>
+                  <td>5000</td>
+                  <td>由于下列原因直接造成保险财产丢失、损毁保险公司负责赔偿：门窗有明显撬窃痕迹的盗窃；有明显翻墙掘壁痕迹的盗窃；入室抢劫。（室内财产盗抢包括家具、厨房用品、床上用品及服装、文体娱乐用品，包括门、窗、外墙、屋顶等房屋围护结构；锁具、报警设备因盗抢受到的损失，但不包括便携式家用电器、手机、相机、现金、金银珠宝等贵重物品。）公安机关立案之日起30天后仍未能追回的，保险公司按约定予以赔偿。</td>
+                </tr>
+                <tr>                  
+                  <td>附加管道爆裂保险</td>
+                  <td>10000</td>
+                  <td>由于被保险人室内的管道（特指自来水管、暖气管、排水管和排污管）爆裂；或相邻住户室内的管道爆裂、管道渗漏家庭财产的直接损失，保险公司按约定予以赔偿。</td>
+                </tr>
+                <tr> 
+                  <td rowspan="3">家庭责任保险</td>
+                  <td>家庭责任保险项目</td>
+                  <td>累计及每次赔偿限额</td>
+                  <td>保障项目解析</td>
+                </tr>
+                <tr>                  
+                  <td>家庭责任</td>
+                  <td>10000</td>
+                  <td>被保险人居所发生火灾、爆炸，致使第三者遭受人身伤亡或财产损失，依照法律应由被保险人或其家庭成员承担经济赔偿责任的，保险公司将约定予以赔偿。</td>
+                </tr>
+                <tr>                  
+                  <td>附加管道爆裂渗漏责任保险</td>
+                  <td>5000</td>
+                  <td>被保险人居所的管道（特指自来水管、暖气管、排水管、排污管）发生爆裂或渗漏，致使第三者遭受财产损失，依照法律应由被保险人或其家庭成员承担经济赔偿责任的，保险公司根据约定赔偿。</td>
+                </tr>
+                <tr> 
+                  <td rowspan="4">意外伤害保险</td>
+                  <td>意外险保险项目</td>
+                  <td>意外险赔偿限额</td>
+                  <td>保障项目解析</td>
+                </tr>
+                <tr>                  
+                  <td>意外伤害及伤残保险金额</td>
+                  <td>100000</td>
+                  <td  rowspan="3">保险期间内，被保险人在其承租的、且在与房屋租赁公司租赁合同中列明的出租屋内（如出租屋属于住宅小区则在小区范围内，以小区围墙为界）因意外伤害或遭受意外伤害导致身故、残疾或住院治疗的，符合保险条款的理赔事故，保险公司将按约定予以赔偿。</td>
+                </tr>                
+                <tr>                  
+                  <td>意外伤害医疗保险金额</td>
+                  <td>10000</td>                  
+                </tr>
+                <tr>                  
+                  <td>意外住院津贴</td>
+                  <td>50元/天</td>                  
+                </tr>
+              </tbody>
+         </table>
+         </div>
+        </div>
+      </div>
+     
+    </van-popup>
   </div>
 
 </template>
@@ -122,6 +213,7 @@ Vue.use(Dialog);
         title:'修改房源信息',
         whyedit:"您的身份证照片模糊，请修改。这里放置审核时提交的驳回原因",
         status:'edit',
+        showServerMain:false,
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),
         value: '',
         house_showImg:[],
@@ -249,6 +341,10 @@ Vue.use(Dialog);
       afterZRead(file){
           this.house_showImg=this.house_showImg;
           this.watermark(file.file,4);         
+      },
+      //增值服务
+      showserver(){
+        this.showServerMain=true;
       },
       //水印
       watermark(res,imgw){
@@ -591,4 +687,8 @@ Vue.use(Dialog);
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;
   }
+  .order_list{padding-bottom: 1rem; box-sizing: border-box;}
+ .order_list>table{border:1px solid #ccc; width: 100%;}
+  .order_list th,.order_list td{border:1px solid #ccc; padding:0.05rem;}
+  .order_list td.tableCols{border:0 none; padding:0;}
 </style>

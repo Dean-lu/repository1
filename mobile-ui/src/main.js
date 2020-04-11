@@ -73,9 +73,9 @@ router.beforeEach((to,from,next)=>{
 })
 
 /* 开发环境vconsole */
-import VConsole  from  'vconsole'
-// if (process.env.NODE_ENV === "development"){
-  const vConsole = new VConsole()
+// import VConsole  from  'vconsole'
+// // if (process.env.NODE_ENV === "development"){
+//   const vConsole = new VConsole()
 // }
 
 Vue.config.productionTip = false

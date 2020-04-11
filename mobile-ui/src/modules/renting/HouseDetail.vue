@@ -62,9 +62,7 @@
         <van-cell>
           <van-field readonly clickable name="rentTerm" :value="valueRentTerm" label="租期:" label-width="4.2rem"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
-          <van-popup class="popup-select" v-model="showRentTerm" position="bottom"  style="z-index:9999">
-            <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm" style="z-index:9999"/>
-          </van-popup>
+          
         </van-cell>
         <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
         <!-- @click="showHandingTimeSelect = true" -->
@@ -76,6 +74,11 @@
         <van-button square type="info" size="small" color="#F8B729" @click="toConfirmRentInfo">下一步</van-button>
       </div>
     </van-action-sheet>
+    <div style="position：absolute;z-index:9999;">
+      <van-popup class="popup-select" v-model="showRentTerm" position="bottom"  >
+          <van-picker show-toolbar title="选择租期" :columns="rentTermList" @cancel="showRentTerm = false" @confirm="confirmRentTerm"/>
+        </van-popup>
+    </div>
     <div style="position：absolute;z-index:9999;">
       <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
     </div>

@@ -107,6 +107,7 @@
       },
       delTip(){
         this.is_show=false;
+        this.$router.push({path : '/home'});
       },
       getposition:function(){
         var that = this;
@@ -314,6 +315,11 @@
     position: relative;
     margin-bottom: .2rem;
   }
+  .input-item::after{
+    content:""; 
+   display: block; 
+   clear:both; 
+  }
   .input-item label{
     color: #727171;
     width: 2rem;
@@ -321,6 +327,8 @@
     line-height: 1rem;
     text-align: right;
     display: inline-block;
+    float: left;
+
   }
   .input-item input{
     font-size: .36rem;
@@ -334,6 +342,8 @@
     padding-left: .3rem;
     color: #000;
     box-sizing: border-box;
+    display: inline-block;
+    float:left
   }
   #verify-btn{
     position: absolute;
