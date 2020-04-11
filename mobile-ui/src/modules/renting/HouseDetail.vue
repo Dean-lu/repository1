@@ -80,7 +80,7 @@
         </van-popup>
     </div>
     <div style="position：absolute;z-index:9999;">
-      <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />
+      <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" :max-date="maxDate"/>
     </div>
      <div style="position：absolute;z-index:9999;">
       <van-calendar v-model="showEndTimeSelect" color="#FFB640" @confirm="onConfirmEndTime" />
@@ -122,6 +122,7 @@
         startRentDate: new Date(),
         actualRentTimeLimit: '',
         // startRentTime: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear() + 1}`,
+        maxDate:'',
         // 租期
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
@@ -136,14 +137,27 @@
         showEndTimeSelect: false,
       }
     },
-    mounted(){
-      
+    mounted(){     
       this.init();
     },
     updated() {
     	document.title= this.title;
     },
     methods: {
+      FunGetDateStr(p_count){
+            var dd = new Date();
+            dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth() + 1;//获取当前月份的日期
+            if( m <10){
+                m = '0'+m;
+            }
+            var d = dd.getDate();
+            if( d <10){
+                d = '0'+d;
+            }
+            return y + "," + m + "," + d;
+      },
       init(){
         console.log(this.$store.state.renting.id)
         // 获取房源详情
@@ -176,7 +190,9 @@
         // if(this.$store.state.renting.EnterRentTime){
         //   this.EnterRentTime = this.$store.state.renting.EnterRentTime;
         // }
-        this.actualRentTimeLimit = this.dateAddFormat(new Date(),3);
+        let time=this.FunGetDateStr(2);
+        this.maxDate=new Date(time);
+        this.actualRentTimeLimit = this.dateAddFormat(new Date(),2);
       },
       //签约之前判断个人信息是否完善
       signcheck(){
@@ -244,7 +260,7 @@
         this.startRentDate = date;
         this.endRentDate=date;
         this.startRentTime = this.formatDate(date);
-        this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
+        //this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
         if(this.rentTerm==1){
           this.expectHandingTime = `${this.startRentDate.getFullYear() + 1}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
         }else if(this.rentTerm==2){
