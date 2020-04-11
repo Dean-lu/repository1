@@ -83,6 +83,9 @@
             <img :src="item"  alt="图片" class="imgPreview">
             <van-icon name="close" @click="delImg(index)" class="delte"/>
           </div>
+          <div class="imgTips" v-if="showTips">                 
+                 图片正在上传中......
+          </div>
           <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
         </div>
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
@@ -216,8 +219,10 @@ Vue.use(Dialog);
         showServerMain:false,
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),
         value: '',
+        showTips:false,
         house_showImg:[],
-        houseInfo: {          
+        houseInfo: {  
+          house_img:[]        
         },
         // areaList: require('../../assets/js/area.js'), // 数据格式见 Area 组件文档
         areaList: areaList,
@@ -349,6 +354,9 @@ Vue.use(Dialog);
       //水印
       watermark(res,imgw){
         console.log("res",res)
+        if(imgw==4){
+          this.showTips=true;
+        }
         let fileMain=res;
         let param=new FormData;
         param.append("api_token", this.$store.state.global.api_token),
@@ -358,8 +366,7 @@ Vue.use(Dialog);
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-             console.log(res.data.data)
-              
+             console.log(res.data.data)              
               let src=res.data.data;
               if(imgw==1){
                 that.houseInfo.cardimg1=src;
@@ -373,12 +380,15 @@ Vue.use(Dialog);
               }else if(imgw==4){
                 that.houseInfo.house_img.push(src);
                 console.log(that.houseInfo.house_img);
+                that.showTips=false;
               }            
             }else{
               that.$toast(res.data.msg);
+              that.showTips=false;
             }
           }else{
-            that.$toast('获取图片失败，请刷新重试！');            
+            that.$toast('获取图片失败，请刷新重试！');  
+            that.showTips=false;          
             return;
           }
         });
@@ -669,6 +679,19 @@ Vue.use(Dialog);
   .manyPic img,.img_are img{
     width:100%;
     margin-bottom:0.35rem;
+  }
+  .imgTips{    
+    height:2.5rem;
+    width:100%;
+    font-size:0.4rem;
+    color:#fff;
+    Justify-content:center;  // 子元素水平居中 
+    align-items:center;       //子元素垂直居中    
+    display:-webkit-flex;   
+    padding:0.1rem;
+    box-sizing: border-box;
+    background:rgba(0,0,0,0.4);
+    margin-bottom:0.2rem;
   }
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem; width:80%;margin:0 auto;}

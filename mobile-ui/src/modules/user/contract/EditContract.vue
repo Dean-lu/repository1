@@ -9,7 +9,7 @@
         <van-cell v-model="ContractInfo.tenant.telphone" title="电话:" placeholder="请输入电话" v-bind:disabled="diasabledInput" />
         <van-cell v-model="ContractInfo.tenant.idcardcode" title="身份证:" placeholder="请输入身份证" /> 
         <van-cell title="起租时间:" :value="ContractInfo.tenant.start_time" @click="showRentTimeSelect = true" />
-        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" />    
+        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime"  :max-date="maxDate"/>    
         <van-field readonly clickable name="rentTerm" :value="userent" label="选择租期:"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
@@ -105,6 +105,7 @@
         showRentTerm: false,
         date:'',
         alueRentTerm: '',// 临时变量
+        maxDate:'',
         rentTerm: '',
         rentTermList: ['一年','半年'],
         diasabledInput:true,
@@ -189,17 +190,34 @@
               //that.$store.state.locale.editHouseInfo = res.data.data;
             }else{
               that.$toast(res.data.msg);
+              this.$router.back(-1);
             }
           }else{
-            that.$toast('获取房源详情失败，请刷新重试！');
+            that.$toast('获取房源详情失败，请重试！');
+            this.$router.back(-1);
             // setTimeout(() => {
             //     this.$router.back(-1);
             // }, 1000);
             return;
           }
         });
-        
+        let time=this.FunGetDateStr(2);
+        this.maxDate=new Date(time);
       },   
+      FunGetDateStr(p_count){
+            var dd = new Date();
+            dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth() + 1;//获取当前月份的日期
+            if( m <10){
+                m = '0'+m;
+            }
+            var d = dd.getDate();
+            if( d <10){
+                d = '0'+d;
+            }
+            return y + "," + m + "," + d;
+      },
       formatDate(date,addy) {
         console.log(date)
         if(addy==2){

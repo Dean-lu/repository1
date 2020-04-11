@@ -13,24 +13,28 @@
               src="https://apis.map.qq.com/tools/geolocation?key=BKVBZ-HZDW3-CFA3H-YGEZW-NUX47-5UFNS&referer=bianmin">
       </iframe>
       <div class="input-item">
+        <van-field v-model="truename" label="姓名" label-width="2.5rem" /> 
+<!--       
         <label>姓名</label>
-        <input type="text" name="truename" id="truename" v-model="truename"/>
+        <input type="text" name="truename" id="truename" v-model="truename"/> -->
       </div>
       <div class="input-item">
-        <label>手机号</label>
-        <input type="text" name="telphone" id="telphone" readonly="readonly" v-model="telphone"/>
+        <van-field v-model="telphone" label="手机号" maxlength="11" label-width="2.5rem" /> 
+        <!-- <input type="text" name="telphone" id="telphone" readonly="readonly" v-model="telphone"/> -->
       </div>
       <div class="input-item">
-        <label>身份证号</label>
-        <input type="text" name="idcardcode" id="idcardcode" v-model="idcardcode" />
+        <van-field v-model="idcardcode" label="身份证号" maxlength="18"  label-width="2.5rem" /> 
+        <!-- <label>身份证号</label>
+        <input type="text" name="idcardcode" id="idcardcode" v-model="idcardcode" /> -->
       </div>
       <!-- <div class="input-item">
          <label>小区</label>
          <input type="text" name="court" id="court" v-model="court" />
        </div>-->
       <div class="input-item">
-        <label>小区</label>
-        <input type="text" name="area" id="area" v-model="court" readonly="readonly"/>
+        <van-field v-model="court" label="小区"  label-width="2.5rem" readonly /> 
+        <!-- <label>小区</label>
+        <input type="text" name="area" id="area" v-model="court" readonly="readonly"/> -->
         <input type="hidden" v-model="garden_id"/>
       </div>
       <!-- input显示区域-->
@@ -291,6 +295,15 @@
 </script>
 
 <style scoped lang="less">
+/deep/.van-cell{
+  line-height:0.8rem;
+  font-size:0.4rem;
+  padding:0.2rem 0;
+}
+/deep/.van-field__value{
+  background: #dcdddd;
+  padding-left: 0.4rem;
+}
   .pwd .van-nav-bar .van-icon,
   .pwd .van-nav-bar__title{
     color:#FFB640;
@@ -300,7 +313,7 @@
   }
   .form-container{
     position: relative;
-    width: 83%;
+    width: 88%;
     height: 61.5%;
     background-color: #FFFFFF;
     position: absolute;
@@ -327,7 +340,7 @@
     line-height: 1rem;
     text-align: right;
     display: inline-block;
-    float: left;
+  
 
   }
   .input-item input{
@@ -343,7 +356,7 @@
     color: #000;
     box-sizing: border-box;
     display: inline-block;
-    float:left
+
   }
   #verify-btn{
     position: absolute;
@@ -455,6 +468,7 @@
     border:.03rem solid #dddddd;
     border-radius:10px;
     padding: .15rem .25rem;
+    margin-top: 0.5rem;
   }
   .form-container .garden .bm-header-search-box{
     border: .03rem solid #dddddd;

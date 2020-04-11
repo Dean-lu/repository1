@@ -20,6 +20,9 @@
                 <img :src="item"  alt="图片" class="imgPreview">
                 <van-icon name="close" @click="delImg(index)" class="delte"/>
               </div>
+              <div class="imgTips" v-if="showTips">                 
+                  图片正在上传......
+                </div>
               <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
             </div> 
         </div>   
@@ -43,8 +46,8 @@ export default {
             houseList:'submit',
             title:"房屋清单",
             listdec:'',
-            house_img:[]
-                    
+            house_img:[],
+            showTips:false         
         }
     },
     mounted() {
@@ -88,6 +91,7 @@ export default {
       //多图上传
       afterZRead(file){
           //this.house_showImg=this.house_showImg;
+          this.showTips=true;
           this.watermark(file.file);         
       },
       //水印
@@ -105,12 +109,15 @@ export default {
              console.log(res.data.data);              
               let src=res.data.data;
               that.house_img.push(src);
-              console.log(that.house_img);      
+              console.log(that.house_img); 
+              that.showTips=false;  
             }else{
               that.$toast(res.data.msg);
+              that.showTips=false;
             }
           }else{
-            that.$toast('获取图片失败，请刷新重试！');            
+            that.$toast('获取图片失败，请刷新重试！');  
+            that.showTips=false;          
             return;
           }
         });
@@ -190,6 +197,20 @@ export default {
   .pic-area img{width:85%; margin-bottom:0.5rem;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}
-  /deep/.posting-uploader-item{position:relative;float:left;width:3rem; height:3rem;}
+  /deep/.posting-uploader-item{position:relative;float:left;width:2.5rem; height:2.5rem;margin-right:0.2rem;}
+  .imgTips{
+    float: left;
+    height:2.5rem;
+    width:2.5rem;
+    font-size:0.4rem;
+    color:#fff;
+    Justify-content:center;  // 子元素水平居中 
+    align-items:center;       //子元素垂直居中    
+    display:-webkit-flex;   
+    padding:0.1rem;
+    box-sizing: border-box;
+    background:rgba(0,0,0,0.4);
+    margin-left:0.2rem;
+  }
 }
 </style>

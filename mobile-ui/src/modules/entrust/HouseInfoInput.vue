@@ -82,8 +82,11 @@
             <div class="ver-code-bottom-one-right-code manyPic">
               <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
                 <van-image :src="item" width="2.5rem" height="2.5rem" fit="contain"  alt="图片" class="imgPreview" />
-                <van-icon name="close" @click="delImg(index)" class="delte"/>
+                <van-icon name="close" @click="delImg(index)" class="delte"/>                  
               </div>
+              <div class="imgTips" v-if="showTips">                 
+                  {{showTipsTxt}}
+                </div>
               <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
             </div> 
         </div>
@@ -211,6 +214,8 @@
         noticeIcon: require('../../assets/img/entrust/lingdang.png'),
         value: '',
         showServerMain:false,
+        showTips:false,
+        showTipsTxt:'正在上传...',
         houseInfo:{
           initMark: '0x10',
           house_position: '',
@@ -430,7 +435,8 @@
         });
       },
       // 读取房屋图片
-      afterReadHouseImg(file){
+      afterReadHouseImg(file){ 
+        this.showTips=true;       
         let param=new FormData;
         param.append("api_token", this.$store.state.global.api_token),
         param.append("file",file.file)         
@@ -445,11 +451,14 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               that.houseInfo.house_img.push(res.data.data);
+              that.showTips=false;
             }else{
-              that.$toast(res.data.msg);
+              that.$toast(res.data.msg);             
+              that.showTips=false;
             }
           }else{
-            that.$toast('获取图片失败，请刷新重试！');            
+            that.$toast('获取图片失败，请刷新重试！');
+            that.showTips=false;            
             return;
           }
         });
@@ -774,12 +783,31 @@
   .pic-area img{width:85%; margin-bottom:0.5rem; height:100%;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}
+  .imgTips{
+    float: left;
+    height:2.5rem;
+    width:2.5rem;
+    font-size:0.4rem;
+    color:#fff;
+    Justify-content:center;  // 子元素水平居中 
+    align-items:center;       //子元素垂直居中    
+    display:-webkit-flex;   
+    padding:0.1rem;
+    box-sizing: border-box;
+    background:rgba(0,0,0,0.4);
+    margin-left:0.2rem;
+  }
   /deep/.posting-uploader-item{
     position:relative;
     float:left;
     width:2.5rem;
     height:2.5rem;
     overflow: hidden;
+    margin-right:0.2rem;
+  }
+  .manyPic{
+    width:90%;
+    margin:0 auto;
   }
   .order_list{padding-bottom: 1rem; box-sizing: border-box;}
  .order_list>table{border:1px solid #ccc; width: 100%;}
