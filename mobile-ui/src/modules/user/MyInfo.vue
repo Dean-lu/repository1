@@ -93,17 +93,24 @@
         keyword:'',
         garden_id:'',
         adcode: '',
-        position:'湖南省长沙市岳麓区',
+        position:'',
         showPositionSelect: false,
         areaList: areaList,
         province_name:'',
         city_name:'',
-        district_name:''
+        district_name:'',
+        loc:''
       }
     },
     mounted(){
       document.title = "完善个人信息";
       this.init();
+      var that= this;
+      window.addEventListener('message', function(event) {
+        // 接收位置信息
+        that.loc = event.data;
+        console.log(that.loc);
+      }, false);
     },
     methods:{
       onClickLeft() {
@@ -115,18 +122,14 @@
       },
       getposition:function(){
         var that = this;
-        window.addEventListener('message', function(event) {
-          // 接收位置信息
-          var loc = event.data;
-          if(loc && loc.adcode){
-            that.adcode = loc.adcode;
-            that.position = loc.province + loc.city+loc.district;
-            that.province_name = loc.province;
-            that.city_name = loc.city;
-            that.district_name = loc.district;
-          }
-        }, false);
-        this.getGardenInfo();
+        if(that.loc.adcode > 0) {
+            that.adcode = that.loc.adcode;
+            that.position = that.loc.province + that.loc.city + that.loc.district;
+            that.province_name = that.loc.province;
+            that.city_name = that.loc.city;
+            that.district_name = that.loc.district;
+            that.getGardenInfo();
+        }
       },
       getGardenInfo: function () {
         var that = this;
@@ -166,7 +169,7 @@
               that.province_name = re_data.province_name;
               that.city_name = re_data.city_name;
               that.district_name = re_data.district_name;
-              if(!that.adcode){
+              if(that.garden_id == null || that.garden_id == ''){
                 that.getposition();
               }else{
                 that.position = that.province_name+that.city_name+that.district_name;
