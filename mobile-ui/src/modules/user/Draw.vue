@@ -200,12 +200,31 @@ export default {
       .then(res => {
         if (res.status == 200) {
           if(res.data.code==401){
-            that.$toast("您还没绑定银行卡，请去绑定银行卡");
-            that.$router.push({path:'/EditBank'});
+            //that.$toast("您还没绑定银行卡，请去绑定银行卡");
+            that.$dialog.confirm({
+              title: "绑定银行卡",
+              message: "您还没绑定银行卡，立即去绑定银行卡",
+              confirmButtonText: "确定", //改变确认按钮上显示的文字
+              cancelButtonText: "取消" //改变取消按钮上显示的文字
+            }).then(()=> {
+              that.$router.push({path:'/EditBank'});
+            }).catch(() => {
+              done() //关闭
+            })
+
             return;
           }else if(res.data.code==402){
-            that.$toast("您还没设置支付密码，请设置支付密码");
-            that.$router.push({path:'/updatepayPass'});
+            //that.$toast("您还没设置支付密码，请设置支付密码");
+            that.$dialog.confirm({
+              title: "支付密码",
+              message: "您还没设置支付密码，立即去支付密码",
+              confirmButtonText: "确定", //改变确认按钮上显示的文字
+              cancelButtonText: "取消" //改变取消按钮上显示的文字
+            }).then(()=> {
+              that.$router.push({path:'/updatepayPass'});
+            }).catch(() => {
+              done() //关闭
+            })
             return;
           }else if(res.data.code == 200) {            
             //todo            
