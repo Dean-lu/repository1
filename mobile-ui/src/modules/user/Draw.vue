@@ -209,7 +209,7 @@ export default {
             }).then(()=> {
               that.$router.push({path:'/EditBank'});
             }).catch(() => {
-              done() //关闭
+              that.$router.push({path:'/mine'});
             })
 
             return;
@@ -223,7 +223,7 @@ export default {
             }).then(()=> {
               that.$router.push({path:'/updatepayPass'});
             }).catch(() => {
-              done() //关闭
+              that.$router.push({path:'/mine'});
             })
             return;
           }else if(res.data.code == 200) {            
