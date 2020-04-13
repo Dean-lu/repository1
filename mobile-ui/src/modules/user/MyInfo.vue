@@ -53,6 +53,11 @@
             <li v-for="(garden,index) in gardenList" :key="index" @click="selectGarden(garden.id,garden.garden_name)"><span v-text="garden.garden_name"></span></li>
           </ul>
         </div>
+        <div class="garden_list" v-if="gardenList.length == 0">
+          <ul>
+            <li><span>未搜索到小区</span></li>
+          </ul>
+        </div>
       </div>
       <div class="submit" >
         <van-button round block size="middle" color="#FFB640" native-type="submit" @click="doUpdateInfo">
