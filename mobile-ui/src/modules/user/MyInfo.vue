@@ -10,7 +10,7 @@
     </div>
     <div class="form-container">
       <iframe id="geoPage" width=0 height=0 frameborder=0  style="display:none;" scrolling="no"
-              src="https://apis.map.qq.com/tools/geolocation?key=BKVBZ-HZDW3-CFA3H-YGEZW-NUX47-5UFNS&referer=bianmin">
+              src="https://apis.map.qq.com/tools/geolocation?key=2DLBZ-VR63O-BVEWV-STDA3-ZL5AH-U4F7T&referer=house">
       </iframe>
       <div class="input-item">
         <van-field v-model="truename" label="姓名" label-width="2.5rem" /> 
