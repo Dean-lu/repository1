@@ -304,7 +304,7 @@
     methods:{
       // 我要租房--确认租房方式后的数据渲染
       init(){
-        debugger
+        //debugger
         var that = this;
         let param = {
           api_token: this.$store.state.global.api_token,
@@ -440,10 +440,11 @@
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-              console.log("提交租房申请成功！");
-              that.$toast("提交租房申请成功！");
+              //console.log("提交租房申请成功！");
+              //that.$toast("提交租房申请成功！");
               // 跳转到租赁合同审核中提示页
-              this.$router.push({path : '/auditRemind'});
+              //this.$router.push({path : '/auditRemind'});
+              that.showLeaseAgreement=true;
             }else{
               that.$toast(res.data.msg);
             }

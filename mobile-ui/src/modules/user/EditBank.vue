@@ -21,7 +21,8 @@ export default {
     return {
       is_show: "none",
       title: "绑定银行卡",
-      person:false,
+      person:false, 
+      clickBtn:false,
       form:{
           bank_card_no:'',
           bind_tel:'',
@@ -43,10 +44,18 @@ export default {
           if(res.status == 200) {
             if(res.data.code == 400){
               //去完善个人信息
-              that.$toast('请先完善个人信息');
-              setTimeout(()=>{
-                 that.$router.push({path : '/myInfo'});
-              },1000); 
+              //that.$toast('请先完善个人信息');              
+                that.$dialog.confirm({
+                  title: "完善个人信息",
+                  message: "您还完善个人信息，请先完善个人信息",
+                  confirmButtonText: "确定", //改变确认按钮上显示的文字
+                  cancelButtonText: "取消" //改变取消按钮上显示的文字
+                }).then(()=> {
+                  that.$router.push({path:'/myInfo'});
+                }).catch(() => {
+                  that.$router.push({path:'/mine'});
+                })
+                return;
             }else{
               that.save();
             }            
@@ -67,7 +76,10 @@ export default {
         that.$toast('填写的手机号格式不正确');
         return false; 
       }
-      
+      if(that.clickBtn){
+        return false;
+      }
+      that.clickBtn=true;
       // if(that.form.bank_card_no.length!=19 || that.form.bank_card_no.length!=16){
       //   that.$toast('请填写正确的银行卡号！');
       //   return false;
@@ -77,15 +89,16 @@ export default {
         .then(res => {
           if (res.status == 200) {
             if (res.data.code == 200) {
+              //that.clickBtn=false;
               that.$toast("提交成功");
-              setTimeout(() => {
-                that.$router.push({ path: "/Bank" });
-              }, 1000);
+              that.$router.push({ path: "/Bank" });
             } else {
-              that.$toast(res.data.msg);              
+              that.$toast(res.data.msg);  
+              that.clickBtn=false;            
             }
           } else {
             that.$toast("系统异常！");
+            that.clickBtn=false; 
           }
         });
     }

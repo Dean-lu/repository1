@@ -105,7 +105,7 @@
         showRentTerm: false,
         date:'',
         alueRentTerm: '',// 临时变量
-        maxDate:'',
+        maxDate:new Date(2020, 10, 26),
         rentTerm: '',
         rentTermList: ['一年','半年'],
         diasabledInput:true,
@@ -166,6 +166,8 @@
     mounted(){
       document.title = "修改合同信息";
       this.init();
+      //let time=this.FunGetDateStr(2);
+      //this.maxDate=new Date(time);
     },
     methods: {
       init(){
@@ -201,18 +203,17 @@
             return;
           }
         });
-        let time=this.FunGetDateStr(2);
-        this.maxDate=new Date(time);
+        
       },   
-      FunGetDateStr(p_count){
-            var dd = new Date();
+      FunGetDateStr(p_count){      
+            let dd = new Date();
             dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
-            var y = dd.getFullYear();
-            var m = dd.getMonth() + 1;//获取当前月份的日期
+            let y = dd.getFullYear();
+            let m = dd.getMonth() + 1;//获取当前月份的日期
             if( m <10){
                 m = '0'+m;
             }
-            var d = dd.getDate();
+            let d = dd.getDate();
             if( d <10){
                 d = '0'+d;
             }

@@ -205,7 +205,7 @@
           if(res.status == 200){
             if(res.data.code == 200){
               that.is_show=true;
-              that.$toast('个人信息编辑成功');
+              //that.$toast('个人信息编辑成功');
             }else{
               that.$toast(res.data.msg);
             }

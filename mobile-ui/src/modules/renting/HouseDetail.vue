@@ -122,7 +122,7 @@
         startRentDate: new Date(),
         actualRentTimeLimit: '',
         // startRentTime: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear() + 1}`,
-        maxDate:'',
+        maxDate: new Date(2020, 10, 26),
         // 租期
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
@@ -139,20 +139,25 @@
     },
     mounted(){     
       this.init();
+      //this.FunGetDateStr(2);
+      let time=this.FunGetDateStr(2);
+      this.maxDate=new Date(time);
     },
     updated() {
-    	document.title= this.title;
+      document.title= this.title;    
     },
     methods: {
       FunGetDateStr(p_count){
-            var dd = new Date();
+            let dd = new Date();
+            console.log("dd");
+            console.log(dd);
             dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
-            var y = dd.getFullYear();
-            var m = dd.getMonth() + 1;//获取当前月份的日期
+            let y = dd.getFullYear();
+            let m = dd.getMonth() + 1;//获取当前月份的日期
             if( m <10){
                 m = '0'+m;
             }
-            var d = dd.getDate();
+            let d = dd.getDate();
             if( d <10){
                 d = '0'+d;
             }
@@ -190,8 +195,7 @@
         // if(this.$store.state.renting.EnterRentTime){
         //   this.EnterRentTime = this.$store.state.renting.EnterRentTime;
         // }
-        let time=this.FunGetDateStr(2);
-        this.maxDate=new Date(time);
+        
         this.actualRentTimeLimit = this.dateAddFormat(new Date(),2);
       },
       //签约之前判断个人信息是否完善
@@ -305,7 +309,8 @@
         this.EnterRentTime = this.formatDate(date);
       },
       toConfirmRentInfo(){
-        if(!this.startRentTime){
+        console.log("起租时间：" + this.startRentTime);
+        if(!this.startRentTime || this.startRentTime=="选择起租时间"){
           this.$toast("请选择起租时间！");
           return false;
         }
@@ -313,7 +318,7 @@
           this.$toast("请选择租期！");
           return false;
         }
-        if(!this.EnterRentTime){
+        if(!this.EnterRentTime || this.EnterRentTime=="选择期望交房时间"){
           this.$toast("请选择期望交房时间！");
           return false;
         }

@@ -185,7 +185,7 @@
     height: 61.5%;
     background-color: #FFFFFF;
     position: absolute;
-    top: 44.8%;
+    top: 54.8%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.3125rem;
