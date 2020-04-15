@@ -126,7 +126,7 @@
               that.$toast(res.data.msg);
             }
           }else{
-            that.$toast('发送验证码失败，请刷新重试！');
+            that.$toast('发送验证码失败，请重试！');
             return;
           }
         });

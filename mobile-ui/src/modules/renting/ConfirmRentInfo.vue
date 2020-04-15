@@ -99,7 +99,7 @@
       </table>
     </div>
     <div style="width: 50%;margin: 0.625rem auto;">
-      <van-button square type="info" size="large" color="#F8B729" style="border-radius: 0.1875rem;" @click="submitConfirm">提交审核</van-button>
+      <van-button square type="info" size="large" color="#F8B729" style="border-radius: 0.1875rem;" @click="lookContact">查看合同</van-button>
     </div>
     
     <van-popup class="pop-contract" v-model="showLeaseAgreement" :close-on-click-overlay="false">
@@ -110,20 +110,23 @@
         <div style="width: 90%;margin: 0 auto;">
           <h2>房屋使用合同</h2>
           <p class="text-align-left">出租人（以下简称甲方）：湖南米花寓公寓经营管理有限公司</p>
-          <p class="text-align-left">承租人（以下简称乙方）：
-          <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="text-underline">&nbsp;&nbsp;&nbsp;{{tenant.truename}}&nbsp;&nbsp;&nbsp;</span>身份证号码：
+          <p class="text-align-left">承租人（以下简称乙方）：         
+            <span class="text-underline">&nbsp;&nbsp;&nbsp;{{tenant.truename}}&nbsp;&nbsp;&nbsp;
+          <br/></span>身份证号码：
             <span class="text-underline">&nbsp;&nbsp;&nbsp;{{tenant.idcardcode}}&nbsp;&nbsp;&nbsp;</span>
             </p>
           
           <p class="text-align-left" style="text-indent: 0.5rem;">根据《中华人民共和国合同法》、《中华人民共和国民事诉讼法》及相关法律法规的规定，甲、乙双方在平等、自愿的基础上，就甲方将房屋给乙方使用事宜，为明确双方权利义务，经协商一致，订立本合同。</p>
           <h3 class="text-align-left" style="text-indent: 0.5rem;">一、房屋基本情况</h3>
-          <p class="text-align-left" style="text-indent: 0.5rem;">1、1、甲方将位于<span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.house_position}}&nbsp;&nbsp;&nbsp;(区)
-            &nbsp;&nbsp;&nbsp;{{houseInfo.garden_name}}&nbsp;&nbsp;&nbsp;(小区)&nbsp;&nbsp;&nbsp;{{houseInfo.building_number}}&nbsp;&nbsp;&nbsp;栋&nbsp;&nbsp;&nbsp;{{houseInfo.house_number}}&nbsp;&nbsp;&nbsp;号
-            &nbsp;&nbsp;&nbsp;{{houseInfo.room_number}}&nbsp;&nbsp;&nbsp;房住房（以下简称该房屋）代房东转租给乙方使用；</span></p>
-          <p class="text-align-left" style="text-indent: 0.5rem;">2、房屋使用期为&nbsp;&nbsp;&nbsp;{{tenant.rent_time}}&nbsp;&nbsp;&nbsp;，自{{tenant.start_time}}年{{tenant.start_time}}月{{tenant.start_time}}日起至{{tenant.start_time}}年{{tenant.start_time}}月{{tenant.start_time}}日止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；</p>
-          <p class="text-align-left" style="text-indent: 0.5rem;">3、该房屋每月房屋使用费为人民币（大写）   仟   佰   拾   元整（其中设备使用费占40%，房屋运营管理服务费占15-17%，剩余部分为房屋租金）；支付方式为：预付     ；押金为人民币     （大写）   仟   佰   拾   元整；</p>
-          <p class="text-align-left" style="text-indent: 0.5rem;">4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每     个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。</p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">1、1、甲方将位于
+            <span class="text-underline">&nbsp;&nbsp;&nbsp;{{houseInfo.house_position}}&nbsp;&nbsp;&nbsp;(区)
+            &nbsp;&nbsp;&nbsp;{{houseInfo.garden_name}}&nbsp;&nbsp;&nbsp;(小区)&nbsp;&nbsp;&nbsp;{{houseInfo.building_number}}&nbsp;&nbsp;&nbsp;栋&nbsp;&nbsp;&nbsp;{{houseInfo.house_number}}&nbsp;&nbsp;&nbsp;{{houseInfo.room_number}}号
+            房住房（以下简称该房屋）代房东转租给乙方使用；</span></p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">2、房屋使用期为<span class="text-underline" v-if="list.use_time==1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            1年&nbsp;&nbsp;&nbsp;</span><span class="text-underline" v-if="list.use_time==2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            半年&nbsp;&nbsp;&nbsp;</span>，自<span class="text-underline">{{list.start_time}}</span>起至<span class="text-underline">{{list.end_time}}</span>止。合同签订之日起计算房屋使用费（包含房屋租金、设施设备使用费和房屋运营管理服务费），乙方于本合同签订之日办理完毕支付房屋使用费、押金支付及房屋验收、设施设备接收等手续后甲方将房屋交付给乙方；</p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">3、该房屋每月房屋使用费为人民币<span class="text-underline">{{list.price}}</span>元整（其中<span class="text-underline">{{list.other_price}}</span>，剩余部分为房屋租金）；支付方式为：预付<span class="text-underline">{{list.first_pay}}</span>；押金为人民币<span class="text-underline">{{list.deposit}}</span>元整；</p>
+          <p class="text-align-left" style="text-indent: 0.5rem;">4、合同签订时，乙方向甲方一次性支付押金及预付房屋使用费，此后房屋使用费每 <span class="text-underline">{{tenant.pay_style}}</span>个月支付一次，房屋使用费到期前半个月支付下一周期房屋使用费至甲方指定账户（如6月8日房屋使用费到期，则须在5月23日前支付下一周期的房屋使用费，密码锁设定的失效时间即为5月23日，交纳房屋使用费后即重新发送新的密码给乙方），乙方转账时须备注好房号、房屋使用人姓名；乙方拖欠房屋使用费超过3天的，甲方有权解除本合同并不退押金，采取包括但不限于断水、断电、断网、切断房屋门锁密码等措施要求乙方搬走；或者由甲方进行物品清点、打包清运至甲方指定地点（由乙方支付清运费100元/次，保管费10元/天），给甲方造成损失的，将追究乙方的违约责任。</p>
           <h3 class="text-align-left" style="text-indent: 0.5rem;">二、房屋使用约定</h3>
           <p class="text-align-left" style="text-indent: 0.5rem;">1、合法使用：该房屋仅作乙方居住使用，乙方不得改变居住用途，例如不得存放危险用品、不得从事商业活动、不得进行违法违纪活动、不得容留违法人员及容留超过2人居住；未与甲方办理相关手续，乙方不得私自转给他人使用、转借、转租该房屋，否则，甲方有权单方解除本合同并不退押金，乙方已支付但未使用期间的房屋使用费甲方有权不予退还；</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">2、正退</p>
@@ -200,7 +203,7 @@
           <div style="width: 100%;min-height: 2rem;">
             <van-col class="logo-parent"  span="12">
               <div class="text-align-left">委托方（甲方）: </div>
-              <div class="text-align-left" style="text-indent: 0.2rem;line-height: 1.6rem;">湖南米花寓公寓管理有限公司</div>
+              <div class="text-align-left" style="text-indent: 0.2rem;line-height: 0.8rem;height:1.6rem">湖南米花寓公寓管理有限公司</div>
               <div class="text-align-left">代表人：</div>
               <div class="text-align-left">联系电话：</div>
               <div class="mihua-logo"></div>
@@ -208,7 +211,7 @@
             <van-col span="12">
               <div class="text-align-left">受托方（乙方）: </div>
               <div class="text-align-left signature-area">
-                <van-image v-show="showSignatureImg" :src="signatureImg" />
+                <!-- <van-image v-show="showSignatureImg" :src="signatureImg" /> -->
               </div>
               <div class="text-align-left">身份证号：{{tenant.idcardcode}}</div>
               <div class="text-align-left">电话：{{tenant.telphone}}</div>
@@ -220,7 +223,7 @@
       <div style="width: 100%;">
         <div style="width: 90%;margin: 0 auto;">
           <van-button v-if="!showSignatureImg" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="showSignature = true">电子签名</van-button>
-          <van-button v-if="generateContractBtn" square type="info" size="small" color="#F8B729" style="border-radius: 0.1875rem;" @click="generateContract">提交合同</van-button>
+          <van-button type="info" color="#F8B729" style="border-radius: 0.1875rem;margin:0.5rem 0;" @click="submitConfirm">提交审核</van-button>
         </div>
       </div>
       
@@ -243,6 +246,7 @@
     data () {
       return {
         title: '确认租房信息',
+        list:{},
         tenant: {
           truename: '',
           telphone: '',
@@ -277,7 +281,7 @@
         // 显示租房合同
         showLeaseAgreement: false,
         // 显示签名区域
-        showSignatureImg: false,
+        showSignatureImg: true,
         // 显示签名框
         showSignature: false,
         // 生成合同按钮
@@ -321,6 +325,7 @@
               that.tenant = res.data.data.tenant;
               that.houseInfo = res.data.data.house;
               that.bill = res.data.data.bill;
+              that.list=res.data.list;
             }else{
               that.$toast(res.data.msg);
             }
@@ -343,6 +348,21 @@
 //             return;
 //           }
 //         });
+      },
+      lookContact(){
+        if(!this.cardimg1){
+          this.$toast("请上传身份证正面照！");
+          return false;
+        }
+        if(!this.cardimg2){
+          this.$toast("请上传身份证反面照！");
+          return false;
+        }
+        if(!this.cardimg3){
+          this.$toast("请上传身份证手持照！");
+          return false;
+        }
+        this.showLeaseAgreement=true;
       },
       uploadCardFront(file){
         var that = this;
@@ -441,10 +461,9 @@
           if(res.status == 200) {
             if(res.data.code == 200){
               //console.log("提交租房申请成功！");
-              //that.$toast("提交租房申请成功！");
+              that.$toast("提交租房申请成功！");
               // 跳转到租赁合同审核中提示页
-              //this.$router.push({path : '/auditRemind'});
-              that.showLeaseAgreement=true;
+              this.$router.push({path : '/auditRemind'});              
             }else{
               that.$toast(res.data.msg);
             }
@@ -751,8 +770,8 @@
      position: absolute;
      width: 4rem;
      height: 4rem;
-     bottom: -0.5rem;
-     right: -0.5rem;
+     top: -0.5rem;
+     left: -0.5rem;
      background-image: url("../../assets/img/entrust/mihua-logo.png");
      background-repeat: no-repeat;
      background-size: cover; 

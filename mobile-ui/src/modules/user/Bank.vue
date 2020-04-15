@@ -11,6 +11,7 @@
           <div class="card" v-for="(item, index) in cardArr" :key="index">
               <div class="cardno">{{item.bank_card_no}}</div>
               <!-- <div class="bank">{{item.bank}}</div> -->
+              <div class="cardClear" @click="clearBank(item.id)"><van-icon name="cross" /></div>
           </div>
           <div class="btn" @click="add">
               添加银行卡
@@ -27,8 +28,7 @@ export default {
     return {
       is_show: "has",
       title: "银行卡",
-      cardArr:[]
-      
+      cardArr:[]      
     };
   },
   mounted() {
@@ -45,10 +45,37 @@ export default {
       change(){
           this.$router.push({path:'/EditBank'})
       },
+      clearBank(id){
+        console.log(id);
+        let that=this;
+        let param={
+          api_token:this.$store.state.global.api_token,
+          bank_card_id:id
+        }
+         this.$http.post(this.$store.state.global.baseUrl + "user/delete_bank",param)
+          //this.$http.post(this.$store.state.global.baseUrl + "user/my_bankcard?api_token=pZTgamT6LgVMCX4HDqtbDVRUwYvSsCfRaZmuTHXe8vqzO1SASMQ38oYCP6EFhTSrtC6KFu8qiB37RMHchlwk2W7mr7nEqR0v9a29")
+        .then(res => {
+          if (res.status == 200) {
+            if (res.data.code == 200) {
+              that.$toast("删除成功");
+              let data=res.data.data;
+              //todo 
+              if(data.total==0){
+                that.is_show='none'
+              }else{
+                that.cardArr=data.data
+              }            
+            } else {
+              that.$toast(res.data.msg);
+            }
+          } else {
+            that.$toast("系统异常！");
+          }
+        });
+      },
     init(){
         var that=this;
-        console.log(this.$store.state.global.api_token)
-        
+        console.log(this.$store.state.global.api_token);        
         let api_token=this.$store.state.global.api_token;
          this.$http.post(this.$store.state.global.baseUrl + "user/my_bankcard",{
            api_token:this.$store.state.global.api_token
@@ -56,13 +83,12 @@ export default {
           //this.$http.post(this.$store.state.global.baseUrl + "user/my_bankcard?api_token=pZTgamT6LgVMCX4HDqtbDVRUwYvSsCfRaZmuTHXe8vqzO1SASMQ38oYCP6EFhTSrtC6KFu8qiB37RMHchlwk2W7mr7nEqR0v9a29")
         .then(res => {
           if (res.status == 200) {
-            if (res.data.code == 200) {
-              let data=res.data.data;
+            if (res.data.code == 200) {              
               //todo 
-              if(data.total==0){
+              if(res.data.data.length==0){
                 that.is_show='none'
               }else{
-                that.cardArr=data.data
+                that.cardArr=res.data.data
               }
             } else {
               that.$toast(res.data.msg);
@@ -82,6 +108,12 @@ export default {
 .confirm-rent {
   width: 100%;
   height: 100%;  
+}
+.cardClear{
+  position:absolute;
+  right:0.2rem;
+  top:0.2rem;
+  font-size: 0.6rem;
 }
 .confirm-rent .van-nav-bar .van-icon,
   .confirm-rent .van-nav-bar__title{

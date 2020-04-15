@@ -188,7 +188,7 @@ export default {
         this.ctx = this.el.getContext('2d')
         
         // 解构设备的宽度, 和 高度
-        const { clientWidth, clientHeight } = document.documentElement
+        const { clientWidth, clientHeight } =  {"clientWidth":document.documentElement.clientWidth ,"clientHeight":document.documentElement.clientHeight}
         
         var w1 = window.outerWidth;
         var h1 = window.outerHeight;
@@ -270,16 +270,20 @@ export default {
         window.pageYOffset = 0;
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
-        console.log("合同生成....")
-        //debugger
+        console.log("合同生成....");
+        that.$dialog.confirm({
+            message: '合同正在上传中....请稍等',
+          }).then(() => {
+            // on close
+          });
+        debugger
         var title = this.htmlTitle;
         this.$html2Canvas(document.querySelector('#contactMain'), {
           allowTaint: true,
           useCORS: true
         }).then(function(canvas) {    
-            let contentWidth = canvas.width;
+            let contentWidth = canvas.width;            
             let contentHeight = canvas.height;
-
             let pageData = canvas.toDataURL('image/jpeg', 0.4);
 
             let pdfWidth = (contentWidth + 10) / 2 * 0.75;
@@ -315,7 +319,7 @@ export default {
                   // that.status="end";
                   that.showSuc = true;// 弹出上传成功弹框
                 }else{
-                  that.$toast(res.data.msg);
+                  that.$toast(res.data.msg);                 
                 }
               }else{
                 console.log("合同上传失败！");

@@ -343,7 +343,7 @@ export default {
         this.ctx = this.el.getContext('2d')
         
         // 解构设备的宽度, 和 高度
-        const { clientWidth, clientHeight } = document.documentElement
+        const { clientWidth, clientHeight } = {"clientWidth":document.documentElement.clientWidth ,"clientHeight":document.documentElement.clientHeight}
         
         var w1 = window.outerWidth;
         var h1 = window.outerHeight;
