@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'ConfirmSuccess',
     data () {
@@ -28,8 +29,15 @@
     },
     mounted(){
       document.title = '委托合同签约';
+      this.share();
     },
     methods: {
+      share(){
+          let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+          this.wxShare({
+            link:link      
+          });
+        },
       toHome(){
         this.$store.state.global.houseInfo = {
           initMark: '0x10',

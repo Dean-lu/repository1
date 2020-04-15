@@ -51,6 +51,7 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
+  import shareApi from '../../common/until'
   export default {
     name: 'EntrustHouseSource',
     components: {HeaderBar},
@@ -84,8 +85,15 @@
     },
     mounted(){
       this.queryHouseSource('all');
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       onLoad(){
         if(this.PageIndex >= this.lastPage){
           this.loading = true;

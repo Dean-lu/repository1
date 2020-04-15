@@ -186,6 +186,7 @@
 import html2Canvas from 'html2canvas' ;
 import Vue from 'vue'; 
 import JsPDF from 'jspdf';
+import shareApi from '../../../common/until'
 export default {
     data(){
         return {
@@ -224,12 +225,19 @@ export default {
         }
     },
     mounted() {
-    	document.title = "合同详情";
+      document.title = "合同详情";
+      this.share();
     },
     beforeMount(){
         this.init();
         },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
         init(){
         //debugger
         let that = this;

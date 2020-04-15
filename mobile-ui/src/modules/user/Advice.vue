@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
 export default {
   name: "Advice",
   data() {
@@ -51,8 +52,15 @@ export default {
   },
   mounted() {
     document.title = "投诉建议";
+    this.share();
   },
   methods: {
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
     onClickLeft() {
         this.$router.back(-1);
       },

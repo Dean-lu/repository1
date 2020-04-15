@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
 export default {
   name: "Qrcode",
   data() {
@@ -22,8 +23,15 @@ export default {
   mounted() {
     document.title = "我的二维码";
     this.init();
+    this.share();
   },
   methods: {
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
     onClickLeft() {
         this.$router.back(-1);
       },

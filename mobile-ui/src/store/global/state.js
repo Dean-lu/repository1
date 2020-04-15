@@ -16,6 +16,7 @@ export default {
   },
   openid: '',
   pid: '',
+  pidshare:'',
   appid: 'wxd974fd73c9511a6d',
   urlParam: {}
   

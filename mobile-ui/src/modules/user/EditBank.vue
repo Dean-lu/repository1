@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
 export default {
   name: "EditBank",
   data() {
@@ -33,8 +34,15 @@ export default {
   mounted() {
     document.title = "绑定银行卡";
    // this.init()
+   this.share();
   },
   methods: {
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
     bindcheck(){
         const that=this;
         this.$http.post(this.$store.state.global.baseUrl + 'base/pre_solve', {

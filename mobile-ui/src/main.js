@@ -14,6 +14,8 @@ import $ from 'jquery'
 
 import "./assets/css/iconfont.css";
 
+
+
 // h5转pdf依赖
 import html2Canvas from 'html2canvas'
 Vue.prototype.$html2Canvas = html2Canvas
@@ -60,6 +62,8 @@ if(localStorage.getItem('pid')){
   store.state.global.pid = localStorage.getItem('pid');
   localStorage.removeItem('pid')
 }
+
+
 
 // 路由守卫：全局api_token为空，强制去登陆
 router.beforeEach((to,from,next)=>{

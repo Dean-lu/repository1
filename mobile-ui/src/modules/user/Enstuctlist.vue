@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: "Rentlist",
     data() {
@@ -38,8 +39,15 @@
     mounted() {
       document.title = "委托推荐";
       this.getEnstuctList();
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       onClickLeft() {
         this.$router.back(-1);
       },

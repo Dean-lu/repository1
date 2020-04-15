@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'AuditRemind',
     data () {
@@ -20,8 +21,15 @@
     },
     mounted(){
       document.title = "租房合同确认";
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       toHouseCenter(){
         this.$router.push({path : '/houseSourceCenter'});
       }

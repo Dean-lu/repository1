@@ -39,6 +39,7 @@
     </div>
 </template>
 <script>
+  import shareApi from '../../../common/until'
 export default {
     name:'HouseBagList',
     data(){
@@ -51,9 +52,16 @@ export default {
         }
     },
     mounted() {
-    	document.title = "房屋清单";
+      document.title = "房屋清单";
+      this.share();
     },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
         submitList(){
             if(!this.listdec || this.houseImg){
                  this.$toast("请填写入住清单描述或图片");

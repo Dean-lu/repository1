@@ -93,6 +93,8 @@
 
 <script>
   import areaList from '../../../assets/js/area.js'
+  import shareApi from '../../../common/until'
+  
   export default {
     name: 'HouseInfoInput',
     data() {
@@ -166,10 +168,17 @@
     mounted(){
       document.title = "修改合同信息";
       this.init();
-      //let time=this.FunGetDateStr(2);
-      //this.maxDate=new Date(time);
+      let time=this.FunGetDateStr(2);
+      this.maxDate=new Date(time);
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         //debugger
         // if(this.$store.state.entrust.houseInfo){

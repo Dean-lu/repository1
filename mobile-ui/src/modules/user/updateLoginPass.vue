@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'updateLoginPass',
     data () {
@@ -59,8 +60,15 @@
     mounted(){
       document.title = '重置登录密码';
       this.init();
+      this.share();
     },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       onClickLeft() {
         this.$router.back(-1);
       },

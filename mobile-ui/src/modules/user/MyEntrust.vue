@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'MyEntrust',
     data () {
@@ -49,8 +50,15 @@
     mounted(){
       document.title = "我的委托";
       this.queryHouseSource('all');
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       onClickLeft() {
         this.$router.back(-1);
       },

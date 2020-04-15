@@ -125,6 +125,7 @@
 
 <script>
   import FooterBar from '../../components/common/FooterBar'
+  import shareApi from '../../common/until'
   export default {
     name: 'Mine',
     components: {FooterBar},
@@ -138,8 +139,15 @@
     mounted(){
       document.title = '个人中心';
       this.init();
+      this.share();
     },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         // debugger
         if(!this.$store.state.global.api_token){

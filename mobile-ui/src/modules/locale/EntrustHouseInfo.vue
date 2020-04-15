@@ -108,6 +108,7 @@
 </template>
 
 <script>
+  import shareApi from '../../common/until'
   import HeaderBar from '../../components/common/HeaderBar'
   export default {
     name: 'EntrustHouseInfo',
@@ -150,12 +151,20 @@
     mounted(){
       document.title = "房源信息";
       this.init();
+      this.share();
     },
     methods: {
+       share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         console.log(this.$store.state.locale.houseId)
         //debugger
         // 获取房源详情
+        
         let that = this;
         let param = {
           api_token: this.$store.state.locale.api_token,

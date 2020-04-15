@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
 export default {
   name: "Rentlist",
   data() {
@@ -36,8 +37,15 @@ export default {
   mounted() {
     document.title = "出租推荐";
     this.getRentlist();
+    this.share();
   },
   methods: {
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
     onClickLeft() {
         this.$router.back(-1);
       },

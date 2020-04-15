@@ -8,6 +8,7 @@
 </template>
 
 <script>
+
   export default {
     name: 'RegisterSuc',
     data () {
@@ -16,6 +17,7 @@
       }
     }
   }
+
 </script>
 
 <style scoped>

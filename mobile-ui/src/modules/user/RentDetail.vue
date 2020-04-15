@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'RentDetail',
     data () {
@@ -49,11 +50,18 @@
     mounted(){
       document.title = this.title;
       this.init();
+      this.share();
     },
     updated() {
     	document.title = this.title;
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         // 获取房源详情
         let that = this;
@@ -152,7 +160,7 @@
   .van-cell__value{
     text-align: left;
   }
-  /deep/.van-cell{
+  .van-cell{
     line-height: 0.5rem!important;
     padding: 0.1rem 0;
   }

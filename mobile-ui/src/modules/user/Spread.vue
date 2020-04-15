@@ -50,7 +50,7 @@
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :offset="10"  :error.sync="error" error-text="请求失败，点击重新加载">
           <div style="-webkit-overflow-scrolling : touch; position: relative;">
             <ul>
-              <li class="border-1px flex" v-for="item in list" v-cloak="">
+              <li class="border-1px flex" v-for="(item,index) in list" :key="index">
                 <div class="txt-content">
                   <p class="float-left" v-if="item.type == 1">提现</p>
                   <p class="float-left" v-if="item.type == 2">分佣</p>
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: "Spread",
     data() {

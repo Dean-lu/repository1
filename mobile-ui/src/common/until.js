@@ -1,11 +1,14 @@
 //分享
+import Axios from 'axios'
 export const wxShare=function({link}){
+    let that=this;
     this.$http.post(this.$store.state.global.baseUrl + "base/share",{
         api_token:this.$store.state.global.api_token
       }).then(
         res=>{
             if(res.data.code==200){
-                var share_config = res.data.data;
+                var share_config = res.data.app;                
+                this.$store.state.global.pidshare=res.data.pid;
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。　　
                     appId: share_config.appId, // 必填，公众号的唯一标

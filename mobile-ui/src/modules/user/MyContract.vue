@@ -29,6 +29,7 @@
 
 <script>
 import Vue from "vue"
+import shareApi from '../../common/until'
   export default {
     name: 'MyContract',
     data () {
@@ -49,8 +50,15 @@ import Vue from "vue"
       document.title = "我的合同";
       // this.changeStatus()
       this.contactSourct('all');
+      this.share()
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       onClickLeft() {
         this.$router.back(-1);
       },

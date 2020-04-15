@@ -206,7 +206,7 @@
   import areaList from '../../assets/js/area.js';
   import Vue from 'vue';
   import { Dialog } from 'vant';
-
+import shareApi from '../../common/until'
 // 全局注册
 Vue.use(Dialog);
   export default {
@@ -256,8 +256,15 @@ Vue.use(Dialog);
     mounted(){
       document.title = "修改房源信息";
       this.init();
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/me_rent/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         //debugger
         let that = this;

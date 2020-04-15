@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
   export default {
     name: 'Login',
     data () {
@@ -31,8 +32,15 @@
     },
     mounted(){
       this.init();
+      this.share();
     },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       init(){
         //吸底显示首页
         this.$store.state.global.isShowFooter = false;

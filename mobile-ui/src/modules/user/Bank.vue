@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import shareApi from '../../common/until'
 export default {
   name: "Bank",
   data() {
@@ -33,9 +34,16 @@ export default {
   },
   mounted() {
     document.title = "我的银行卡";
-    this.init()
+    this.init();
+    this.share();
   },
-  methods: {     
+  methods: {    
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       }, 
      onClickLeft() {
         this.$router.back(-1);
       },

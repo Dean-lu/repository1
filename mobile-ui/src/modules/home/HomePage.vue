@@ -51,9 +51,12 @@
 
 <script>
 import FooterBar from '../../components/common/FooterBar'
+import shareApi from '../../common/until'
 export default {
   name: 'HomePage',
-  components: {FooterBar},
+  components: {
+    FooterBar
+  },
   data () {
     return {
       location: "XXX小区",
@@ -105,8 +108,15 @@ export default {
     this.getNotice();
     //this.createInterval();
     this.getHouseSource();
+    this.share()
   },
   methods: {
+    share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      });
+    },
     init(){
       // debugger
 //       if(!this.$store.state.global.api_token){

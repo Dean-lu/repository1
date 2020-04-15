@@ -99,17 +99,19 @@
              </p>
       </div>
     </van-dialog>
-    
+    <van-popup v-model="tipsshow" :close-on-click-overlay="false">正在保存信息,请耐心等待.....</van-popup>
 </div>
 </template>
 <script>
 import html2Canvas from 'html2canvas' ;
 import Vue from 'vue'; 
 import JsPDF from 'jspdf';
+import shareApi from '../../../common/until'
 export default {
     data(){
         return {
             title:'委托房屋合同签约',
+            tipsshow:false,
             diasabledInput:true,
             showSignature:false,
             signbtn:"sign",
@@ -126,12 +128,19 @@ export default {
     },
     mounted(){
         document.title = "委托房屋合同签约";
-        this.init()
+        this.init();
+        this.share();
     },
     updated () {
         this.draw()
     },
     methods:{
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
         submitList(){           
             this.$router.push({path : '/HouseBag'});
         },
@@ -271,11 +280,7 @@ export default {
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
         console.log("合同生成....");
-        that.$dialog.confirm({
-            message: '合同正在上传中....请稍等',
-          }).then(() => {
-            // on close
-          });
+        that.tipsshow=true;
         debugger
         var title = this.htmlTitle;
         this.$html2Canvas(document.querySelector('#contactMain'), {
@@ -318,11 +323,14 @@ export default {
                   // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
                   // that.status="end";
                   that.showSuc = true;// 弹出上传成功弹框
+                  that.tipsshow=false;
                 }else{
-                  that.$toast(res.data.msg);                 
+                  that.$toast(res.data.msg); 
+                  that.tipsshow=false;                
                 }
               }else{
                 console.log("合同上传失败！");
+                that.tipsshow=false;
                 that.$toast("合同上传失败！");
                 return;
               }

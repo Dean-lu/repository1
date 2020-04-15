@@ -90,6 +90,7 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
+  import shareApi from '../../common/until'
   export default {
     name: 'HouseDetail',
     components: {HeaderBar},
@@ -142,11 +143,18 @@
       //this.FunGetDateStr(2);
       let time=this.FunGetDateStr(2);
       this.maxDate=new Date(time);
+      this.share();
     },
     updated() {
       document.title= this.title;    
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+this.$store.state.renting.id+"/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      })
+       },
       FunGetDateStr(p_count){
             let dd = new Date();
             console.log("dd");

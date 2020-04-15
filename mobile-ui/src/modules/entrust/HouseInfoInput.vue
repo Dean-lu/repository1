@@ -206,6 +206,7 @@
 <script>
   // import HeaderBar from '../../components/common/HeaderBar'
   import areaList from '../../assets/js/area.js'
+  import shareApi from '../../common/until'
   export default {
     name: 'HouseInfoInput',
     // components: {HeaderBar},
@@ -291,8 +292,15 @@
     },
     mounted(){
       this.init();
+      this.share();
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      });
+    },
       init(){
         document.title = '房源信息录入';
         if(this.$store.state.entrust.houseInfo && this.$store.state.entrust.houseInfo.initMark == '0x10'){

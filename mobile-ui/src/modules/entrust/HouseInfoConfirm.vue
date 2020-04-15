@@ -186,6 +186,7 @@
   // import HeaderBar from '../../components/common/HeaderBar'
 // 使用 <dingtalk></dingtalk> 在页面中调用
   import JsPDF from 'jspdf'
+  import shareApi from '../../common/until'
   export default {
     name: 'HouseInfoConfirm',
     // components: {HeaderBar},
@@ -268,11 +269,18 @@
       document.title = '房源信息确认';
       this.generationConfirm();
       this.clickif=false;
+      this.share();
     },
     updated () {
         this.draw()
     },
     methods: {
+      share(){
+      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
+      this.wxShare({
+        link:link      
+      });
+    },
       // 接受房源信息录入参数
       generationConfirm(){
         // 从vuex获取数据
