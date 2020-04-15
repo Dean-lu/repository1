@@ -265,6 +265,7 @@
               sum += ai * wi;
             }
             var last = parity[sum % 11];
+            if(code[17]=='x') code[17] = code[17].toUpperCase();
             if(parity[sum % 11] != code[17]){
               tip = "校验位错误";
               pass =false;
