@@ -1,7 +1,7 @@
 <template>
 <div class="main">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
-    <div id="contactMain" v-if="status='start'">    
+    <div id="contactMain" ref="contactMain">    
         <h1>委托出租服务协议</h1>
         <div>
             <p>委托方（甲方）：<span>{{contact.name}}</span></p>
@@ -79,7 +79,7 @@
         <div style="width: 100%;height: 0.5rem;"></div>
     </div>
     <div class="buttons">
-        <button @click="showSignature=true" v-if="signbtn=='sign'" class="btnOrange">打开签名版</button>
+        <button @click="showSign" v-if="signbtn=='sign'" class="btnOrange">打开签名版</button>
         <button @click="submitSign" v-if="signbtn=='submit' && generateContractBtn" class="btnOrange">提交合同</button>
     </div>
     <van-action-sheet disable-scroll v-model="showSignature" :round="false" title="电子签名" :close-on-click-overlay="false">
@@ -125,16 +125,20 @@ export default {
             contact:{
                
             },
-            showSuc: false
+            showSuc: false,
+            signTest:true
         }
     },
     mounted(){
         document.title = "委托房屋合同签约";
         this.init();
         this.share();
-    },
+    },    
     updated () {
-        this.draw()
+      if(this.signTest){
+        this.draw();
+      }
+      
     },
     methods:{
       share(){
@@ -198,7 +202,7 @@ export default {
         this.ctx = this.el.getContext('2d')
         
         // 解构设备的宽度, 和 高度
-        const { clientWidth, clientHeight } =  {"clientWidth":document.documentElement.clientWidth ,"clientHeight":document.documentElement.clientHeight}
+        const { clientWidth, clientHeight } =  document.documentElement
         
         var w1 = window.outerWidth;
         var h1 = window.outerHeight;
@@ -211,10 +215,13 @@ export default {
 //         var x = ss.offset().left;
         let x = 0;
         let y = clientHeight - this.el.offsetParent.clientHeight + this.el.offsetTop;
+      
         // let y2 = document.body.clientHeight - this.el.offsetParent.clientHeight + this.el.offsetTop;
         //debugger
         this.el.width = this.el.offsetParent.clientWidth * 0.90-2;
-        // this.el.height = 250;
+       // this.el.height = this.el.offsetParent.clientHeight*0.90-2;
+        console.log(this.el.offsetParent.clientHeight)
+         this.el.height = 150;
         let width = this.el.clientWidth;
         let height = this.el.clientHeight;
         
@@ -257,6 +264,10 @@ export default {
       clearHandle() {
         this.initCanvas()
       },
+      showSign(){
+        this.showSignature=true;
+        
+      },
       // 保存信息
       saveImg() {       
         const imgBase64 = this.el.toDataURL();
@@ -267,6 +278,7 @@ export default {
         this.showSignatureImg=true;        
         // console.log('保存签名成功' + imgBase64);  
          console.log('保存签名成功')
+         this.signTest=false;
         // document.removeEventListener('touchmove', e => e.preventDefault(), {
         //   passive: true
         // })
@@ -282,12 +294,19 @@ export default {
         document.body.scrollTop = 0;
         console.log("合同生成....");
         that.tipsshow=true;
-        debugger
+        //debugger
         var title = this.htmlTitle;
-        this.$html2Canvas(document.querySelector('#contactMain'), {
+        console.log(document.querySelector('#contactMain'));
+       // let element=document.getElementById('contactMain');
+       let element=that.$refs.contactMain;
+       console.log("element")
+       console.log(element);
+        this.$html2Canvas(element, {
           allowTaint: true,
           useCORS: true
         }).then(function(canvas) {    
+            console.log(canvas.width);
+             console.log(canvas.height)
             let contentWidth = canvas.width;            
             let contentHeight = canvas.height;
             let pageData = canvas.toDataURL('image/jpeg', 0.4);
@@ -320,9 +339,7 @@ export default {
               console.log(file);
               if(res.status == 200) {
                 if(res.data.code == 200){
-                  console.log("合同上传成功！");
-                  // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
-                  // that.status="end";
+                  console.log("合同上传成功！");                  
                   that.showSuc = true;// 弹出上传成功弹框
                   that.tipsshow=false;
                 }else{
@@ -371,7 +388,7 @@ export default {
     border-bottom: .11rem solid #f5f5f5;
   }
 .pay_conter{padding-bottom:1rem;}
-.cavas{border:1px solid #ccc;width:90%; margin:0.5rem auto;}
+.cavas{border:1px solid #ccc;width:90%; margin:0.5rem auto;height:4.2rem}
 #contactMain{
     text-align: left;
     width:100%;

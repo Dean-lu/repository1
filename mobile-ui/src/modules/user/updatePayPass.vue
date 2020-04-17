@@ -164,6 +164,14 @@
           this.$toast('支付密码不能为空');
           return false;
         }
+         if(this.pay_password.length>6){
+          this.$toast('支付密码不能大于6位数');
+          return false;
+        }
+        if(isNaN(this.pay_password)){
+          this.$toast('支付密码只能是数字');
+          return false;
+        }
         if(!this.code){
           this.$toast('验证码不能为空');
           return false;

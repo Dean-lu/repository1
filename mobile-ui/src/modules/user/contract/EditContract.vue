@@ -9,7 +9,7 @@
         <van-cell v-model="ContractInfo.tenant.telphone" title="电话:" placeholder="请输入电话" v-bind:disabled="diasabledInput" />
         <van-cell v-model="ContractInfo.tenant.idcardcode" title="身份证:" placeholder="请输入身份证" /> 
         <van-cell title="起租时间:" :value="ContractInfo.tenant.start_time" @click="showRentTimeSelect = true" />
-        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime"  :max-date="maxDate"/>    
+        <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime"  :max-date="this.maxDate"/>    
         <van-field readonly clickable name="rentTerm" :value="userent" label="选择租期:"
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           <van-popup class="popup-select" v-model="showRentTerm" position="bottom" >
@@ -107,7 +107,7 @@
         showRentTerm: false,
         date:'',
         alueRentTerm: '',// 临时变量
-        maxDate:new Date(2020, 10, 26),
+       // maxDate:new Date(2020, 10, 26),
         rentTerm: '',
         rentTermList: ['一年','半年'],
         diasabledInput:true,
@@ -168,9 +168,18 @@
     mounted(){
       document.title = "修改合同信息";
       this.init();
-      let time=this.FunGetDateStr(2);
-      this.maxDate=new Date(time);
+      //let time=this.FunGetDateStr(2);
+      //this.maxDate=new Date(time);
       this.share();
+    },
+    computed: {
+     // 计算属性的 getter
+     maxDate(){
+      let curDate = (new Date()).getTime();
+      let one = 2 * 24 * 3600 * 1000;
+      let oneYear = curDate + one;
+      return new Date(oneYear);
+     }
     },
     methods: {
       share(){
@@ -213,20 +222,6 @@
         });
         
       },   
-      FunGetDateStr(p_count){      
-            let dd = new Date();
-            dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
-            let y = dd.getFullYear();
-            let m = dd.getMonth() + 1;//获取当前月份的日期
-            if( m <10){
-                m = '0'+m;
-            }
-            let d = dd.getDate();
-            if( d <10){
-                d = '0'+d;
-            }
-            return y + "," + m + "," + d;
-      },
       formatDate(date,addy) {
         console.log(date)
         if(addy==2){

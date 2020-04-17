@@ -80,7 +80,7 @@
         </van-popup>
     </div>
     <div style="position：absolute;z-index:9999;">
-      <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" :max-date="maxDate"/>
+      <van-calendar v-model="showRentTimeSelect" color="#FFB640" @confirm="onConfirmRentTime" :max-date="this.maxDate"/>
     </div>
      <div style="position：absolute;z-index:9999;">
       <van-calendar v-model="showEndTimeSelect" color="#FFB640" @confirm="onConfirmEndTime" />
@@ -123,7 +123,7 @@
         startRentDate: new Date(),
         actualRentTimeLimit: '',
         // startRentTime: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear() + 1}`,
-        maxDate: new Date(2020, 10, 26),
+        //maxDate:new Date(2020,4, 19),
         // 租期
         showRentTerm: false,
         valueRentTerm: '',// 临时变量
@@ -136,17 +136,26 @@
         EnterRentTime:'选择期望交房时间',
         endRentDate: new Date(),
         showEndTimeSelect: false,
+        timechoice:new Date()
       }
     },
     mounted(){     
       this.init();
       //this.FunGetDateStr(2);
-      //let time=this.funGetDateStr(2);
-      //this.maxDate=new Date(time);
+     
       this.share();
     },
     updated() {
       document.title= this.title;    
+    },
+    computed: {
+     // 计算属性的 getter
+     maxDate(){
+      let curDate = (new Date()).getTime();
+      let one = 2 * 24 * 3600 * 1000;
+      let oneYear = curDate + one;
+      return new Date(oneYear);
+     }
     },
     methods: {
       share(){
@@ -154,21 +163,11 @@
         let that=this;
         this.$shareApi.wxShare(link,that);
        },
-      funGetDateStr(p_count){
-            let dd = new Date();
-            console.log("dd");
-            console.log(dd);
-            dd.setDate(dd.getDate() + p_count);//获取p_count天后的日期
-            let y = dd.getFullYear();
-            let m = dd.getMonth() + 1;//获取当前月份的日期
-            if( m <10){
-                m = '0'+m;
-            }
-            let d = dd.getDate();
-            if( d <10){
-                d = '0'+d;
-            }
-            return y + "," + m + "," + d;
+      funGetDateStr(date,day){            
+        let seconds = date.getTime();
+        console.log(seconds)
+        let newDate = new Date(seconds + day * 1000 * 60 * 60 * 24);
+        return `${newDate.getFullYear()},${newDate.getMonth() + 1},${newDate.getDate()}`;        
       },
       init(){       
         // 获取房源详情
@@ -233,7 +232,9 @@
         });
       },
       //马上签约按钮
-      signhouse(){        
+      signhouse(){      
+         
+       // this.maxDate=this.funGetDateStr(new Date(),2);
         // 获取房源详情
         let that = this;
         let param = {
