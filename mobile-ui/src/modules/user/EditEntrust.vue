@@ -3,58 +3,58 @@
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="main" v-if="status=='edit'">      
       <div class="remind" v-if="houseInfo.reason">*温馨提示：{{houseInfo.reason}}</div>
-      <div class="remind" v-else>*温馨提示：还没有提示您要修改的内容</div>
+      <div class="remind" v-else>*温馨提示：标星为必填的内容</div>
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">基本信息</div>
-        <van-field readonly :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" />
+        <van-field readonly :value="houseInfo.house_position" label="*所属区域:" placeholder="点击选择省市区" />
         <van-popup v-model="showHousePosition" position="bottom">
           <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
         </van-popup>
         
-        <van-field readonly v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
-        <van-field readonly v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
-        <van-field readonly v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
+        <van-field readonly v-model="houseInfo.garden_name" label="*小区名称:" placeholder="请输入小区名称" />
+        <van-field readonly v-model="houseInfo.building_number" label="*楼栋号:" placeholder="请输入楼栋号" />
+        <van-field readonly v-model="houseInfo.room_number" label="*房号:" placeholder="请输入房号" />
         <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
         <div class="editable">
-          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
-          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true"  />
+          <van-field v-model="houseInfo.area" label="*面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
+          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="*户型:" placeholder="户型" @click="showHouseLayout = true"  />
         </div>
         <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
           <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
         </van-popup>
-        <van-field readonly :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" />
+        <van-field readonly :value="valueExpireYear" label="*委托期限" placeholder="点击选择委托期限" />
         <van-popup v-model="showExpireYear" position="bottom">
           <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
         </van-popup>
         <div class="editable">
-          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
-          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
+          <van-field v-model="houseInfo.rent_price" label="*租金:" placeholder="请输入租金"  type="number"/>
+          <van-field v-model="houseInfo.deposit" label="*押金:" placeholder="请输入押金"  type="number"/>
         </div>
-        <van-field readonly :value="valueRentType" label="类型" placeholder="点击出租类型" />
+        <van-field readonly :value="valueRentType" label="*类型" placeholder="点击出租类型" />
         <van-popup v-model="showRentType" position="bottom">
           <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
         </van-popup>
          <div class="editable">
-        <van-field readonly clickable :value="valuetrimStatus" label="装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
+        <van-field readonly clickable :value="valuetrimStatus" label="*装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
         </div>
           <van-popup v-model="showrtrimStatus" position="bottom">
             <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
           </van-popup>
          
         <div class="editable">
-          <van-field readonly clickable :value="houseInfo.pay_style_name" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
+          <van-field readonly clickable :value="houseInfo.pay_style_name" label="*付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
         </div>
         <van-popup v-model="showPayStyle" position="bottom">
           <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
         </van-popup>
         
-        <div class="label">房源描述:</div>
+        <div class="label">*房源描述:</div>
         <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" 
          placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
       </div>
       <div class="pic-area">
-        <div class="title">证件信息</div>
+        <div class="title">*证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
         <div class="id-front img_are">
           <van-uploader :max-count="1" :after-read="onread1">
@@ -107,7 +107,9 @@
            <p class="tips">您的修改已经完成，我们会尽快为您审核！</p>
        
     </div>
-    <van-popup class="pop-contract" v-model="showServerMain" style="width:90%; height:85%"  closeable>
+    <div class="closeBtn" v-if="showServerMain" @click="closeServerMain"><van-icon name="cross" /></div> 
+     
+    <van-popup class="pop-contract" v-model="showServerMain" style="width:90%; height:85%">
       <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
         <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="closeContract" />
       </van-nav-bar> -->
@@ -206,7 +208,7 @@
   import areaList from '../../assets/js/area.js';
   import Vue from 'vue';
   import { Dialog } from 'vant';
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
 // 全局注册
 Vue.use(Dialog);
   export default {
@@ -260,10 +262,9 @@ Vue.use(Dialog);
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/me_rent/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       init(){
         //debugger
@@ -298,6 +299,10 @@ Vue.use(Dialog);
         });
         
       },
+       closeServerMain(){
+         //console.log("a");
+         this.showServerMain=false;
+       },
       // 组件：确认区域选择
       confirmArea(values) {
         this.valueHousePosition = values.map(item => item.name).join('');
@@ -608,6 +613,22 @@ Vue.use(Dialog);
     text-indent: 0.45rem;
     margin: 0.3rem 0;
   }
+  .closeBtn{
+  position:fixed; 
+  top:0.2rem;
+  right:0.2rem;
+  width:0.75rem;
+   height:0.75rem;
+    color:#fff; 
+    font-size:0.6rem; 
+    z-index:9999;
+    border: 0.04rem solid #fff; 
+    border-radius: 50%; 
+    line-height:0.75rem;
+      .van-icon{
+        vertical-align:middle;
+      }
+    }
   /deep/.van-field__control{
     color:#aaa;
   }

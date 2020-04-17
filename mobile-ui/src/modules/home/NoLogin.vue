@@ -17,8 +17,14 @@
     },
     mounted(){
       document.title = '爆米花房管家';
+      this.share();
     },
     methods: {
+      share(){
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
     	toRegister() {
          alert("0")
     		this.$router.push({path : '/register'});

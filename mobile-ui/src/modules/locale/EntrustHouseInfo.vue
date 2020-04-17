@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  import shareApi from '../../common/until'
+ // import shareApi from '../../common/until'
   import HeaderBar from '../../components/common/HeaderBar'
   export default {
     name: 'EntrustHouseInfo',
@@ -155,10 +155,9 @@
     },
     methods: {
        share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       init(){
         console.log(this.$store.state.locale.houseId)

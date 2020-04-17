@@ -2,7 +2,7 @@
   <div class="main">
      <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div class="list">
-      <van-tabs color="#FFB640" v-model="active" @click="onClick"  :swipe-threshold="6">
+      <van-tabs color="#FFB640" v-model="active" @click="onClick"  :swipe-threshold="5">
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in contract" :key="index" >      
@@ -15,7 +15,8 @@
                         <span v-if="item.order_status==1" class="contract_status">待修改</span>
                         <span v-if="item.order_status==2" class="contract_status">待支付</span>
                         <span v-if="item.order_status==3" class="contract_status">待签约</span> 
-                        <span v-if="item.order_status==4" class="contract_status">待入住</span>                        
+                        <span v-if="item.order_status==4" class="contract_status">待入住</span>
+                        <span v-if="item.order_status==5" class="contract_status">已入住</span>                     
                         <van-icon name="arrow"/>
                     </div>
                 </div>                
@@ -38,8 +39,8 @@ import shareApi from '../../common/until'
         areaKeyWord: '',
         roomNum: '',
         active: 0,
-        tabs: ['全部','待审核','待修改','待支付','待签约','待入住'],
-        tabsCode: ['all','0','1','2','3','4'],
+        tabs: ['全部','待审核','待修改','待支付','待签约','待入住','已入住'],
+        tabsCode: ['all','0','1','2','3','4','5'],
         loading:false,
         finished:true,
         checkType: 'all',
@@ -54,10 +55,9 @@ import shareApi from '../../common/until'
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       onClickLeft() {
         this.$router.back(-1);

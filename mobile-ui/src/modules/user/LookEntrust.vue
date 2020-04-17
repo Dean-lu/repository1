@@ -110,7 +110,7 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
-  import shareApi from '../../common/until'
+  //import shareApi from '../../common/until'
   export default {
     name: 'EntrustHouseInfo',
     components: {HeaderBar},
@@ -136,11 +136,10 @@
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+this.$store.locale.houseId+"/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
-       },
+        let link="https://house.growingsale.cn/wxindex/"+this.$store.locale.houseId+"/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },      
       init(){
         console.log(this.$store.state.locale.houseId)
         //debugger

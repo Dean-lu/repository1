@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
   export default {
     name: 'AuditRemind',
     data () {
@@ -25,10 +25,9 @@ import shareApi from '../../common/until'
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       toHouseCenter(){
         this.$router.push({path : '/houseSourceCenter'});

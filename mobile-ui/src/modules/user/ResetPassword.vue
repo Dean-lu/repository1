@@ -23,7 +23,7 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
-  import shareApi from '../../common/until'
+  //import shareApi from '../../common/until'
   export default {
     name: 'ResetPassword',
     components: {HeaderBar},
@@ -51,10 +51,9 @@
     },
     methods:{
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       init(){
         this.$store.state.global.isShowFooter = false;// 不显示吸底

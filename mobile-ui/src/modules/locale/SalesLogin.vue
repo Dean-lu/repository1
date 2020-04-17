@@ -27,8 +27,14 @@
     },
     mounted(){
       document.title = '业务员登录';
+      this.share();
     },
     methods: {
+      share(){
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
       // 业务员登录
       onSubmit(){
         if(!this.username){

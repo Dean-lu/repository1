@@ -93,7 +93,7 @@
 
 <script>
   import areaList from '../../../assets/js/area.js'
-  import shareApi from '../../../common/until'
+  //import shareApi from '../../../common/until'
   
   export default {
     name: 'HouseInfoInput',
@@ -174,10 +174,9 @@
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       init(){
         //debugger

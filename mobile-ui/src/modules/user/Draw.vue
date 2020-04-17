@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
 const keys = () => [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0];
 export default {
   name: "Draw",
@@ -117,10 +117,9 @@ export default {
   },
   methods: {
     share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
     backHandle() {
       this.clearPasswordHandle(); // 返回时清除password

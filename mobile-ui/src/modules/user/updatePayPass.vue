@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
   export default {
     name: 'updatePayPass',
     data () {
@@ -63,11 +63,10 @@ import shareApi from '../../common/until'
       this.share();
     },
     methods:{
-      share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+     share(){
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       onClickLeft() {
         this.$router.back(-1);

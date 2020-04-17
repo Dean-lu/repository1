@@ -99,14 +99,16 @@
              </p>
       </div>
     </van-dialog>
-    <van-popup v-model="tipsshow" :close-on-click-overlay="false">正在保存信息,请耐心等待.....</van-popup>
+    <van-popup v-model="tipsshow" :close-on-click-overlay="false">
+        <div style="padding:2rem 1rem">正在保存信息,请耐心等待.....</div>
+    </van-popup>
 </div>
 </template>
 <script>
 import html2Canvas from 'html2canvas' ;
 import Vue from 'vue'; 
 import JsPDF from 'jspdf';
-import shareApi from '../../../common/until'
+//import shareApi from '../../../common/until'
 export default {
     data(){
         return {
@@ -136,10 +138,9 @@ export default {
     },
     methods:{
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
         submitList(){           
             this.$router.push({path : '/HouseBag'});

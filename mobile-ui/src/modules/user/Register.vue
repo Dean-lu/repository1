@@ -3,15 +3,16 @@
     <!-- <HeaderBar></HeaderBar> -->
     <div class="form-container">
       <div class="division"></div>
-      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2.2rem" >
-      <template #button>
+      <van-field v-model="telphone" center clearable label="手机号" maxlength="11" label-width="2.2rem" >           
+      
+      </van-field>
+      <van-field v-model="code" label="验证码" center label-width="2.2rem" >
+        <template #button>
           <van-button slot="button" size="large" :disabled="msgBtnLock" type="primary" color="#FFB640" id="verify-btn" @click="sendMsg" >
         {{sendMsgBtnTxt}}&nbsp;&nbsp;
       </van-button>
-      </template>      
-      
+      </template> 
       </van-field>
-      <van-field v-model="code" label="验证码" label-align="right" label-width="2.2rem" />
       <van-field v-model="password" type="password" label="密码" maxlength="18" label-align="right" label-width="2rem"  @blur="checkPwd" />
       <van-field v-model="enter_password" type="password" maxlength="18" label="确认密码" label-align="right" label-width="2/2rem" @blur="checkEnterPwd" />
       <!-- <van-field v-model="truename" label="姓名" label-align="right" maxlength="20" label-width="2rem" />
@@ -64,8 +65,14 @@
     },
     mounted(){
       this.init();
+      this.share();
     },
     methods: {
+      share(){
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
       init(){
         this.openid = this.$store.state.global.openid;
         this.pid = this.$store.state.global.pid;

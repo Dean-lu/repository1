@@ -38,6 +38,7 @@ import EditContract from '@/modules/user/contract/EditContract'
 import updateLoginPass from '@/modules/user/updateLoginPass'
 import updatePayPass from '@/modules/user/updatePayPass'
 import myInfo from '@/modules/user/MyInfo'
+import More from '@/modules/home/More'
 
 
 Vue.use(Router)
@@ -115,6 +116,15 @@ export default new Router({
             component: ResetPassword,
             meta: {
                 title: '密码重置',
+                showHeader: true
+            }
+        },
+        {
+            path: '/more',
+            name: 'more',
+            component: More,
+            meta: {
+                title: '联系我们',
                 showHeader: true
             }
         },

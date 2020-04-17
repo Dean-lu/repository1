@@ -51,7 +51,7 @@
 
 <script>
 import FooterBar from '../../components/common/FooterBar'
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
 export default {
   name: 'HomePage',
   components: {
@@ -112,11 +112,10 @@ export default {
   },
   methods: {
     share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      });
-    },
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
     init(){
       // debugger
 //       if(!this.$store.state.global.api_token){
@@ -240,7 +239,7 @@ export default {
       this.$router.push({path : '/salesLogin'})
     },
     more(){
-      this.$toast('暂无更多功能！');
+      this.$router.push({path : '/more'});
     },
     // 房源详情
     toDetail(id){

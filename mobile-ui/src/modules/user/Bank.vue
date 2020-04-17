@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
 export default {
   name: "Bank",
   data() {
@@ -39,11 +39,10 @@ export default {
   },
   methods: {    
     share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
-       }, 
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
      onClickLeft() {
         this.$router.back(-1);
       },

@@ -8,7 +8,7 @@
       <div class="data-form">
         <div class="title">基本信息</div>
         <van-form >
-          <van-field readonly clickable :value="houseInfo.house_position" label="所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
+          <van-field readonly clickable :value="houseInfo.house_position" label="*所属区域:" placeholder="点击选择省市区" @click="showHousePosition = true" />
           <van-popup v-model="showHousePosition" position="bottom">
             <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
           </van-popup>
@@ -16,44 +16,44 @@
           <van-field v-model="houseInfo.house_number" label="产权编号:" placeholder="请输入产权编号"
             :rules="[{ validator, message: '请不要输入数字和英文字母' }]"/>
           
-          <van-field v-model="houseInfo.garden_name" label="小区名称:" placeholder="请输入小区名称" />
-          <van-field v-model="houseInfo.building_number" label="楼栋号:" placeholder="请输入楼栋号" />
-          <van-field v-model="houseInfo.room_number" label="房号:" placeholder="请输入房号" />
-          <van-field v-model="houseInfo.area" label="面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
+          <van-field v-model="houseInfo.garden_name" label="*小区名称:" placeholder="请输入小区名称" />
+          <van-field v-model="houseInfo.building_number" label="*楼栋号:" placeholder="请输入楼栋号" />
+          <van-field v-model="houseInfo.room_number" label="*房号:" placeholder="请输入房号" />
+          <van-field v-model="houseInfo.area" label="*面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
           
-          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="户型:" placeholder="户型" @click="showHouseLayout = true" />
+          <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="*户型:" placeholder="户型" @click="showHouseLayout = true" />
           <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
             <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
           </van-popup>
           
-          <van-field readonly clickable :value="valueRentType" label="类型" placeholder="点击房屋类型" @click="showRentType = true" />
+          <van-field readonly clickable :value="valueRentType" label="*类型" placeholder="点击房屋类型" @click="showRentType = true" />
           <van-popup v-model="showRentType" position="bottom">
             <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
           </van-popup>
           
-          <van-field v-model="houseInfo.rent_price" label="租金:" placeholder="请输入租金"  type="number"/>
-          <van-field v-model="houseInfo.deposit" label="押金:" placeholder="请输入押金"  type="number"/>
-          <van-field readonly clickable :value="valuePayStyle" label="付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
+          <van-field v-model="houseInfo.rent_price" label="*租金:" placeholder="请输入租金"  type="number"/>
+          <van-field v-model="houseInfo.deposit" label="*押金:" placeholder="请输入押金"  type="number"/>
+          <van-field readonly clickable :value="valuePayStyle" label="*付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
           <van-popup v-model="showPayStyle" position="bottom">
             <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
           </van-popup>
-           <van-field readonly clickable :value="valuetrimStatus" label="装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
+           <van-field readonly clickable :value="valuetrimStatus" label="*装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
           <van-popup v-model="showrtrimStatus" position="bottom">
             <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
           </van-popup>
-          <van-field readonly clickable :value="valueExpireYear" label="委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
+          <van-field readonly clickable :value="valueExpireYear" label="*委托期限" placeholder="点击选择委托期限" @click="showExpireYear = true" />
           <van-popup v-model="showExpireYear" position="bottom">
             <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
           </van-popup>
           
-          <div class="label">房源描述:</div>
+          <div class="label">*房源描述:</div>
           <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
            placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
         </van-form>
       </div>
       <div class="pic-area">
         <div class="title">证件信息</div>
-        <div class="label">身份证正面照片(与产权人一致)：</div>
+        <div class="label">*身份证正面照片(与产权人一致)：</div>
         <div class="id-front">
           <van-field name="houseInfo.idcardFront">
             <template #input>
@@ -61,7 +61,7 @@
             </template>
           </van-field>
         </div>
-        <div class="label">身份证反面照片(与产权人一致)：</div>
+        <div class="label">*身份证反面照片(与产权人一致)：</div>
         <div class="id-back">
           <van-field name="houseInfo.idcardBack">
             <template #input>
@@ -69,7 +69,7 @@
             </template>
           </van-field>
         </div>
-        <div class="label">房产证或产权合同照片：</div>
+        <div class="label">*房产证或产权合同照片：</div>
         <div class="house-cer">
           <van-field name="houseInfo.certifiInfo">
             <template #input>
@@ -77,7 +77,7 @@
             </template>
           </van-field>
         </div>
-        <div class="label">房屋照片<span style="color: #acabab;">（*限8张)</span></div>
+        <div class="label">*房屋照片<span style="color: #acabab;">（*限8张)</span></div>
         <div class="ver-code-bottom-one-right-code">            
             <div class="ver-code-bottom-one-right-code manyPic">
               <div class="posting-uploader-item" v-for="(item,index) in houseInfo.house_img" :key="index">
@@ -109,12 +109,17 @@
           size="small" @click="toConfirm">提交</van-button>
       </div>
     </div>
-     <van-popup class="pop-contract" v-model="showServerMain" style="width:90%; height:85%"  closeable>
+     <div class="closeBtn" v-if="showServerMain" @click="closeServerMain"><van-icon name="cross" /></div> 
+     <van-popup class="pop-contract" v-model="showServerMain"
+   style="width:90%; height:85%"  >
+       
+       
       <!-- <van-nav-bar :left-arrow="false" :fixed="true" border title="委托合同签约">
         <van-icon name="cross" slot="right" color="#F8B729" size="0.5rem" @click="closeContract" />
       </van-nav-bar> -->
       <div style="width: 100%;margin: 0 auto;">
         <div style="width: 90%;margin: 0 auto; font-size:0.35rem">
+         
           <h2>爆米花房管家增值服务</h2>          
           <p class="text-align-left" style="text-indent: 0.5rem;">1、<span style="font-weight:bold">1元维修巡查服务：</span><span style="color:#f00">“1元/天·（间）套”（合租房按间计）</span>，提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损及提出解决方案，但维修的人工费和材料费由甲方承担（人为损坏的，协助甲方要求损坏人赔偿）。</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">2、<span style="font-weight:bold">5元出租无忧服务：</span><span style="color:#f00">“5元/天·（间）套”（合租房按间计）</span>，提供出租带看、交房和收房服务；退租后保洁服务；各项费用代缴服务；提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损、提出解决方案并承担维修人工费（但材料费和设施设备更换费用由甲方承担，人为损坏的，协助甲方要求损坏人赔偿）；购买该套房的房屋财产保险及租客人身意外伤害保险（受益人为甲方）；协调各方关系与问题处理；代为签署房屋使用过程中所有相关法律文件等。</p>
@@ -206,7 +211,7 @@
 <script>
   // import HeaderBar from '../../components/common/HeaderBar'
   import areaList from '../../assets/js/area.js'
-  import shareApi from '../../common/until'
+  //import shareApi from '../../common/until'
   export default {
     name: 'HouseInfoInput',
     // components: {HeaderBar},
@@ -296,11 +301,14 @@
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      });
-    },
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
+       closeServerMain(){
+         //console.log("a");
+         this.showServerMain=false;
+       },
       init(){
         document.title = '房源信息录入';
         if(this.$store.state.entrust.houseInfo && this.$store.state.entrust.houseInfo.initMark == '0x10'){
@@ -758,8 +766,8 @@
   }
   .ques-icon{
     display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
+    width:0.5rem;
+    height:0.5rem;
     background-image: url("../../assets/img/entrust/ques-icon.png");
     background-repeat: no-repeat;
     background-size: cover;
@@ -773,6 +781,12 @@
   }
   /deep/.van-picker__cancel, /deep/.van-picker__confirm{
     color: #F8B729;
+  }
+  /deep/.van-popup__close-icon{
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 50%;
+    padding: 0.05rem;
   }
   .pic-area{
     width: 95%;
@@ -788,6 +802,22 @@
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
   }
+.closeBtn{
+  position:fixed; 
+  top:0.2rem;
+  right:0.2rem;
+  width:0.75rem;
+   height:0.75rem;
+    color:#fff; 
+    font-size:0.6rem; 
+    z-index:9999;
+    border: 0.04rem solid #fff; 
+    border-radius: 50%; 
+    line-height:0.75rem;
+      .van-icon{
+        vertical-align:middle;
+      }
+    }
   .pic-area img{width:85%; margin-bottom:0.5rem; height:100%;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}

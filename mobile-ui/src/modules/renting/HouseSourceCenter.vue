@@ -83,7 +83,7 @@
 <script>
   // import HeaderBar from '../../components/common/HeaderBar'
   import areaList from '../../assets/js/area.js'
-  import shareApi from '../../common/until'
+  //import shareApi from '../../common/until'
   export default {
     name: 'HouseSourceCenter',
     // components: {HeaderBar},
@@ -138,10 +138,9 @@
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/me_rent/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       // 组件：确认区域选择
       confirmHousePosition(values) {

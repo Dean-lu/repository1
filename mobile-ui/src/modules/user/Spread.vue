@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
   export default {
     name: "Spread",
     data() {
@@ -91,8 +91,14 @@ import shareApi from '../../common/until'
       document.title = "推广赚钱";
       this.getList();
       this.init();
+      this.share();
     },
     methods: {
+      share(){
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
+       },
       onClickLeft() {
         this.$router.back(-1);
       },

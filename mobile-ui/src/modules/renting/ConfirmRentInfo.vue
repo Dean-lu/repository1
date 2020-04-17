@@ -241,7 +241,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
    export default {
     name: 'ConfirmRentInfo',
     data () {
@@ -309,10 +309,9 @@ import shareApi from '../../common/until'
     },
     methods:{
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       // 我要租房--确认租房方式后的数据渲染
       init(){

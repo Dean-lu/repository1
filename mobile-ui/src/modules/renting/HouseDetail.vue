@@ -90,7 +90,7 @@
 
 <script>
   import HeaderBar from '../../components/common/HeaderBar'
-  import shareApi from '../../common/until'
+  //import shareApi from '../../common/until.js'
   export default {
     name: 'HouseDetail',
     components: {HeaderBar},
@@ -141,8 +141,8 @@
     mounted(){     
       this.init();
       //this.FunGetDateStr(2);
-      let time=this.FunGetDateStr(2);
-      this.maxDate=new Date(time);
+      //let time=this.funGetDateStr(2);
+      //this.maxDate=new Date(time);
       this.share();
     },
     updated() {
@@ -150,12 +150,11 @@
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+this.$store.state.renting.id+"/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+this.$store.state.renting.id+"/"+  this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link,that);
        },
-      FunGetDateStr(p_count){
+      funGetDateStr(p_count){
             let dd = new Date();
             console.log("dd");
             console.log(dd);
@@ -171,8 +170,7 @@
             }
             return y + "," + m + "," + d;
       },
-      init(){
-        console.log(this.$store.state.renting.id)
+      init(){       
         // 获取房源详情
         let that = this;
         let param = {house_id: this.$store.state.renting.id};

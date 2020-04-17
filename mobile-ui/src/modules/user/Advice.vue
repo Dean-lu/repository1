@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import shareApi from '../../common/until'
+//import shareApi from '../../common/until'
 export default {
   name: "Advice",
   data() {
@@ -56,10 +56,9 @@ export default {
   },
   methods: {
     share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
     onClickLeft() {
         this.$router.back(-1);
@@ -72,7 +71,7 @@ export default {
     },
     onSubmit() {
       var that = this;
-      if(!that.code){
+      if(!that.code || that.code=="选择投诉类型"){
         that.$toast("请选择建议类型");
         return false;
       }
@@ -128,9 +127,10 @@ export default {
 .cont {
   text-align: center;
   width: 100%;
-  height:2.09375rem;
-  position: fixed;
-  bottom: 3.0625rem;
+  height:1rem;
+  /* position: fixed;
+  bottom: 3.0625rem; */
+  margin-top: 2rem;
 }
 .btn {
       width: 3.5rem;

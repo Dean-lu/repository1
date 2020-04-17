@@ -120,21 +120,22 @@
         </div>
         <div class="housesign">
             <div style="width: 100%;min-height: 2rem;">
-            <van-col span="12">
+              <van-col class="logo-parent" span="12">
               <div class="text-align-left">委托方（甲方）: </div>
+              <div class="text-align-left" style="text-indent: 0.2rem;line-height: 1.6rem;">湖南米花寓公寓管理有限公司</div>
+              <div class="text-align-left">签约代表：</div>
+              <div class="text-align-left">电话：</div>
+              <div class="mihua-logo"></div>
+            </van-col>
+            <van-col span="12">
+              <div class="text-align-left">受托方（乙方）: </div>
               <div class="text-align-left signature-area">
                 <van-image v-show="showSignatureImg" :src="signatureImg" />
               </div>
               <div class="text-align-left">身份证号：{{contact.idcardcode}}</div>
               <div class="text-align-left">电话：{{contact.telphone}}</div>
             </van-col>
-            <van-col class="logo-parent" span="12">
-              <div class="text-align-left">受托方（乙方）: </div>
-              <div class="text-align-left" style="text-indent: 0.2rem;line-height: 1.6rem;">湖南米花寓公寓管理有限公司</div>
-              <div class="text-align-left">签约代表：</div>
-              <div class="text-align-left">电话：</div>
-              <div class="mihua-logo"></div>
-            </van-col>
+            
           </div>
             <p>时间：<span>{{currDate.getFullYear()}}年{{currDate.getMonth() + 1}}月{{currDate.getDate()}}日</span></p>
         </div>
@@ -186,7 +187,7 @@
 import html2Canvas from 'html2canvas' ;
 import Vue from 'vue'; 
 import JsPDF from 'jspdf';
-import shareApi from '../../../common/until'
+//import shareApi from '../../../common/until'
 export default {
     data(){
         return {
@@ -227,16 +228,13 @@ export default {
     mounted() {
       document.title = "合同详情";
       this.share();
+      this.init();
     },
-    beforeMount(){
-        this.init();
-        },
     methods:{
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
         init(){
         //debugger
@@ -590,8 +588,8 @@ export default {
     position: absolute;
     width: 4rem;
     height: 4rem;
-    bottom: -0.5rem;
-    right: -0.5rem;
+    top: -0.5rem;
+    left: -0.5rem;
     background-image: url("../../../assets/img/entrust/mihua-logo.png");
     background-repeat: no-repeat;
     background-size: cover; 

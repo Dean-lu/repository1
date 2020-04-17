@@ -36,11 +36,11 @@ export default {
     height: 100%;
     /* margin-top: 60px; */
   }
-  .*{
+  /* *{
     margin: 0;
     padding: 0;
     border: none;
-  }
+  } */
   html,body{
     margin:0px;
     height:100%;

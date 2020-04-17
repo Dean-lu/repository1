@@ -54,10 +54,9 @@ import shareApi from '../../common/until'
     },
     methods: {
       share(){
-      let link="https://house.growingsale.cn/wxindex/"+ this.$store.global.pidshare;
-      this.wxShare({
-        link:link      
-      })
+        let link="https://house.growingsale.cn/wxindex/"+ this.$store.state.global.pidshare;
+        let that=this;
+        this.$shareApi.wxShare(link);
        },
       onClickLeft() {
         this.$router.back(-1);
