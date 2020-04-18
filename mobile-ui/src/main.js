@@ -21,6 +21,9 @@ Vue.prototype.$shareApi=shareApi;
 import html2Canvas from 'html2canvas'
 Vue.prototype.$html2Canvas = html2Canvas
 
+/* 引入vconsole */
+import VConsole  from  'vconsole'
+
 // 移动端自动适配
 import 'lib-flexible'
 
@@ -57,6 +60,12 @@ if(localStorage.getItem('api_token')){
 }
 if(localStorage.getItem('openid')){
   store.state.global.openid = localStorage.getItem('openid');
+  /* 特定调试人员打开vconsole */
+  if (store.state.global.openid === 'o8AIEv3Q6owuO0qmH8Z91VbYblkY' || store.state.global.openid === 'o8AIEv0PPNHmIzUSLV4WJDVYsnYg'
+      || store.state.global.openid === 'o8AIEvwKckjEcbbZKvARAGavaEtI' || store.state.global.openid === 'o8AIEv64paWyccJ2qpUaKaU82o2I'
+      || store.state.global.openid === 'o8AIEv6b1cryHyuyB25tpDcfIJOA'){
+    const vConsole = new VConsole();
+  }
   localStorage.removeItem('openid')
 }
 if(localStorage.getItem('pid')){
@@ -64,7 +73,10 @@ if(localStorage.getItem('pid')){
   localStorage.removeItem('pid')
 }
 
-
+/* 开发环境打开vconsole */
+if (process.env.NODE_ENV === 'development'){
+  const vConsole = new VConsole();
+}
 
 // 路由守卫：全局api_token为空，强制去登陆
 router.beforeEach((to,from,next)=>{
@@ -76,12 +88,6 @@ router.beforeEach((to,from,next)=>{
     next('/login'); 
   }
 })
-
-/* 开发环境vconsole */
-import VConsole  from  'vconsole'
-// if (process.env.NODE_ENV === "development"){
-  const vConsole = new VConsole()
-  //}
 
 Vue.config.productionTip = false
 
