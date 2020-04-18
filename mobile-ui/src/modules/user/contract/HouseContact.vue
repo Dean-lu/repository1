@@ -57,22 +57,22 @@
             </p>
         </div>
         <div class="housesign">           
-            <div style="width: 100%;min-height: 2rem;">
-            <van-col span="12">
+            <div class="hoseSignMain">
+            <div class="bottomrun">
               <div class="text-align-left">委托方（甲方）: </div>
               <div class="text-align-left signature-area">
                 <van-image v-show="showSignatureImg" :src="signatureImg" />
               </div>
               <div class="text-align-left">身份证号：{{contact.idcardcode}}</div>
               <div class="text-align-left">电话：{{contact.telphone}}</div>
-            </van-col>
-            <van-col class="logo-parent" span="12">
+            </div>
+            <div class="bottomrun">
               <div class="text-align-left">受托方（乙方）: </div>
               <div class="text-align-left" style="text-indent: 0.2rem;line-height: 1.6rem;">湖南米花寓公寓管理有限公司</div>
               <div class="text-align-left">签约代表：</div>
               <div class="text-align-left">电话：</div>
               <div class="mihua-logo"></div>
-            </van-col>
+            </div>
           </div>
             <p>时间：<span>{{contact.date}}</span></p>
         </div>
@@ -426,12 +426,12 @@ export default {
         text-align: center;
         padding:0 0.2rem;
     }
-    input[disabled],input:disabled,input.disabled{  
-        background: #fff;
-        -webkit-text-fill-color:#333;  
-        -webkit-opacity:1;  
-        opacity: 1;  
-    }
+    // input[disabled],input:disabled,input.disabled{  
+    //     background: #fff;
+    //     -webkit-text-fill-color:#333;  
+    //     -webkit-opacity:1;  
+    //     opacity: 1;  
+    // }
     input.small{
         width: 1rem;
     }
@@ -482,5 +482,22 @@ export default {
       padding: 0 0.4rem;
       line-height: 0.8rem;
       height: 0.8rem;
+  }
+  .bottomrun{
+    float: left;
+    box-sizing: border-box;
+    min-height:2rem;
+    width:50%;
+    position:relative;
+  }
+  .houseSignMain{
+    width: 100%;
+    min-height: 2rem;
+
+  }
+  .houseSignMain::after{
+    content:"";
+    height:0;
+    clear:both;
   }
 </style>
