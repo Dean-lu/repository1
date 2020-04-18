@@ -139,6 +139,13 @@
         
       },
       queryHouseSource(chenkType){
+        // 查看cookie中是都有业务员登录的api_token
+        if(!this.$cookies.get('salesApiToken')){
+          this.$toast("登录已失效，请重新登录！");
+          this.$router.push({path : '/salesLogin'});
+        }else{
+          this.$store.state.locale.api_token = this.$cookies.get('salesApiToken');
+        }
         var that = this;
         let param = {
           api_token: that.$store.state.locale.api_token,
@@ -156,6 +163,9 @@
               that.finished = false;  
             }else{
               that.$toast(res.data.msg);
+              if(res.data.msg == 'api_token错误或者不存在'){
+                that.$router.push({path : '/salesLogin'});
+              }
             }
           }else{
             that.$toast('获取房源信息失败，请刷新重试！');
