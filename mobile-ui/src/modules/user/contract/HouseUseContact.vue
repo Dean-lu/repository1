@@ -222,7 +222,8 @@ export default {
             },
             showSignature:false,
             signatureImg:'',
-            showSignatureImg:false
+            showSignatureImg:false,
+            signTest:true
         }
     },
     mounted() {
@@ -417,6 +418,7 @@ export default {
         this.showSignatureImg=true;       
         // console.log('保存签名成功' + imgBase64);    
         console.log('保存签名成功')
+        this.signTest=false;
       },
        // 合同生成
       submitSign(){
@@ -501,7 +503,9 @@ export default {
       }
     },
     updated () {
-      this.draw()
+      if(this.signTest){
+        this.draw();
+      }
     }
 }
 </script>
