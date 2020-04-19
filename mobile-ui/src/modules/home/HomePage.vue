@@ -21,7 +21,7 @@
       <van-grid :column-num="4">
         <van-grid-item :icon="icons[0]" text="我要委托" @click="toHouseInfoInput" />
         <van-grid-item :icon="icons[1]" text="我要租房" @click="toHouseSourceCenter" />
-        <van-grid-item :icon="icons[2]" text="现场勘查" @click="toSalesLogin" />
+        <van-grid-item :icon="icons[2]" text="现场勘查" @click="toEntrustHouseSource" />
         <!-- <van-grid-item :icon="icons[3]" text="委托代理" /> -->
         <!-- <van-grid-item :icon="icons[4]" text="出租代理" /> -->
         <van-grid-item :icon="icons[5]" text="更多" @click="more" />
@@ -235,8 +235,8 @@ export default {
       this.$router.push({path : '/houseSourceCenter'})
     },
     // 点击现场勘查
-    toSalesLogin(){
-      this.$router.push({path : '/salesLogin'})
+    toEntrustHouseSource(){
+      this.$router.push({path : '/entrustHouseSource'})
     },
     more(){
       this.$router.push({path : '/more'});

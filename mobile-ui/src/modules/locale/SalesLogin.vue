@@ -54,7 +54,8 @@
             if(res.data.code == 200){
               that.$store.state.locale.api_token = res.data.api_token;
               that.$toast("登录成功！");
-              this.$router.push({path : '/entrustHouseSource'});
+              that.$cookies.set('salesApiToken', res.data.api_token, { expires: 7 });
+              that.$router.push({path : '/entrustHouseSource'});
             }else{
               that.$toast(res.data.msg);
             }

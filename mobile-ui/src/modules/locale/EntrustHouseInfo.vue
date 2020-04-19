@@ -160,6 +160,13 @@
         this.$shareApi.wxShare(link);
        },
       init(){
+        // 查看cookie中是都有业务员登录的api_token
+        if(!this.$cookies.get('salesApiToken')){
+          this.$toast("登录已失效，请重新登录！");
+          this.$router.push({path : '/salesLogin'});
+        }else{
+          this.$store.state.locale.api_token = this.$cookies.get('salesApiToken');
+        }
         console.log(this.$store.state.locale.houseId)
         //debugger
         // 获取房源详情
@@ -178,6 +185,9 @@
               that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];
             }else{
               that.$toast(res.data.msg);
+              if(res.data.msg == 'api_token错误或者不存在'){
+                that.$router.push({path : '/salesLogin'});
+              }
             }
           }else{
             that.$toast('获取房源详情失败，请刷新重试！');
@@ -208,6 +218,9 @@
               this.$router.push({path : '/entrustHouseSource'});
             }else{
               that.$toast(res.data.msg);
+              if(res.data.msg == 'api_token错误或者不存在'){
+                that.$router.push({path : '/salesLogin'});
+              }
             }
           }else{
             that.$toast('获取房源详情失败，请刷新重试！');
@@ -231,6 +244,9 @@
               this.$router.push({path : '/entrustHouseSource'});
             }else{
               that.$toast(res.data.msg);
+              if(res.data.msg == 'api_token错误或者不存在'){
+                that.$router.push({path : '/salesLogin'});
+              }
             }
           }else{
             that.$toast('获取房源详情失败，请刷新重试！');

@@ -27,6 +27,10 @@ import VConsole  from  'vconsole'
 // 移动端自动适配
 import 'lib-flexible'
 
+// cookie
+import Cookies from 'js-cookie'
+Vue.prototype.$cookies = Cookies;
+
 // 按需引入vant
 import {Button, Col, Row, Icon, Divider, Swipe, SwipeItem, NoticeBar, Grid, GridItem,
 Tabbar, TabbarItem, List, Cell, CellGroup, NumberKeyboard, Image, Field, Form, Toast,
