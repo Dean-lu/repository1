@@ -310,7 +310,8 @@ export default {
             let contentWidth = canvas.width;            
             let contentHeight = canvas.height;
             let pageData = canvas.toDataURL('image/jpeg', 0.4);
-
+            console.log("pageData");
+            console.log(pageData);
             let pdfWidth = (contentWidth + 10) / 2 * 0.75;
             let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 500为底部留白
 
@@ -325,6 +326,7 @@ export default {
             //调用
             var blob = that.dataURLtoBlob(pageData);
             var file = that.blobToFile(blob, "contract_path_file");
+            console.log("file");
             console.log(file);
             let param = new FormData();
             param.append("api_token",that.$store.state.global.api_token);

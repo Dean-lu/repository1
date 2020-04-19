@@ -118,10 +118,11 @@
       getList(){
         var that = this;
         var p={api_token:this.$store.state.global.api_token};
+       // var p={api_token:"AOb63rV2N54HOhMSnVCyzssRXFHNyzTWArh1mjP0s6wgaHyKLuCqeWVlKvbZ2PE3x1UMObqjZfh2DDZyiiYkPHAC7rqi30o16wEX"}
         this.$http.post(this.$store.state.global.baseUrl + 'spread/spread_center',p).then(res => {
           if(res.status == 200) {
             if(res.data.code == 200){
-              var list = res.data.data.data;
+              that.list = res.data.data.data;
               that.lastPage=res.data.data.last_page;
               // 加载状态结束
               that.loading = false;

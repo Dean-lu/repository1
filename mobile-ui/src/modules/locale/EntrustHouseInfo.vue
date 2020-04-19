@@ -204,7 +204,7 @@
           //debugger
           if(res.status == 200) {
             if(res.data.code == 200){
-              that.$toast(res.data.msg);
+              that.$toast("驳回成功！");
               this.$router.push({path : '/entrustHouseSource'});
             }else{
               that.$toast(res.data.msg);

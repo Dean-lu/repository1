@@ -54,28 +54,31 @@
       <div class="pic-area">
         <div class="title">证件信息</div>
         <div class="label">*身份证正面照片(与产权人一致)：</div>
-        <div class="id-front">
-          <van-field name="houseInfo.idcardFront">
-            <template #input>
-              <van-uploader v-model="houseInfo.idcardFront" :after-read="uploadCardFront" :max-count="1" />
-            </template>
-          </van-field>
+        <div class="id-front">          
+          <van-uploader :after-read="uploadCardFront" :max-count="1">
+              <img :src="CardFront" ref="goodsImg_1" />
+          </van-uploader> 
+          <div class="card-tips" v-if="card1Tips">
+             <p>图片正在上传请稍等......</p>
+          </div>            
         </div>
         <div class="label">*身份证反面照片(与产权人一致)：</div>
-        <div class="id-back">
-          <van-field name="houseInfo.idcardBack">
-            <template #input>
-              <van-uploader v-model="houseInfo.idcardBack" :after-read="uploadCardBack" :max-count="1" />
-            </template>
-          </van-field>
+          <div class="id-front">          
+          <van-uploader :after-read="uploadCardBack" :max-count="1">
+              <img :src="CardBack" ref="goodsImg_2" />
+          </van-uploader> 
+          <div class="card-tips" v-if="card2Tips">
+             <p>图片正在上传请稍等......</p>
+          </div>          
         </div>
         <div class="label">*房产证或产权合同照片：</div>
-        <div class="house-cer">
-          <van-field name="houseInfo.certifiInfo">
-            <template #input>
-              <van-uploader v-model="houseInfo.certifiInfo" :after-read="uploadCertificate" :max-count="1" />
-            </template>
-          </van-field>
+        <div class="id-front">          
+          <van-uploader :after-read="uploadCertificate" :max-count="1">
+              <img :src="CardcertifiInfo" ref="goodsImg_3" />
+          </van-uploader>  
+          <div class="card-tips" v-if="card3Tips">
+             <p>图片正在上传请稍等......</p>
+          </div>         
         </div>
         <div class="label">*房屋照片<span style="color: #acabab;">（*限8张)</span></div>
         <div class="ver-code-bottom-one-right-code">            
@@ -222,6 +225,12 @@
         showServerMain:false,
         showTips:false,
         showTipsTxt:'正在上传...',
+        CardFront:require('../../assets/img/entrust/id-front.png'),
+        CardBack:require('../../assets/img/entrust/id-back.png'),
+        CardcertifiInfo:require('../../assets/img/entrust/ceri.png'),
+        card1Tips:false,
+        card2Tips:false,
+        card3Tips:false,
         houseInfo:{
           initMark: '0x10',
           house_position: '',
@@ -294,6 +303,7 @@
           
         ]
       }
+      
     },
     mounted(){
       this.init();
@@ -377,6 +387,7 @@
       // 上传身份证正面照
       uploadCardFront(file){
         var that = this;
+        that.card1Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -388,12 +399,17 @@
             if(res.data.code == 200){
               // 记录上传后返回的URL
               console.log(res.data.data)
+              that.card1Tips=false;
               that.houseInfo.cardimg1 = res.data.data;
+              that.$refs.goodsImg_1.src=res.data.data;
+              
             }else{
               that.$toast(res.data.msg);
+              that.card1Tips=false;
             }
           }else{
             that.$toast('上传图片失败，请重新选择图片！');
+            that.card1Tips=false;
             return;
           }
         });
@@ -401,6 +417,7 @@
       // 上传身份证反面照
       uploadCardBack(file){
         var that = this;
+        that.card2Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -412,13 +429,17 @@
           console.log(res)
           if(res.status == 200) {
             if(res.data.code == 200){
+              that.card2Tips=false;
               console.log(res.data.data)
               // 记录上传后返回的URL
               that.houseInfo.cardimg2 = res.data.data;
+              that.$refs.goodsImg_2.src=res.data.data;
             }else{
+              that.card2Tips=false;
               that.$toast(res.data.msg);
             }
           }else{
+            that.card2Tips=false;
             that.$toast('上传图片失败，请重新选择图片！');
             return;
           }
@@ -427,6 +448,7 @@
       // 上传房产证/合同
       uploadCertificate(file){
         var that = this;
+        that.card3Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -434,17 +456,21 @@
         let config = {
           headers:{'Content-Type':'multipart/form-data'}
         }
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
+        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {          
           console.log(res)
           if(res.status == 200) {
             if(res.data.code == 200){
+              that.card3Tips=false;
               console.log(res.data.data)
               // 记录上传后返回的URL
               that.houseInfo.certifi_info = res.data.data;
+              that.$refs.goodsImg_3.src=res.data.data;
             }else{
+              that.card3Tips=false;
               that.$toast(res.data.msg);
             }
           }else{
+            that.card3Tips=false;
             that.$toast('上传图片失败，请重新选择图片！');
             return;
           }
@@ -552,8 +578,6 @@
               }
             }
           }
-          
-          
           for(let c = 0; c < this.houseInfo.addedServiceSelect.length; c++){
             if(item.id == this.houseInfo.addedServiceSelect[c].id){
               this.houseInfo.addedServiceSelect.splice(c,1);
@@ -633,8 +657,10 @@
           this.$toast("请选择户型");
           return;
         }
-        if(!this.houseInfo.rent_type){
+        console.log(this.houseInfo.rentTypeDesc)
+        if(!this.houseInfo.rentTypeDesc){
           this.$toast("必须选择类型");
+          return;
         }
         if(!this.houseInfo.rent_price){
           this.$toast("请输入租金");
@@ -722,12 +748,17 @@
     border-radius: 0.3125rem;
   }
 
-  .id-front /deep/.van-uploader__upload{
+  .id-front{
     width: 8.75rem;
-    height: 5rem;
-    background-image: url("../../assets/img/entrust/id-front.png");
-    background-repeat: no-repeat;
-    background-size: cover; 
+    // height: 5rem;
+    // background-image: url("../../assets/img/entrust/id-front.png");
+    // background-repeat: no-repeat;
+    // background-size: cover; 
+    margin:0.2rem auto;
+    position:relative;
+  }
+  .pic-area .id-front img{
+    width:100%
   }
   .id-front /deep/.van-uploader__upload-icon{
     display: none;
@@ -847,8 +878,15 @@
     width:90%;
     margin:0 auto;
   }
+  .manyPic::after{
+    contain: "";
+    clear:both;
+    height:0
+  }
   .order_list{padding-bottom: 1rem; box-sizing: border-box;}
  .order_list>table{border:1px solid #ccc; width: 100%;}
   .order_list th,.order_list td{border:1px solid #ccc; padding:0.05rem;}
   .order_list td.tableCols{border:0 none; padding:0;}
+  .card-tips{position:absolute;left:0; top:0; bottom:0; width:100%; background:rgba(0, 0, 0, 0.2); display:flex;align-items: center;
+    justify-content: center; color: #000; box-sizing:border-box; padding:0.5rem;}
 </style>

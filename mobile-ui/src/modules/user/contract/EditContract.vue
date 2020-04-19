@@ -226,15 +226,28 @@
         console.log(date)
         if(addy==2){
           if(date.getMonth()>5){
-              return `${date.getFullYear()+1}-${date.getMonth()-5}-${date.getDate()}`;
+              // return `${date.getFullYear()+1}-${date.getMonth()-5}-${date.getDate()}`;
+              return this.getTimes(date.getFullYear()+1,date.getMonth()-5,date.getDate())
           }else{
-             return `${date.getFullYear()}-${date.getMonth()+7}-${date.getDate()}`;
+             //return `${date.getFullYear()}-${date.getMonth()+7}-${date.getDate()}`;
+              return this.getTimes(date.getFullYear(),date.getMonth()+7,date.getDate())
           }          
         }else{
-           return `${date.getFullYear()+addy}-${date.getMonth() + 1}-${date.getDate()}`;
+          // return `${date.getFullYear()+addy}-${date.getMonth() + 1}-${date.getDate()}`;
+           return this.getTimes(date.getFullYear()+addy,date.getMonth()+1,date.getDate())
         }
         
-      },      
+      }, 
+      getTimes(year,month,date) { //end时间加0计算
+        // console.log(time+"time");
+        if(month<10){
+          month="0"+month
+        }
+        if(date<10){
+          date="0"+date;
+        }
+        return year+"-"+month+"-" +date;
+        },     
       // 确认起租时间
       onConfirmRentTime(date) {
         console.log(date);
@@ -248,7 +261,7 @@
         let endTimeCode=this.getTimestamp(date);
         let startTimeCode=this.getTimestamp(this.ContractInfo.tenant.start_time);
         if(endTimeCode<startTimeCode){
-          this.$toast("期望入住时间不能早于起租时间");
+          this.$toast("期望交房时间不能早于起租时间");
           return;
         };
         this.showEndTimeSelect = false;

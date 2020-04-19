@@ -39,7 +39,7 @@ import updateLoginPass from '@/modules/user/updateLoginPass'
 import updatePayPass from '@/modules/user/updatePayPass'
 import myInfo from '@/modules/user/MyInfo'
 import More from '@/modules/home/More'
-
+import contractImg from '@/modules/user/contract/ContractImg'
 
 Vue.use(Router)
 
@@ -274,6 +274,15 @@ export default new Router({
             path: '/houseusecontact',
             name: 'HouseUseContact',
             component: HouseUseContact,
+            meta: {
+                title: '房屋使用合同',
+                showHeader: true
+            }
+        },
+        {
+            path: '/contractimg',
+            name: 'ContractImg',
+            component: contractImg,
             meta: {
                 title: '房屋使用合同',
                 showHeader: true

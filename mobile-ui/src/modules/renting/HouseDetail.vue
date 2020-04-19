@@ -64,7 +64,7 @@
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           
         </van-cell>
-        <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
+        <van-cell title="期望交房时间:" :value="expectHandingTime" />
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
         <van-cell title="期望交房时间:" :value="EnterRentTime" @click="showEndTimeSelect = true" />
@@ -256,7 +256,17 @@
         });
       },
       formatDate(date) {
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        let month=date.getMonth()+1;
+        let timedate=date.getDate();
+        console.log(timedate);
+        if(month<10){
+          month="0"+month;
+           console.log(month);
+        }   
+        if(timedate<10){
+          timedate="0"+timedate;
+        }
+        return `${date.getFullYear()}-`+month+`-`+timedate;
       },
       // 返回date+3day后的日期
       dateAddFormat(date,day){
@@ -265,20 +275,39 @@
         let newDate = new Date(seconds + day * 1000 * 60 * 60 * 24);
         return `${newDate.getFullYear()}年${newDate.getMonth() + 1}月${newDate.getDate()}日`;
       },
+      getTimes(year,month,date) { //end时间加0计算
+        // console.log(time+"time");
+        if(month<10){
+          month="0"+month
+        }
+        if(date<10){
+          date="0"+date;
+        }
+        return year+"-"+month+"-" +date;
+        },
+       //日期转换成时间戳用来计算结束日期
+      getTimestamp(time) { //把时间日期转成时间戳
+        // console.log(time+"time");
+        return (new Date(time)).getTime() / 1000
+        },
       // 确认起租时间
       onConfirmRentTime(date) {
         this.showRentTimeSelect = false;
         this.startRentDate = date;
         this.endRentDate=date;
         this.startRentTime = this.formatDate(date);
-        //this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);
+        //this.actualRentTimeLimit = this.dateAddFormat(this.startRentDate,3);      
+
         if(this.rentTerm==1){
-          this.expectHandingTime = `${this.startRentDate.getFullYear() + 1}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+          //this.expectHandingTime = `${this.startRentDate.getFullYear() + 1}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+          this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear() + 1,this.startRentDate.getMonth() + 1,this.startRentDate.getDate())
         }else if(this.rentTerm==2){
           if(this.startRentDate.getMonth()>5){
-            this.expectHandingTime = `${this.startRentDate.getFullYear()+1}-${this.startRentDate.getMonth() -5}-${this.startRentDate.getDate()}`;
+            //this.expectHandingTime = `${this.startRentDate.getFullYear()+1}-${this.startRentDate.getMonth() -5}-${this.startRentDate.getDate()}`;
+            this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear() + 1,this.startRentDate.getMonth() -5,this.startRentDate.getDate())
           }else{
-            this.expectHandingTime = `${this.startRentDate.getFullYear()}-${this.startRentDate.getMonth()+7}-${this.startRentDate.getDate()}`;
+            //this.expectHandingTime = `${this.startRentDate.getFullYear()}-${this.startRentDate.getMonth()+7}-${this.startRentDate.getDate()}`;
+            this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear(),this.startRentDate.getMonth()+7,this.startRentDate.getDate())
           }         
         }else{
           this.expectHandingTime = this.formatDate(date);
@@ -293,12 +322,13 @@
         // 计算交房时间（退房时间）
         console.log("index:"+index)
         if(index==0){
-          this.expectHandingTime = `${this.startRentDate.getFullYear() + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+          //this.expectHandingTime = `${this.startRentDate.getFullYear() + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
+          this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear() + 1,this.startRentDate.getMonth() + 1,this.startRentDate.getDate())
         }else if(index==1){         
           if(this.startRentDate.getMonth()>5){
-            this.expectHandingTime = `${this.startRentDate.getFullYear()+1}-${this.startRentDate.getMonth() -5}-${this.startRentDate.getDate()}`;
+            this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear() + 1,this.startRentDate.getMonth() -5,this.startRentDate.getDate())
           }else{
-            this.expectHandingTime = `${this.startRentDate.getFullYear()}-${this.startRentDate.getMonth()+7}-${this.startRentDate.getDate()}`;
+            this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear(),this.startRentDate.getMonth()+7,this.startRentDate.getDate())
           }
           
         }

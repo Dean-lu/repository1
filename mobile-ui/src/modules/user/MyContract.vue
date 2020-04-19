@@ -6,7 +6,7 @@
         <van-tab v-for="(item, index) in tabs" :key="index" :title="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-cell class="list-item" v-for="(item, index) in contract" :key="index" >      
-                <div @click="look(item.id)">
+                <div @click="look(item.id,item.order_status)">
                     <div class="float-left">                        
                         <span>房屋租赁合同</span>
                     </div>
@@ -92,11 +92,14 @@ import shareApi from '../../common/until'
         });
       },      
       //去查看
-      look(contractId){
+      look(contractId,lookStatus){
         this.$store.state.locale.contractId = contractId;
         this.$store.state.locale.editcontractInfo='';
-        this.$router.push({path : '/HouseUseContact'});
-        
+        if(lookStatus==4 || lookStatus==5){
+           this.$router.push({path : '/contractImg'});
+        }else{         
+          this.$router.push({path : '/HouseUseContact'});
+        } 
       }
      
     }

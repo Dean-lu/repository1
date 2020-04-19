@@ -21,29 +21,32 @@
       <span class="span-cell">身份证照片:(*请上传清晰完整照片，否则无法通过审核)</span>
       <div style="width: 100%; height: 0.625rem;"></div>
       <div class="label">正面：</div>
-      <div class="id-front">
-        <van-field name="idCardFront">
-          <template #input>
-            <van-uploader v-model="idCardFront" :after-read="uploadCardFront" :max-count="1" />
-          </template>
-        </van-field>
-      </div>
+       <div class="id-front">          
+          <van-uploader :after-read="uploadCardFront" :max-count="1">
+              <img :src="CardFront" ref="goodsImg_1" />
+          </van-uploader> 
+          <div class="card-tips" v-if="card1Tips">
+             <p>图片正在上传请稍等......</p>
+          </div>          
+        </div>
       <div class="label">反面：</div>
-      <div class="id-back">
-        <van-field name="idCardBack">
-          <template #input>
-            <van-uploader v-model="idCardBack" :after-read="uploadCardBack" :max-count="1" />
-          </template>
-        </van-field>
-      </div>
+       <div class="id-front">          
+          <van-uploader :after-read="uploadCardBack" :max-count="1">
+              <img :src="CardBack" ref="goodsImg_2" />
+          </van-uploader>   
+          <div class="card-tips" v-if="card2Tips">
+              <p>图片正在上传请稍等......</p>
+          </div>        
+        </div>
       <div class="label">手持：</div>
-      <div class="house-cer">
-        <van-field name="idCardHand">
-          <template #input>
-            <van-uploader v-model="idCardHand" :after-read="uploadCardHand" :max-count="1" />
-          </template>
-        </van-field>
-      </div>
+      <div class="id-front">          
+          <van-uploader :after-read="uploadCardHand" :max-count="1">
+              <img :src="CardcertifiInfo" ref="goodsImg_3" />
+          </van-uploader>   
+          <div class="card-tips" v-if="card3Tips">
+              <p>图片正在上传请稍等......</p>
+          </div>        
+        </div>     
     </div>
     <div style="width: 100%; height: 0.625rem;border-bottom: 0.125rem solid #F5F5F5;"></div>
     <div class="info-title">
@@ -267,6 +270,10 @@
           telphone: "",
           date: ""
         },
+        //身份证照片
+        CardFront:require('../../assets/img/entrust/id-front.png'),
+        CardBack:require('../../assets/img/entrust/id-back.png'),
+        CardcertifiInfo:require('../../assets/img/entrust/ceri.png'),
         // 返回的房屋信息
         houseInfo: {},
         // 返回的bill
@@ -296,7 +303,10 @@
         color: '#000', // 绘制时线条的颜色
         linewidth: 3, // 线条的宽度
         /* */
-        currDate: new Date()
+        currDate: new Date(),
+        card1Tips:false,
+        card2Tips:false,
+        card3Tips:false
       }
     },
     mounted(){
@@ -373,6 +383,7 @@
       },
       uploadCardFront(file){
         var that = this;
+        that.card1Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -382,22 +393,28 @@
         }; 
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
           console.log(res.data)
+         
           if(res.status == 200) {
             if(res.data.code == 200){
               // 记录上传后返回的URL
               console.log(res.data.data)
               that.cardimg1 = res.data.data;
+              that.$refs.goodsImg_1.src=res.data.data;
+               that.card1Tips=false;
             }else{
               that.$toast(res.data.msg);
+               that.card1Tips=false;
             }
           }else{
             that.$toast('上传图片失败，请重新选择图片！');
+             that.card1Tips=false;
             return;
           }
         });
       },
       uploadCardBack(file){
         var that = this;
+        that.card2Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -407,22 +424,28 @@
         }; 
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
           console.log(res.data)
+         
           if(res.status == 200) {
             if(res.data.code == 200){
               // 记录上传后返回的URL
               console.log(res.data.data)
               that.cardimg2 = res.data.data;
+              that.$refs.goodsImg_2.src=res.data.data;
+               that.card2Tips=false;
             }else{
               that.$toast(res.data.msg);
+               that.card2Tips=false;
             }
           }else{
             that.$toast('上传图片失败，请重新选择图片！');
+             that.card2Tips=false;
             return;
           }
         });
       },
       uploadCardHand(file){
         var that = this;
+        that.card3Tips=true;
         let param = new FormData();
         param.append('api_token', this.$store.state.global.api_token);
         param.append('file', file.file);
@@ -432,16 +455,21 @@
         }; 
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
           console.log(res.data)
+          that.card3Tips=false;
           if(res.status == 200) {
             if(res.data.code == 200){
               // 记录上传后返回的URL
               console.log(res.data.data)
               that.cardimg3 = res.data.data;
+              that.$refs.goodsImg_3.src=res.data.data;
+              that.card3Tips=false;
             }else{
               that.$toast(res.data.msg);
+              that.card3Tips=false;
             }
           }else{
             that.$toast('上传图片失败，请重新选择图片！');
+            that.card3Tips=false;
             return;
           }
         });
@@ -694,13 +722,19 @@
      color: #323233;
      line-height: 1rem;
    }
-   /deep/.id-front .van-uploader__upload{
-     width: 8.2rem;
-     height: 5rem;
-     background-image: url("../../assets/img/entrust/id-front.png");
-     background-repeat: no-repeat;
-     background-size: cover; 
-   }
+   .id-front{
+    width:100%;
+    // height: 5rem;
+    // background-image: url("../../assets/img/entrust/id-front.png");
+    // background-repeat: no-repeat;
+    // background-size: cover; 
+    margin:0.2rem auto;
+    position:relative;
+  }
+  .id-front img{
+    width:100%
+  }
+   
    /deep/.id-front .van-uploader__upload-icon{
      display: none;
    }
@@ -811,4 +845,6 @@
   .bill-table>table{border:1px solid #ccc; width: 100%;}
   .bill-table th,.bill-table td{border:1px solid #ccc; padding:0.1rem;}
   .bill-table td.tableCols{border:0 none; padding:0;}
+  .card-tips{position:absolute;left:0; top:0; bottom:0; width:100%; background:rgba(0, 0, 0, 0.2); display:flex;align-items: center;
+    justify-content: center; color: #000; box-sizing:border-box; padding:0.5rem;}
 </style>
