@@ -290,7 +290,9 @@ export default {
         sign () {           
             this.showSignature=true;
         },        
-        submitList(){           
+        submitList(){  
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;         
             this.$router.push({path : '/HouseBag'});
         },
         editList(){
@@ -347,10 +349,11 @@ export default {
                     if(res.err_msg == "get_brand_wcpay_request:ok" ){
                       that.status="end";
                       that.tips="恭喜支付成功！1-2个工作日会有工作人员联系您!";
-                    //that.$toast('支付成功');
-                    that.paypg = false;
-                    that.contact.order_status = 3;
-                    that.isShowSign = true;
+                      //that.$toast('支付成功');
+                       that.paypg = false;
+                      // that.contact.order_status = 3;
+                      // that.isShowSign = true;
+                      that.$router.push({path : '/mycontract'});
                 } 
             }); 
         },

@@ -60,7 +60,7 @@ if(search != ''){
 // 获取LocalStorage参数
 if(localStorage.getItem('api_token')){
   store.state.global.api_token = localStorage.getItem('api_token');
-  localStorage.removeItem('api_token')
+  //localStorage.removeItem('api_token')
 }
 if(localStorage.getItem('openid')){
   store.state.global.openid = localStorage.getItem('openid');
@@ -70,17 +70,17 @@ if(localStorage.getItem('openid')){
       || store.state.global.openid === 'o8AIEv6b1cryHyuyB25tpDcfIJOA'){
     const vConsole = new VConsole();
   }
-  localStorage.removeItem('openid')
+  //localStorage.removeItem('openid')
 }
 if(localStorage.getItem('pid')){
   store.state.global.pid = localStorage.getItem('pid');
-  localStorage.removeItem('pid')
+  //localStorage.removeItem('pid')
 }
 
 /* 开发环境打开vconsole */
-// if (process.env.NODE_ENV === 'development'){
-//   const vConsole = new VConsole();
-// }
+if (process.env.NODE_ENV === 'development'){
+  const vConsole = new VConsole();
+}
 
 // 路由守卫：全局api_token为空，强制去登陆
 router.beforeEach((to,from,next)=>{
