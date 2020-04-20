@@ -44,6 +44,7 @@ export default {
                 that.$refs.contactDetai_img.src=res.data.data.contact_path;
                 console.log(res.data.data.contact_path)
               }
+              
               //that.$store.state.locale.editHouseInfo = res.data.data;             
             }else{
               that.$toast(res.data.msg);

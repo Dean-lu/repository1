@@ -2,7 +2,8 @@
 <div class="main">
     <!-- <van-nav-bar :title="title" left-arrow :fixed="true" color="#FFB640" @click-left="onClickLeft" /> -->
     <div  v-if="status=='start'"> 
-        <div id="contactMain"  ref="contactMain">
+      <div v-if="contactstatus=='start'">
+        <div class="contactMain"  ref="contactMain">
           <h1>房屋使用合同</h1>
           <div>
               <p>出租人（以下简称甲方）：湖南米花寓公寓经营管理有限公司</p>
@@ -119,6 +120,7 @@
                   （此项以下无正文）
               </p>
           </div>
+          
           <div class="housesign">
               <div style="width: 100%;min-height: 2rem;">
                 <van-col class="logo-parent" span="12">
@@ -141,6 +143,11 @@
               <p>时间：<span>{{currDate.getFullYear()}}年{{currDate.getMonth() + 1}}月{{currDate.getDate()}}日</span></p>
           </div>
         </div>
+      </div>
+        <!-- <div v-if="contactstatus=='end'"  ref="contactMain3">
+           <van-image :src="contactsImg1" />
+           <van-image :src="contactsImg2" />
+        </div> -->
         <!-- <button v-if="contract.order_status==1" @click="editList" class="btnOrange">修改合同信息</button> -->
         <div v-if="btnstatus=='enter'">
           <button v-if="contact.order_status==2" @click="paypg=true" class="btnOrange">点击支付</button>        
@@ -207,7 +214,8 @@ export default {
             btnstatus:"enter",
             isShowSign: false,// 是否打开签名版
             htmlTitle:"房屋使用合同",      
-            contactDetai_img:"",    
+            contactDetai_img:"",   
+            contactstatus:"start",
             contact:{
                 order_status: null,
                 house_position: "",
@@ -229,7 +237,9 @@ export default {
             showSignature:false,
             signatureImg:'',
             showSignatureImg:false,
-            signTest:true
+            signTest:true,
+            contactsImg1:"",
+            contactsImg2:""
         }
     },
     mounted() {
@@ -256,9 +266,10 @@ export default {
             if(res.data.code == 200){
               that.contact = res.data.data;
               console.log(res.data.data);
-              if(res.data.data.order_status==4 || res.data.data.order_status==5){
-                that.contactDetai_img=res.data.data.contact_path;
-                that.$refs.contactDetai_img.src=res.data.data.contact_path;
+               if(res.data.data.order_status==4 || res.data.data.order_status==5){
+                that.signatureImg=res.data.data.contact_path;
+                that.showSignatureImg=true; 
+                //that.$refs.contactDetai_img.src=res.data.data.contact_path;
                 console.log(res.data.data.contact_path)
               }
               //that.$store.state.locale.editHouseInfo = res.data.data;             
@@ -432,79 +443,118 @@ export default {
         this.signTest=false;
       },
        // 合同生成
-      submitSign(){
-        var that = this;       
-        this.generateContractBtn = false;// 隐藏生成合同按钮
-        window.pageYOffset = 0;
-        //document.documentElement.scrollTop = 0;
-        //document.body.scrollTop = 0;
-        console.log("合同生成....");
-        that.tipsshow=true;
-        //debugger
-        var title = this.htmlTitle;
-        let element=this.$refs.contactMain;
-        this.$html2Canvas(element, {
-          allowTaint: true,
-          useCORS: true
-        }).then(function(canvas) {    
-            console.log("修改了allowTaint");
-            console.log(canvas.width);
-            console.log(canvas.height);
-            // canvas.width=canvas.width*0.35;
-            // canvas.width=canvas.height*0.35;
-            let contentWidth = canvas.width;
-            let contentHeight = canvas.height;
-            let pageData = canvas.toDataURL('image/jpeg', 0.1);
-            console.log(pageData);
-            console.log("pageData");
-            let pdfWidth = (contentWidth + 10) / 2 * 0.75;
-            let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 200为底部留白
+  //     submitSign(){
+  //       var that = this;       
+  //       this.generateContractBtn = false;// 隐藏生成合同按钮
+  //       window.pageYOffset = 0;
+  //       //document.documentElement.scrollTop = 0;
+  //       //document.body.scrollTop = 0;
+  //       console.log("合同生成....");
+  //       that.tipsshow=true;
+  //       //debugger
+  //       var title = this.htmlTitle;
+  //       let element=this.$refs.contactMain;
+  //       this.$html2Canvas(element, {
+  //         allowTaint: true,
+  //         useCORS: true
+  //       }).then(function(canvas) {    
+  //           console.log("修改了allowTaint");
+  //           console.log(canvas.width);
+  //           console.log(canvas.height);
+  //           // canvas.width=canvas.width*0.35;
+  //           // canvas.width=canvas.height*0.35;
+  //           let contentWidth = canvas.width;
+  //           let contentHeight = canvas.height;
+  //           let pageData = canvas.toDataURL('image/jpeg', 0.1);
+  //           console.log(pageData);
+  //           console.log("pageData");
+  //           let pdfWidth = (contentWidth + 10) / 2 * 0.75;
+  //           let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 200为底部留白
 
-            let imgWidth = pdfWidth;
-            let imgHeight = (contentHeight / 2 * 0.75); //内容图片这里不需要留白的距离
-            console.log("生成pdf");
-            let pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
-            console.log("pdf已生成");
-            pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
-            console.log("pdf添加图片");
-            //debugger
-            // var datauri = pdf.output('dataurlstring');
-            //调用
+  //           let imgWidth = pdfWidth;
+  //           let imgHeight = (contentHeight / 2 * 0.75); //内容图片这里不需要留白的距离
+  //           console.log("生成pdf");
+  //           let pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
+  //           console.log("pdf已生成");
+  //           pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
+  //           console.log("pdf添加图片");
+  //           //debugger
+  //           // var datauri = pdf.output('dataurlstring');
+  //           //调用
             
-            var blob = that.dataURLtoBlob(pageData);
-            var file = that.blobToFile(blob, "contract_path_file");
-            console.log(file);
-            let param = new FormData();
-            param.append("api_token",that.$store.state.global.api_token);
-            // param.append("house_id",that.house_id);
-            param.append("order_id",that.$store.state.locale.contractId);
-            param.append("file",file);
-            let config = {
-              headers:{'Content-Type':'multipart/form-data'}
-            }; 
-            that.$http.post(that.$store.state.global.baseUrl + 'user/sign_post', param, config).then(res => {
-              //debugger
-              console.log(file);
-              that.tipsshow=false;
-              if(res.status == 200) {
-                if(res.data.code == 200){
-                  console.log("合同上传成功！");
-                  // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
-                  // 跳转到
-                  that.status="end";
-                  that.tips="恭喜您！合同签约成功，1-2个工作日会有工作人员联系您!"
-                }else{
-                  that.$toast(res.data.msg);
-                }
-              }else{
-                console.log("合同上传失败！");
-                that.$toast("合同上传失败！");
-                that.tipsshow=false;
-                return;
-              }
-            });            
-           // pdf.save(title + '.pdf');  
-        })
+  //           var blob = that.dataURLtoBlob(pageData);
+  //           var file = that.blobToFile(blob, "contract_path_file");
+  //           console.log(file);
+              // let param = new FormData();
+              //         param.append("api_token",that.$store.state.global.api_token);
+              //         // param.append("house_id",that.house_id);
+              //         param.append("order_id",that.$store.state.locale.contractId);
+              //         param.append("file",file1);
+              //         let config = {
+              //           headers:{'Content-Type':'multipart/form-data'}
+              //         }; 
+              //         that.$http.post(that.$store.state.global.baseUrl + 'user/sign_post', param, config).then(res => {
+              //           //debugger
+              //           console.log(file);
+              //           that.tipsshow=false;
+              //           if(res.status == 200) {
+              //             if(res.data.code == 200){
+              //               console.log("合同上传成功！");
+              //               // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
+              //               // 跳转到
+              //               that.status="end";
+              //               that.tips="恭喜您！合同签约成功，1-2个工作日会有工作人员联系您!"
+              //             }else{
+              //               that.$toast(res.data.msg);
+              //             }
+              //           }else{
+              //             console.log("合同上传失败！");
+              //             that.$toast("合同上传失败！");
+              //             that.tipsshow=false;
+              //             return;
+              //           }
+              //         });            
+  //          // pdf.save(title + '.pdf');  
+  //       })
+  //     },
+      submitSign(){
+      var that = this;  
+      that.tipsshow=true;     
+      var blob = that.dataURLtoBlob(this.signatureImg);
+      var file = that.blobToFile(blob, "contract_path_file");
+      console.log(file);
+      let param = new FormData();
+      param.append("api_token",that.$store.state.global.api_token);
+      // param.append("house_id",that.house_id);
+      param.append("order_id",that.$store.state.locale.contractId);
+      param.append("file",file);
+      let config = {
+        headers:{'Content-Type':'multipart/form-data'}
+      }; 
+      that.$http.post(that.$store.state.global.baseUrl + 'user/sign_post', param, config).then(res => {
+        //debugger
+        console.log(file);
+        that.tipsshow=false;
+        if(res.status == 200) {
+          if(res.data.code == 200){
+            console.log("合同上传成功！");
+            // that.$toast("恭喜您！您的房源已上架推广，同时会有工作人员联系您实地查勘。");
+            // 跳转到
+            that.status="end";
+            that.tips="恭喜您！合同签约成功，1-2个工作日会有工作人员联系您!"
+            that.tipsshow=false; 
+          }else{
+            that.$toast(res.data.msg);
+            that.tipsshow=false; 
+          }
+        }else{
+          console.log("合同上传失败！");
+          that.$toast("合同上传失败！");          
+          that.tipsshow=false;
+          return;
+        }
+      });            
+
       },
       dataURLtoBlob: function(dataurl) { 
         var arr = dataurl.split(','),
@@ -541,7 +591,7 @@ export default {
   }
 .pay_conter{padding-bottom:1rem;}
 .cavas{border:1px solid #ccc;width:90%; margin:0.5rem auto;}
-#contactMain{
+.contactMain{
     text-align: left;
     width:100%;
     margin:0 auto;

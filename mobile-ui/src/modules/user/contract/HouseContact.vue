@@ -289,9 +289,9 @@ export default {
       submitSign(){
         var that = this;       
         this.generateContractBtn = false;// 隐藏生成合同按钮
-        window.pageYOffset = 0;
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        // window.pageYOffset = 0;
+        // document.documentElement.scrollTop = 0;
+        // document.body.scrollTop = 0;
         console.log("合同生成....");
         that.tipsshow=true;
         //debugger
@@ -301,63 +301,64 @@ export default {
        let element=that.$refs.contactMain;
        console.log("element")
        console.log(element);
-        this.$html2Canvas(element, {
-          allowTaint: true,
-          useCORS: true
-        }).then(function(canvas) {    
-            console.log(canvas.width);
-             console.log(canvas.height)
-            let contentWidth = canvas.width;            
-            let contentHeight = canvas.height;
-            let pageData = canvas.toDataURL('image/jpeg', 0.4);
-            console.log("pageData");
-            console.log(pageData);
-            let pdfWidth = (contentWidth + 10) / 2 * 0.75;
-            let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 500为底部留白
+       var blob = that.dataURLtoBlob(this.signatureImg);
+      var file = that.blobToFile(blob, "contract_path_file");
+      console.log("file");
+      console.log(file);
+      let param = new FormData();
+      param.append("api_token",that.$store.state.global.api_token);
+      // param.append("house_id",that.house_id);
+      param.append("house_id",that.$store.state.locale.houseId);
+      param.append("contract_path",file);
+      let config = {
+        headers:{'Content-Type':'multipart/form-data'}
+      }; 
+      that.$http.post(that.$store.state.global.baseUrl + 'entrust/signing', param, config).then(res => {
+        //debugger
+        console.log(file);
+        if(res.status == 200) {
+          if(res.data.code == 200){
+            console.log("合同上传成功！");                  
+            that.showSuc = true;// 弹出上传成功弹框
+            that.tipsshow=false;
+          }else{
+            that.$toast(res.data.msg); 
+            that.tipsshow=false;                
+          }
+        }else{
+          console.log("合同上传失败！");
+          that.tipsshow=false;
+          that.$toast("合同上传失败！");
+          return;
+        }
+      });            
+  //       this.$html2Canvas(element, {
+  //         allowTaint: true,
+  //         useCORS: true
+  //       }).then(function(canvas) {    
+  //           console.log(canvas.width);
+  //            console.log(canvas.height)
+  //           let contentWidth = canvas.width;            
+  //           let contentHeight = canvas.height;
+  //           let pageData = canvas.toDataURL('image/jpeg', 0.4);
+  //           console.log("pageData");
+  //           console.log(pageData);
+  //           let pdfWidth = (contentWidth + 10) / 2 * 0.75;
+  //           let pdfHeight = (contentHeight + 200) / 2 * 0.75; // 500为底部留白
 
-            let imgWidth = pdfWidth;
-            let imgHeight = (contentHeight / 2 * 0.75); //内容图片这里不需要留白的距离
+  //           let imgWidth = pdfWidth;
+  //           let imgHeight = (contentHeight / 2 * 0.75); //内容图片这里不需要留白的距离
 
-            let pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
-            pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
+  //           let pdf = new JsPDF('', 'pt', [pdfWidth, pdfHeight]);
+  //           pdf.addImage(pageData, 'jpeg', 0, 0, imgWidth, imgHeight);
             
-            //debugger
-            // var datauri = pdf.output('dataurlstring');
-            //调用
-            var blob = that.dataURLtoBlob(pageData);
-            var file = that.blobToFile(blob, "contract_path_file");
-            console.log("file");
-            console.log(file);
-            let param = new FormData();
-            param.append("api_token",that.$store.state.global.api_token);
-            // param.append("house_id",that.house_id);
-            param.append("house_id",that.$store.state.locale.houseId);
-            param.append("contract_path",file);
-            let config = {
-              headers:{'Content-Type':'multipart/form-data'}
-            }; 
-            that.$http.post(that.$store.state.global.baseUrl + 'entrust/signing', param, config).then(res => {
-              //debugger
-              console.log(file);
-              if(res.status == 200) {
-                if(res.data.code == 200){
-                  console.log("合同上传成功！");                  
-                  that.showSuc = true;// 弹出上传成功弹框
-                  that.tipsshow=false;
-                }else{
-                  that.$toast(res.data.msg); 
-                  that.tipsshow=false;                
-                }
-              }else{
-                console.log("合同上传失败！");
-                that.tipsshow=false;
-                that.$toast("合同上传失败！");
-                return;
-              }
-            });            
-           // pdf.save(title + '.pdf');  
+  //           //debugger
+  //           // var datauri = pdf.output('dataurlstring');
+  //           //调用
+            
+  //          // pdf.save(title + '.pdf');  
            
-        })
+  //       })
       },
       dataURLtoBlob: function(dataurl) { 
         var arr = dataurl.split(','),

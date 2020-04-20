@@ -78,9 +78,9 @@ if(localStorage.getItem('pid')){
 }
 
 /* 开发环境打开vconsole */
-if (process.env.NODE_ENV === 'development'){
-  const vConsole = new VConsole();
-}
+// if (process.env.NODE_ENV === 'development'){
+//   const vConsole = new VConsole();
+// }
 
 // 路由守卫：全局api_token为空，强制去登陆
 router.beforeEach((to,from,next)=>{

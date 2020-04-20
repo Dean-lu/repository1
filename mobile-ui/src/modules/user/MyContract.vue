@@ -94,12 +94,8 @@ import shareApi from '../../common/until'
       //去查看
       look(contractId,lookStatus){
         this.$store.state.locale.contractId = contractId;
-        this.$store.state.locale.editcontractInfo='';
-        if(lookStatus==4 || lookStatus==5){
-           this.$router.push({path : '/contractImg'});
-        }else{         
+        this.$store.state.locale.editcontractInfo='';               
           this.$router.push({path : '/HouseUseContact'});
-        } 
       }
      
     }

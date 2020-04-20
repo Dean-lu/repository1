@@ -64,7 +64,7 @@
            label-align="right" placeholder="选择租期" @click="showRentTerm = true" />
           
         </van-cell>
-        <van-cell title="期望交房时间:" :value="expectHandingTime" />
+        <!-- <van-cell title="期望交房时间:" :value="expectHandingTime" /> -->
         <!-- @click="showHandingTimeSelect = true" -->
         <!-- <van-calendar v-model="showHandingTimeSelect" color="#FFB640" @confirm="onConfirmHandingTime" /> -->
         <van-cell title="期望交房时间:" :value="EnterRentTime" @click="showEndTimeSelect = true" />
