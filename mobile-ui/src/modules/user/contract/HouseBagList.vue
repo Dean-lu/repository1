@@ -14,16 +14,19 @@
         ></textarea>        
         <h2>房屋物品照片：</h2>      
 
-        <div class="ver-code-bottom-one-right-code pic-area">            
-            <div class="ver-code-bottom-one-right-code manyPic">
-              <div class="posting-uploader-item" v-for="(item,index) in house_img" :key="index">
+        <div class="pic-area">            
+            <div class="manyPic">
+              <div class="uploader-item" v-for="(item,index) in house_img" :key="index">
                 <img :src="item"  alt="图片" class="imgPreview">
                 <van-icon name="close" @click="delImg(index)" class="delte"/>
               </div>
               <div class="imgTips" v-if="showTips">                 
                   图片正在上传......
                 </div>
-              <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
+                <div class="manyImgBtn" @click="changeImg">
+                  <van-icon name="plus" />
+                </div>
+              <!-- <van-uploader :after-read="afterZRead" :accept="'image/*'"  /> -->
             </div> 
         </div>   
         <button class="btnOrange" @click="submitList"> 提交 </button>
@@ -54,6 +57,11 @@ export default {
     mounted() {
       document.title = "房屋清单";
       this.share();
+      if(sessionStorage.getItem("orderId")){
+        this.$store.state.locale.contractId=sessionStorage.getItem("orderId");
+      }else{
+        this.$router.back(-1);
+      }
     },
     methods:{
       share(){
@@ -95,6 +103,50 @@ export default {
           }
         });
         }, 
+         changeImg(){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              that.showTips=true;          
+              that.uploadToWeixinServer(res.localIds[0]);
+            }
+          });
+      },
+      uploadToWeixinServer(localId) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;                  
+                  that.house_img.push(src);  
+                  console.log(that.house_img);                     
+                  that.showTips=false;                     
+                }else{
+                  that.showTips=false; 
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //提示隐藏
+                that.showTips=false;
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
+          }
+        });
+      },      
       //多图上传
       afterZRead(file){
           //this.house_showImg=this.house_showImg;
@@ -204,7 +256,17 @@ export default {
   .pic-area img{width:85%; margin-bottom:0.5rem;}
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem;}
-  /deep/.posting-uploader-item{position:relative;float:left;width:2.5rem; height:2.5rem;margin-right:0.2rem;}
+  .uploader-item{
+    position:relative;
+    float:left;
+    width:2.5rem; 
+    height:2.5rem;
+    margin-right:0.2rem;
+    margin-top:0.2rem;
+    overflow:hidden;
+    
+    img{width:2.5rem; height:2.5rem;}
+    }
   .imgTips{
     float: left;
     height:2.5rem;
@@ -214,10 +276,32 @@ export default {
     Justify-content:center;  // 子元素水平居中 
     align-items:center;       //子元素垂直居中    
     display:-webkit-flex;   
-    padding:0.1rem;
+    padding:0 0.1rem;
     box-sizing: border-box;
     background:rgba(0,0,0,0.4);
-    margin-left:0.2rem;
+    margin-right:0.2rem;
   }
+
+}
+.manyPic{
+  width:95%; margin:0.5rem auto; position:relative;
+  display: block;
+  overflow: hidden;
+}
+.manyImgBtn{
+    background:#f3f3f3;
+    width:2.5rem;
+    height:2.5rem;
+    align-items: center;
+    justify-content: center; 
+    font-size:2rem;
+    line-height:3rem;
+    float:left;
+    margin-right:0.2rem;
+    margin-top:0.2rem;
+    text-align: center;
+    /deep/ .van-icon{
+      color:#ccc
+    }
 }
 </style>

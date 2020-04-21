@@ -285,6 +285,9 @@
         // 从vuex获取数据
         this.houseInfo = this.$store.state.entrust.houseInfo;
         this.user = this.$store.state.global.user;
+        if(!this.houseInfo){
+           this.$router.back(-1);
+        }
       },
       showConfirmF(){
         
@@ -427,6 +430,7 @@
       },
       roHouseContact(houseId){
         this.$store.state.locale.houseId = houseId;
+         sessionStorage.setItem("locale_house",houseId);
         console.log(this.$store.state.locale.houseId)
         this.$router.push({path : '/HouseContact'});
       },

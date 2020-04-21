@@ -33,6 +33,10 @@ var myfunction = {
                     jsApiList: [
                         'updateAppMessageShareData',
                         'updateTimelineShareData',
+                        "chooseImage", //拍照或从手机相册中选图接口
+                        "previewImage", //预览图片接口
+                        "uploadImage", //上传图片接口
+                        "downloadImage" //下载图片接口
                     ] // 必填，需要使用的JS接口列表
                 });
                 //通过ready接口处理成功验证

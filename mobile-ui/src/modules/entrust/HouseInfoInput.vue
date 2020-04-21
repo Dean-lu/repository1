@@ -55,28 +55,31 @@
         <div class="title">证件信息</div>
         <div class="label">*身份证正面照片(与产权人一致)：</div>
         <div class="id-front">          
-          <van-uploader :after-read="uploadCardFront" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCardFront" :max-count="1">
               <img :src="CardFront" ref="goodsImg_1" />
-          </van-uploader> 
-          <div class="card-tips" v-if="card1Tips">
+          </van-uploader>  -->
+          <img :src="CardFront" @click="changeImg('img_1')" ref="goodsImg_1" />
+          <div class="card-tips" v-if="cardTips_1">
              <p>图片正在上传请稍等......</p>
           </div>            
         </div>
         <div class="label">*身份证反面照片(与产权人一致)：</div>
           <div class="id-front">          
-          <van-uploader :after-read="uploadCardBack" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCardBack" :max-count="1">
               <img :src="CardBack" ref="goodsImg_2" />
-          </van-uploader> 
-          <div class="card-tips" v-if="card2Tips">
+          </!-->
+           <img :src="CardBack" @click="changeImg('img_2')" ref="goodsImg_2" />
+          <div class="card-tips" v-if="cardTips_2">
              <p>图片正在上传请稍等......</p>
           </div>          
         </div>
         <div class="label">*房产证或产权合同照片：</div>
         <div class="id-front">          
-          <van-uploader :after-read="uploadCertificate" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCertificate" :max-count="1">
               <img :src="CardcertifiInfo" ref="goodsImg_3" />
-          </van-uploader>  
-          <div class="card-tips" v-if="card3Tips">
+          </van-uploader>   -->
+          <img :src="CardcertifiInfo" @click="changeImg('img_3')" ref="goodsImg_3" />
+          <div class="card-tips" v-if="cardTips_3">
              <p>图片正在上传请稍等......</p>
           </div>         
         </div>
@@ -87,10 +90,13 @@
                 <van-image :src="item" width="2.5rem" height="2.5rem" fit="contain"  alt="图片" class="imgPreview" />
                 <van-icon name="close" @click="delImg(index)" class="delte"/>                  
               </div>
-              <div class="imgTips" v-if="showTips">                 
+              <div class="imgTips" v-if="cardTips_4">                 
                   {{showTipsTxt}}
                 </div>
-              <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" />
+                <div class="manyImgBtn" @click="changeImg('img_4')">
+                  <van-icon name="plus" />
+                </div>
+              <!-- <van-uploader :after-read="afterReadHouseImg" multiple :max-count="8" /> -->
             </div> 
         </div>
         <van-divider />
@@ -228,9 +234,10 @@
         CardFront:require('../../assets/img/entrust/id-front.png'),
         CardBack:require('../../assets/img/entrust/id-back.png'),
         CardcertifiInfo:require('../../assets/img/entrust/ceri.png'),
-        card1Tips:false,
-        card2Tips:false,
-        card3Tips:false,
+        cardTips_1:false,
+        cardTips_2:false,
+        cardTips_3:false,
+        cardTips_4:false,
         houseInfo:{
           initMark: '0x10',
           house_position: '',
@@ -384,127 +391,87 @@
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },
-      // 上传身份证正面照
-      uploadCardFront(file){
-        var that = this;
-        that.card1Tips=true;
-        let param = new FormData();
-        param.append('api_token', this.$store.state.global.api_token);
-        param.append('file', file.file);
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, {
-            headers: { 'Content-Type':'multipart/form-data' }
-          }).then(res => {
-          console.log(res.data)
-          if(res.status == 200) {
-            if(res.data.code == 200){
-              // 记录上传后返回的URL
-              console.log(res.data.data)
-              that.card1Tips=false;
-              that.houseInfo.cardimg1 = res.data.data;
-              that.$refs.goodsImg_1.src=res.data.data;
-              
-            }else{
-              that.$toast(res.data.msg);
-              that.card1Tips=false;
+      changeImg(imgsrc){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              if(imgsrc=="img_1"){
+                that.cardTips_1=true;
+                that.$refs.goodsImg_1.src=res.localIds[0];
+              }else if(imgsrc=="img_2"){
+                that.cardTips_2=true;
+                 that.$refs.goodsImg_2.src=res.localIds[0];
+              }else if(imgsrc=="img_3"){
+                that.cardTips_3=true;
+                 that.$refs.goodsImg_3.src=res.localIds[0];
+              }  else if(imgsrc=="img_4"){
+                that.cardTips_4=true;
+              }             
+              that.uploadToWeixinServer(res.localIds[0],imgsrc);
             }
-          }else{
-            that.$toast('上传图片失败，请重新选择图片！');
-            that.card1Tips=false;
-            return;
-          }
-        });
+          });
       },
-      // 上传身份证反面照
-      uploadCardBack(file){
-        var that = this;
-        that.card2Tips=true;
-        let param = new FormData();
-        param.append('api_token', this.$store.state.global.api_token);
-        param.append('file', file.file);
-        //设置请求头
-        let config = {
-          headers:{'Content-Type':'multipart/form-data'}
-        }; 
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
-          console.log(res)
-          if(res.status == 200) {
-            if(res.data.code == 200){
-              that.card2Tips=false;
-              console.log(res.data.data)
-              // 记录上传后返回的URL
-              that.houseInfo.cardimg2 = res.data.data;
-              that.$refs.goodsImg_2.src=res.data.data;
-            }else{
-              that.card2Tips=false;
-              that.$toast(res.data.msg);
-            }
-          }else{
-            that.card2Tips=false;
-            that.$toast('上传图片失败，请重新选择图片！');
-            return;
+      uploadToWeixinServer(localId,imgsrc) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;
+                  if(imgsrc=="img_1"){
+                      that.houseInfo.cardimg1 =src;
+                      that.$refs.goodsImg_1.src=src;
+                      that.cardTips_1=false;
+                    }else if(imgsrc=="img_2"){
+                      that.houseInfo.cardimg2=src;
+                      that.$refs.goodsImg_2.src=src;
+                      that.cardTips_2=false;
+                    }else if(imgsrc=="img_3"){
+                      that.houseInfo.certifi_info=src;
+                      that.$refs.goodsImg_3.src=src;
+                      that.cardTips_3=false;
+                    }else if(imgsrc=="img_4"){
+                      that.houseInfo.house_img.push(src);                      
+                      that.cardTips_4=false;
+                    }
+                }else{
+                  //that.card2Tips=false;
+                  that.tipsCz(imgsrc);
+                  //that.num=false;
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //let num="cardTips_"+parseInt(imgsrc);
+                 //提示隐藏
+                that.tipsCz(imgsrc);
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
           }
         });
-      },
-      // 上传房产证/合同
-      uploadCertificate(file){
-        var that = this;
-        that.card3Tips=true;
-        let param = new FormData();
-        param.append('api_token', this.$store.state.global.api_token);
-        param.append('file', file.file);
-        //设置请求头
-        let config = {
-          headers:{'Content-Type':'multipart/form-data'}
-        }
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {          
-          console.log(res)
-          if(res.status == 200) {
-            if(res.data.code == 200){
-              that.card3Tips=false;
-              console.log(res.data.data)
-              // 记录上传后返回的URL
-              that.houseInfo.certifi_info = res.data.data;
-              that.$refs.goodsImg_3.src=res.data.data;
-            }else{
-              that.card3Tips=false;
-              that.$toast(res.data.msg);
-            }
-          }else{
-            that.card3Tips=false;
-            that.$toast('上传图片失败，请重新选择图片！');
-            return;
+      },      
+      tipsCz(imgsrc){
+        if(imgsrc=="img_1"){                     
+            that.cardTips_1=false;
+          }else if(imgsrc=="img_2"){                     
+            that.cardTips_2=false;
+          }else if(imgsrc=="img_3"){                     
+            that.cardTips_3=false;
+          }else if(imgsrc=="img_4"){                      
+            that.cardTips_4=false;
           }
-        });
-      },
-      // 读取房屋图片
-      afterReadHouseImg(file){ 
-        this.showTips=true;       
-        let param=new FormData;
-        param.append("api_token", this.$store.state.global.api_token),
-        param.append("file",file.file)         
-        let that=this;
-        //设置请求头
-        let config = {
-          headers:{'Content-Type':'multipart/form-data'}
-        }
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param, config).then(res => {
-          //debugger
-          console.log(res);   
-          if(res.status == 200) {
-            if(res.data.code == 200){
-              that.houseInfo.house_img.push(res.data.data);
-              that.showTips=false;
-            }else{
-              that.$toast(res.data.msg);             
-              that.showTips=false;
-            }
-          }else{
-            that.$toast('获取图片失败，请刷新重试！');
-            that.showTips=false;            
-            return;
-          }
-        });
-        
       },
       //删除图片
       delImg(index){
@@ -877,11 +844,17 @@
   .manyPic{
     width:90%;
     margin:0 auto;
+    // min-height:2.5rem;
+    margin-top:0.25rem;
+    display: block;
+    overflow: hidden;
   }
   .manyPic::after{
     contain: "";
-    clear:both;
-    height:0
+     display: block;
+     height: 0;
+     clear: both;
+     visibility: hidden;
   }
   .order_list{padding-bottom: 1rem; box-sizing: border-box;}
  .order_list>table{border:1px solid #ccc; width: 100%;}
@@ -889,4 +862,19 @@
   .order_list td.tableCols{border:0 none; padding:0;}
   .card-tips{position:absolute;left:0; top:0; bottom:0; width:100%; background:rgba(0, 0, 0, 0.2); display:flex;align-items: center;
     justify-content: center; color: #000; box-sizing:border-box; padding:0.5rem;}
+    .manyImgBtn{
+        background:#f3f3f3;
+        width:2.5rem;
+        height:2.5rem;
+        align-items: center;
+        justify-content: center; 
+        font-size:2rem;
+        line-height:3rem;
+        float:left;
+        margin-left:0.2rem;
+        /deep/ .van-icon{
+          color:#ccc
+        }
+    }
+    
 </style>

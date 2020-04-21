@@ -94,7 +94,8 @@ import shareApi from '../../common/until'
       //去查看
       look(contractId,lookStatus){
         this.$store.state.locale.contractId = contractId;
-        this.$store.state.locale.editcontractInfo='';               
+        this.$store.state.locale.editcontractInfo='';     
+         sessionStorage.setItem("orderId",contractId);          
           this.$router.push({path : '/HouseUseContact'});
       }
      

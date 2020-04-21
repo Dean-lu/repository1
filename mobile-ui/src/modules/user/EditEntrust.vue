@@ -57,21 +57,33 @@
         <div class="title">*证件信息</div>
         <div class="label">身份证正面照片(与产权人一致)：</div>
         <div class="id-front img_are">
-          <van-uploader :max-count="1" :after-read="onread1">
+          <!-- <van-uploader :max-count="1" :after-read="onread1">
               <img :src="houseInfo.cardimg1" ref="goodsImg" />
-          </van-uploader>
+          </van-uploader> -->
+          <img :src="houseInfo.cardimg1" @click="changeImg('img_1')" ref="goodsImg_1" />
+          <div class="card-tips" v-if="cardTips_1">
+             <p>图片正在上传请稍等......</p>
+          </div>   
         </div>
         <div class="label">身份证反面照片(与产权人一致)：</div>
         <div class="id-back img_are">
-          <van-uploader :max-count="1" :after-read="onread2">
+          <!-- <van-uploader :max-count="1" :after-read="onread2">
               <img :src="houseInfo.cardimg2" ref="goodsImg_2" />
-          </van-uploader> 
+          </van-uploader>  -->
+          <img :src="houseInfo.cardimg2" @click="changeImg('img_2')" ref="goodsImg_2" />
+          <div class="card-tips" v-if="cardTips_2">
+             <p>图片正在上传请稍等......</p>
+          </div>   
         </div>
         <div class="label">房产证或产权合同照片：</div>
         <div class="house-cer img_are">
-          <van-uploader :max-count="1" :after-read="onread3">
+          <!-- <van-uploader :max-count="1" :after-read="onread3">
               <img :src="houseInfo.certifi_info" ref="goodsImg_3" />
-          </van-uploader>
+          </van-uploader> -->
+          <img :src="houseInfo.certifi_info" @click="changeImg('img_3')" ref="goodsImg_3" />
+          <div class="card-tips" v-if="cardTips_3">
+             <p>图片正在上传请稍等......</p>
+          </div>  
         </div>
         <div class="test">
           <div class="test1"></div>
@@ -83,10 +95,16 @@
             <img :src="item"  alt="图片" class="imgPreview">
             <van-icon name="close" @click="delImg(index)" class="delte"/>
           </div>
-          <div class="imgTips" v-if="showTips">                 
+          <!-- <div class="imgTips" v-if="showTips">                 
                  图片正在上传中......
           </div>
-          <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
+          <van-uploader :after-read="afterZRead" :accept="'image/*'"  /> -->
+           <div class="imgTips" v-if="cardTips_4">                 
+                   图片正在上传中......
+            </div>
+            <div class="manyImgBtn" @click="changeImg('img_4')">
+              <van-icon name="plus" />
+            </div>
         </div>
         <div style="text-align: left;font-size: 0.5rem;color: #323233;text-indent: 0.45rem;margin: 0.3rem 0;">
           增值服务
@@ -252,8 +270,14 @@ Vue.use(Dialog);
         valueRentType: '',
         rentTypeDesc: ['整租', '合租'],  
         addhouse:[],
-        houseImgcout:[]
+        houseImgcout:[],
+        //图片提示显示
+        cardTips_1:false,
+        cardTips_2:false,
+        cardTips_3:false,
+        cardTips_4:false,
       }
+      
     },
     mounted(){
       document.title = "修改房源信息";
@@ -269,6 +293,11 @@ Vue.use(Dialog);
       init(){
         //debugger
         let that = this;
+         if(sessionStorage.getItem("locale_house")){
+              this.$store.state.locale.houseId=sessionStorage.getItem("locale_house");
+            }else{
+              this.$router.back(-1);
+            }
         let param = {
           api_token: this.$store.state.global.api_token,
           house_id: this.$store.state.locale.houseId,
@@ -339,72 +368,93 @@ Vue.use(Dialog);
       toggle(index) {
         this.$refs.checkboxes[index].toggle();
       },     
-      //身份证正面照片
-      onread1(file){
-       //this.$refs.goodsImg.src=file.content;
-        this.watermark(file.file,1);   
-      },
-      //身份证反面照片
-      onread2(file){
-        //this.$refs.goodsImg_2.src=file.content;
-        this.watermark(file.file,2);
-      },
-      //房产证照片
-      onread3(file){
-        //this.$refs.goodsImg_3.src=file.content;
-        this.watermark(file.file,3);       
-      },
-      //多图上传
-      afterZRead(file){
-          this.house_showImg=this.house_showImg;
-          this.watermark(file.file,4);         
-      },
+      
       //增值服务
       showserver(){
         this.showServerMain=true;
       },
-      //水印
-      watermark(res,imgw){
-        console.log("res",res)
-        if(imgw==4){
-          this.showTips=true;
-        }
-        let fileMain=res;
-        let param=new FormData;
-        param.append("api_token", this.$store.state.global.api_token),
-        param.append("file",fileMain)         
-        let that=this;
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
-          //debugger
-          if(res.status == 200) {
-            if(res.data.code == 200){
-             console.log(res.data.data)              
-              let src=res.data.data;
-              if(imgw==1){
-                that.houseInfo.cardimg1=src;
-                that.$refs.goodsImg.src=src;
-              }else if(imgw==2){
-                that.houseInfo.cardimg2=src;
-                that.$refs.goodsImg_2.src=src;
-              }else if(imgw==3){
-                 that.houseInfo.certifi_info=src;
-                 that.$refs.goodsImg_3.src=src;
-              }else if(imgw==4){
-                that.houseInfo.house_img.push(src);
-                console.log(that.houseInfo.house_img);
-                that.showTips=false;
-              }            
-            }else{
-              that.$toast(res.data.msg);
-              that.showTips=false;
+      changeImg(imgsrc){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              if(imgsrc=="img_1"){
+                that.cardTips_1=true;
+                that.$refs.goodsImg_1.src=res.localIds[0];
+              }else if(imgsrc=="img_2"){
+                that.cardTips_2=true;
+                that.$refs.goodsImg_2.src=res.localIds[0];
+              }else if(imgsrc=="img_3"){
+                that.cardTips_3=true;
+                that.$refs.goodsImg_3.src=res.localIds[0];
+              }  else if(imgsrc=="img_4"){
+                that.cardTips_4=true;
+              }             
+              that.uploadToWeixinServer(res.localIds[0],imgsrc);
             }
-          }else{
-            that.$toast('获取图片失败，请刷新重试！');  
-            that.showTips=false;          
-            return;
+          });
+      },
+      uploadToWeixinServer(localId,imgsrc) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;
+                  if(imgsrc=="img_1"){
+                      that.houseInfo.cardimg1 =src;
+                      that.$refs.goodsImg_1.src=src;
+                      that.cardTips_1=false;
+                    }else if(imgsrc=="img_2"){
+                      that.houseInfo.cardimg2=src;
+                      that.$refs.goodsImg_2.src=src;
+                      that.cardTips_2=false;
+                    }else if(imgsrc=="img_3"){
+                      that.houseInfo.certifi_info=src;
+                      that.$refs.goodsImg_3.src=src;
+                      that.cardTips_3=false;
+                    }else if(imgsrc=="img_4"){
+                      that.houseInfo.house_img.push(src);                      
+                      that.cardTips_4=false;
+                    }
+                }else{
+                  //that.card2Tips=false;
+                  that.tipsCz(imgsrc);
+                  //that.num=false;
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //let num="cardTips_"+parseInt(imgsrc);
+                 //提示隐藏
+                that.tipsCz(imgsrc);
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
           }
         });
-      }, 
+      },      
+      tipsCz(imgsrc){
+        if(imgsrc=="img_1"){                     
+            that.cardTips_1=false;
+          }else if(imgsrc=="img_2"){                     
+            that.cardTips_2=false;
+          }else if(imgsrc=="img_3"){                     
+            that.cardTips_3=false;
+          }else if(imgsrc=="img_4"){                      
+            that.cardTips_4=false;
+          }
+      },
       //删除图片
       delImg(index){
        console.log(index);
@@ -703,7 +753,8 @@ Vue.use(Dialog);
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
   }
-  .manyPic,.img_are{width:85%; margin:0.5rem auto;}
+  .manyPic,.img_are{width:85%; margin:0.5rem auto; position: relative;display: block;
+    overflow: hidden;}
   .manyPic img,.img_are img{
     width:100%;
     margin-bottom:0.35rem;
@@ -742,4 +793,20 @@ Vue.use(Dialog);
  .order_list>table{border:1px solid #ccc; width: 100%;}
   .order_list th,.order_list td{border:1px solid #ccc; padding:0.05rem;}
   .order_list td.tableCols{border:0 none; padding:0;}
+    .card-tips{position:absolute;left:0; top:0; bottom:0; width:100%; background:rgba(0, 0, 0, 0.2); display:flex;align-items: center;
+    justify-content: center; color: #000; box-sizing:border-box; padding:0.5rem;}
+    .manyImgBtn{
+        background:#f3f3f3;
+        width:2.5rem;
+        height:2.5rem;
+        align-items: center;
+        justify-content: center; 
+        font-size:2rem;
+        line-height:3rem;
+        float:left;
+        margin-left:0.2rem;
+        /deep/ .van-icon{
+          color:#ccc
+        }
+    }
 </style>

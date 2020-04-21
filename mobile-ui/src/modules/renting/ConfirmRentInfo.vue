@@ -22,30 +22,33 @@
       <div style="width: 100%; height: 0.625rem;"></div>
       <div class="label">正面：</div>
        <div class="id-front">          
-          <van-uploader :after-read="uploadCardFront" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCardFront" :max-count="1">
               <img :src="CardFront" ref="goodsImg_1" />
-          </van-uploader> 
-          <div class="card-tips" v-if="card1Tips">
+          </van-uploader>  -->
+          <img :src="CardFront" @click="changeImg('img_1')" ref="goodsImg_1" />
+          <div class="card-tips" v-if="cardTips_1">
              <p>图片正在上传请稍等......</p>
           </div>          
         </div>
       <div class="label">反面：</div>
        <div class="id-front">          
-          <van-uploader :after-read="uploadCardBack" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCardBack" :max-count="1">
               <img :src="CardBack" ref="goodsImg_2" />
-          </van-uploader>   
-          <div class="card-tips" v-if="card2Tips">
-              <p>图片正在上传请稍等......</p>
+          </van-uploader>    -->
+          <img :src="CardBack" @click="changeImg('img_2')" ref="goodsImg_2" />
+          <div class="card-tips" v-if="cardTips_2">
+             <p>图片正在上传请稍等......</p>
           </div>        
         </div>
       <div class="label">手持：</div>
       <div class="id-front">          
-          <van-uploader :after-read="uploadCardHand" :max-count="1">
+          <!-- <van-uploader :after-read="uploadCardHand" :max-count="1">
               <img :src="CardcertifiInfo" ref="goodsImg_3" />
-          </van-uploader>   
-          <div class="card-tips" v-if="card3Tips">
-              <p>图片正在上传请稍等......</p>
-          </div>        
+          </van-uploader>    -->
+          <img :src="CardcertifiInfo" @click="changeImg('img_3')" ref="goodsImg_3" />
+          <div class="card-tips" v-if="cardTips_3">
+             <p>图片正在上传请稍等......</p>
+          </div>                    
         </div>     
     </div>
     <div style="width: 100%; height: 0.625rem;border-bottom: 0.125rem solid #F5F5F5;"></div>
@@ -304,9 +307,9 @@
         linewidth: 3, // 线条的宽度
         /* */
         currDate: new Date(),
-        card1Tips:false,
-        card2Tips:false,
-        card3Tips:false
+        cardTips_1:false,
+        cardTips_2:false,
+        cardTips_3:false
       }
     },
     mounted(){
@@ -327,6 +330,10 @@
       init(){
         //debugger
         var that = this;
+        
+         if(!this.$store.state.renting.id){            
+            this.$router.back(-1);
+          }    
         let param = {
           api_token: this.$store.state.global.api_token,
           house_id: this.$store.state.renting.id,
@@ -351,20 +358,6 @@
             return;
           }
         });
-        // 合同详情
-//         this.$http.post(this.$store.state.global.baseUrl + 'base/contract_details', param).then(res => {
-//           debugger
-//           if(res.status == 200) {
-//             if(res.data.code == 200){
-//               that.contractDetails = res.data.data;
-//             }else{
-//               that.$toast(res.data.msg);
-//             }
-//           }else{
-//             that.$toast('获取房源信息失败，请刷新重试！');
-//             return;
-//           }
-//         });
       },
       lookContact(){
         if(!this.cardimg1){
@@ -380,6 +373,81 @@
           return false;
         }
         this.showLeaseAgreement=true;
+      },
+      changeImg(imgsrc){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              if(imgsrc=="img_1"){
+                that.cardTips_1=true;
+                that.$refs.goodsImg_1.src=res.localIds[0];
+              }else if(imgsrc=="img_2"){
+                that.cardTips_2=true;
+                 that.$refs.goodsImg_2.src=res.localIds[0];
+              }else if(imgsrc=="img_3"){
+                that.cardTips_3=true;
+                that.$refs.goodsImg_3.src=res.localIds[0];
+              }           
+              that.uploadToWeixinServer(res.localIds[0],imgsrc);
+            }
+          });
+      },
+      uploadToWeixinServer(localId,imgsrc) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;
+                  if(imgsrc=="img_1"){
+                      that.cardimg1 =src;
+                      that.$refs.goodsImg_1.src=src;
+                      that.cardTips_1=false;
+                    }else if(imgsrc=="img_2"){
+                      that.cardimg2=src;
+                      that.$refs.goodsImg_2.src=src;
+                      that.cardTips_2=false;
+                    }else if(imgsrc=="img_3"){
+                      that.cardimg3=src;
+                      that.$refs.goodsImg_3.src=src;
+                      that.cardTips_3=false;
+                    }
+                }else{
+                  //that.card2Tips=false;
+                  that.tipsCz(imgsrc);
+                  //that.num=false;
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //let num="cardTips_"+parseInt(imgsrc);
+                 //提示隐藏
+                that.tipsCz(imgsrc);
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
+          }
+        });
+      },      
+      tipsCz(imgsrc){
+        if(imgsrc=="img_1"){                     
+          that.cardTips_1=false;
+        }else if(imgsrc=="img_2"){                     
+          that.cardTips_2=false;
+        }else if(imgsrc=="img_3"){                     
+          that.cardTips_3=false;
+        }
       },
       uploadCardFront(file){
         var that = this;

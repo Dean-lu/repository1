@@ -244,6 +244,7 @@ export default {
     // 房源详情
     toDetail(id){
       this.$store.state.renting.id = id;
+      sessionStorage.setItem("houseId", id); 
       console.log(this.$store.state.renting.id)
       this.$router.push({path : '/houseDetail'});
     },

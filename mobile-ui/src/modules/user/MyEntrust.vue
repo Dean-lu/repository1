@@ -97,17 +97,20 @@ import shareApi from '../../common/until'
       edit(houseId){
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
+        sessionStorage.setItem("locale_house",houseId);
         this.$router.push({path : '/EditEntrust'});
       },
       //去查看
       look(houseId){
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
+         sessionStorage.setItem("locale_house",houseId);
         this.$router.push({path : '/LookEntrust'});
       },
       sign(houseId){
         this.$store.state.locale.houseId = houseId;
-        console.log(this.$store.state.locale.houseId)
+        console.log(this.$store.state.locale.houseId);
+         sessionStorage.setItem("locale_house",houseId);
         this.$router.push({path : '/HouseContact'});
       },
       // 申请退款
@@ -125,9 +128,9 @@ import shareApi from '../../common/until'
             api_token: that.$store.state.global.api_token,
             house_id: houseId
           }
-          debugger
+          //debugger
           that.$http.post(that.$store.state.global.baseUrl + 'entrust/refund',params).then(res => {
-            debugger
+            //debugger
             if(res.status == 200) {
               if(res.data.code == 200){
                 that.$toast("发起退款成功！");

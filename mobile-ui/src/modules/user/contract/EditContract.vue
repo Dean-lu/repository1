@@ -22,21 +22,34 @@
         <p style="font-size:0.4rem">身份证照片:<span style="font-size: 0.35rem;color: #acabab;">（*请上传清晰完整照片，否则无法通过审核）</span></p>
             <div class="label">正面：</div>
             <div class="cardImg">
-              <van-uploader :max-count="1" :after-read="onread1">
+              <!-- <van-uploader :max-count="1" :after-read="onread1">
                   <img :src="ContractInfo.tenant.cardimg1" ref="goodsImg_1" />
-              </van-uploader>
+              </van-uploader> -->
+               <img :src="ContractInfo.tenant.cardimg1" @click="changeImg('img_1')" ref="goodsImg_1" />
+              <div class="card-tips" v-if="cardTips_1">
+                <p>图片正在上传请稍等......</p>
+              </div> 
+
             </div>
         <div class="label">反面：</div>
         <div class="cardImg">
-          <van-uploader :max-count="1" :after-read="onread2">
+          <!-- <van-uploader :max-count="1" :after-read="onread2">
               <img :src="ContractInfo.tenant.cardimg2" ref="goodsImg_2" />
-          </van-uploader> 
+          </van-uploader>  -->
+          <img :src="ContractInfo.tenant.cardimg2" @click="changeImg('img_2')" ref="goodsImg_2" />
+              <div class="card-tips" v-if="cardTips_2">
+                <p>图片正在上传请稍等......</p>
+              </div> 
         </div>
         <div class="label">手持：</div>
         <div class="cardImg">
-          <van-uploader :max-count="1" :after-read="onread3">
+          <!-- <van-uploader :max-count="1" :after-read="onread3">
               <img :src="ContractInfo.tenant.cardimg3" ref="goodsImg_3" />
-          </van-uploader> 
+          </van-uploader>  -->
+           <img :src="ContractInfo.tenant.cardimg3" @click="changeImg('img_3')" ref="goodsImg_3" />
+              <div class="card-tips" v-if="cardTips_3">
+                <p>图片正在上传请稍等......</p>
+              </div>
          
         </div>
       </div>
@@ -161,7 +174,10 @@
           
         },
  
-        // 增值服务包
+        // 图片提示
+        cardTips_1:false,
+        cardTips_2:false,
+        cardTips_3:false
         
       }
     },
@@ -192,6 +208,11 @@
         // if(this.$store.state.entrust.houseInfo){
         //   this.houseInfo = this.$store.state.entrust.houseInfo;
         // }
+        if(sessionStorage.getItem("orderId")){
+          this.$store.state.locale.contractId=sessionStorage.getItem("orderId");
+        }else{
+          this.$router.back(-1);
+        }
         let that = this;
         let param = {
           api_token: this.$store.state.global.api_token,
@@ -329,63 +350,83 @@
       onClickLeft() {
         this.$router.back(-1);
       },
-       onread1(file){
-        console.log(file.file)
-        //this.$refs.goodsImg_1.src=file.content;
-        this.watermark(file.file,1);
-        //this.ContractInfo.tenant.imgcard1=file.content;
-      },
-      onread2(file){
-        this.$refs.goodsImg_2.src=file.content;
-        //this.watermark(file.content);
-       // this.ContractInfo.tenant.imgcard2=file.content;
-        this.watermark(file.file,2);
-      },
-      onread3(file){
-        this.$refs.goodsImg_3.src=file.content;
-        //this.ContractInfo.tenant.cardimg3=file.content;
-        this.watermark(file.file,3);
-      },
-      watermark(res,imgw){
-        console.log("res",res)
-        let fileMain=res;
-        let param=new FormData;
-        param.append("api_token", this.$store.state.global.api_token),
-        param.append("file",fileMain)         
-        let that=this;
-        let config = {
-              headers:{'Content-Type':'multipart/form-data'}
-            };
-        this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param,config).then(res => {
-          //debugger
-          if(res.status == 200) {
-            if(res.data.code == 200){
-             console.log(res.data.data)
-              //that.$store.state.locale.editHouseInfo = res.data.data;
-              let src=res.data.data;
-              if(imgw==1){
-                that.ContractInfo.tenant.imgcard1=src;
-                that.$refs.goodsImg_1.src=src;
-              }else if(imgw==2){
-                that.ContractInfo.tenant.imgcard2=src;
-                that.$refs.goodsImg_2.src=src;
-              }else if(imgw==3){
-                 that.ContractInfo.tenant.imgcard2=src;
-                 that.$refs.goodsImg_3.src=src;
-              }
-              // console.log("a:"+that.ContractInfo.tenant.imgcard1);            
-            }else{
-              that.$toast(res.data.msg);
+      changeImg(imgsrc){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              if(imgsrc=="img_1"){
+                that.cardTips_1=true;
+                 that.$refs.goodsImg_1.src=res.localIds[0];
+              }else if(imgsrc=="img_2"){
+                that.cardTips_2=true;
+                 that.$refs.goodsImg_2.src=res.localIds[0];
+              }else if(imgsrc=="img_3"){
+                that.cardTips_3=true;
+                 that.$refs.goodsImg_3.src=res.localIds[0];
+              }  else if(imgsrc=="img_4"){
+                that.cardTips_4=true;
+              }             
+              that.uploadToWeixinServer(res.localIds[0],imgsrc);
             }
-          }else{
-            that.$toast('获取房源详情失败，请刷新重试！');
-            // setTimeout(() => {
-            //     this.$router.back(-1);
-            // }, 1000);
-            return;
+          });
+      },
+      uploadToWeixinServer(localId,imgsrc) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;
+                  if(imgsrc=="img_1"){
+                      that.ContractInfo.tenant.cardimg1 =src;
+                      that.$refs.goodsImg_1.src=src;
+                      that.cardTips_1=false;
+                    }else if(imgsrc=="img_2"){
+                      that.ContractInfo.tenant.cardimg2=src;
+                      that.$refs.goodsImg_2.src=src;
+                      that.cardTips_2=false;
+                    }else if(imgsrc=="img_3"){
+                      that.ContractInfo.tenant.cardimg3=src;
+                      that.$refs.goodsImg_3.src=src;
+                      that.cardTips_3=false;
+                    }
+                }else{
+                  //that.card2Tips=false;
+                  that.tipsCz(imgsrc);
+                  //that.num=false;
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //let num="cardTips_"+parseInt(imgsrc);
+                 //提示隐藏
+                that.tipsCz(imgsrc);
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
           }
         });
-      }
+      },      
+      tipsCz(imgsrc){
+        if(imgsrc=="img_1"){                     
+            that.cardTips_1=false;
+          }else if(imgsrc=="img_2"){                     
+            that.cardTips_2=false;
+          }else if(imgsrc=="img_3"){                     
+            that.cardTips_3=false;
+          }
+      },    
     }
     
     
@@ -502,7 +543,9 @@
   }
   .listConter img{width:22%;margin:2.5rem auto 0.4rem auto;}
   .tips{text-align: center; color:#666; font-size: 0.5rem; width:80%;margin:0 auto;}
-  .cardImg{width:85%;margin:0.5rem auto;}
+  .cardImg{width:85%;margin:0.5rem auto; position:relative;}
+   .card-tips{position:absolute;left:0; top:0; bottom:0; width:100%; background:rgba(0, 0, 0, 0.2); display:flex;align-items: center;
+    justify-content: center; color: #000; box-sizing:border-box; padding:0.5rem;}
  /deep/.cardImg img{width:100%; }
   .add-service-cell div{
     display: inline-block;

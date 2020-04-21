@@ -136,8 +136,10 @@
         EnterRentTime:'选择期望交房时间',
         endRentDate: new Date(),
         showEndTimeSelect: false,
-        timechoice:new Date()
+        timechoice:new Date(),
+        timeRnt:0
       }
+      
     },
     mounted(){     
       this.init();
@@ -172,6 +174,11 @@
       init(){       
         // 获取房源详情
         let that = this;
+        if(sessionStorage.getItem("houseId")){
+          this.$store.state.renting.id=sessionStorage.getItem("houseId");
+        }else{
+          this.$router.back(-1);
+        }
         let param = {house_id: this.$store.state.renting.id};
         this.$http.post(this.$store.state.global.baseUrl + 'house/house_details', param).then(res => {
           //debugger
@@ -179,6 +186,9 @@
             if(res.data.code == 200){
               that.houseDetail = res.data.data;
               that.title = that.houseDetail.garden_name + "靓房出租";
+              if(res.data.data.pay_style_desc=="年付"){
+                that.timeRnt=1;
+              }
             }else{
               that.$toast(res.data.msg);
             }
@@ -199,8 +209,7 @@
         // }
         // if(this.$store.state.renting.EnterRentTime){
         //   this.EnterRentTime = this.$store.state.renting.EnterRentTime;
-        // }
-        
+        // }        
         this.actualRentTimeLimit = this.dateAddFormat(new Date(),2);
       },
       //签约之前判断个人信息是否完善
@@ -236,6 +245,11 @@
          
        // this.maxDate=this.funGetDateStr(new Date(),2);
         // 获取房源详情
+        if(sessionStorage.getItem("houseId")){
+          this.$store.state.renting.id=sessionStorage.getItem("houseId");
+        }else{
+           this.$router.back(-1);
+        }          
         let that = this;
         let param = {
           api_token: this.$store.state.global.api_token,
@@ -316,11 +330,15 @@
       },
       // 确认租期
       confirmRentTerm(value,index){
+         if(this.timeRnt==1 && index==1){
+          this.$toast("此房源只能年租~~");
+          return;
+        }
         this.valueRentTerm = value;
         this.rentTerm = index + 1;
         this.showRentTerm = false;
         // 计算交房时间（退房时间）
-        console.log("index:"+index)
+        console.log("index:"+index);       
         if(index==0){
           //this.expectHandingTime = `${this.startRentDate.getFullYear() + this.rentTerm}-${this.startRentDate.getMonth() + 1}-${this.startRentDate.getDate()}`;
           this.expectHandingTime=this.getTimes(this.startRentDate.getFullYear() + 1,this.startRentDate.getMonth() + 1,this.startRentDate.getDate())

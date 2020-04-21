@@ -102,7 +102,10 @@
         <div class="imgTips" v-if="showTips">                 
           图片正在上传......
         </div>
-        <van-uploader :after-read="afterZRead" :accept="'image/*'"  />
+        <!-- <van-uploader :after-read="afterZRead" :accept="'image/*'"  /> -->
+        <div class="manyImgBtn" @click="changeImg">
+                  <van-icon name="plus" />
+                </div>
       </div>
       <div class="edit-btn">
         <van-button square type="info" size="small" color="#F8B729" @click="submitHouseInfo">确认修改</van-button>
@@ -226,41 +229,84 @@
         }
         this.houseInfo.house_img = tmp;       
       },
-       //多图上传
-      afterZRead(file){
-          //this.house_showImg=this.house_showImg;
-          this.showTips=true;
-          let param=new FormData;
-          param.append("api_token", this.$store.state.locale.api_token),
-          param.append("file",(file.file));         
-          let that=this;
-          this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
-            //debugger
-            if(res.status == 200) {
-              if(res.data.code == 200){
-                console.log(res.data.data)
-                
-                let src=res.data.data;
-                if(that.houseInfo.house_img==null && !that.houseInfo.house_img){
-                  that.houseInfo.house_img=[]
-                };
-                that.houseInfo.house_img.push(src);
-                console.log(that.houseInfo.house_img);  
-                that.showTips=false;     
-              }else{
-                that.$toast(res.data.msg);
-                that.showTips=false;
-                if(res.data.msg == 'api_token错误或者不存在'){
-                  that.$router.push({path : '/salesLogin'});
-                }
-              }
-            }else{
-              that.$toast('获取图片失败，请刷新重试！'); 
-              that.showTips=false;           
-              return;
+      changeImg(){
+         let that=this;
+          wx.chooseImage({
+            count: 1, //张数， 默认9
+            sizeType: ["compressed"], //建议压缩图
+            sourceType: ["album", "camera"], // 来源是相册、相机
+            success: function (res) {
+              that.showTips=true;          
+              that.uploadToWeixinServer(res.localIds[0]);
             }
-          });      
-      }
+          });
+      },
+      uploadToWeixinServer(localId) {
+        let that = this;
+        wx.uploadImage({
+          localId: localId,
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            //res.serverId 返回图片的微信服务器端ID
+            // self.add_vip.serverId = res.serverId;
+            console.log(res);
+            let serverId=res.serverId;
+             that.$http.post(that.$store.state.global.baseUrl + 'entrust/watermark', {media_id:serverId}).then(res => {
+              console.log(res)
+              if(res.status == 200) {
+                if(res.data.code == 200){
+                  let src=res.data.data;                  
+                  that.houseInfo.house_img.push(src);                      
+                  that.showTips=false;                     
+                }else{
+                  that.showTips=false; 
+                  that.$toast(res.data.msg);
+                }
+              }else{
+                 //提示隐藏
+                that.showTips=false;
+                that.$toast('上传图片失败，请重新选择图片！');
+                return;
+              }
+            });
+          }
+        });
+      },      
+      //  //多图上传
+      // afterZRead(file){
+      //     //this.house_showImg=this.house_showImg;
+      //     this.showTips=true;
+      //     let param=new FormData;
+      //     param.append("api_token", this.$store.state.locale.api_token),
+      //     param.append("file",(file.file));         
+      //     let that=this;
+      //     this.$http.post(this.$store.state.global.baseUrl + 'entrust/watermark', param).then(res => {
+      //       //debugger
+      //       if(res.status == 200) {
+      //         if(res.data.code == 200){
+      //           console.log(res.data.data)
+                
+      //           let src=res.data.data;
+      //           if(that.houseInfo.house_img==null && !that.houseInfo.house_img){
+      //             that.houseInfo.house_img=[]
+      //           };
+      //           that.houseInfo.house_img.push(src);
+      //           console.log(that.houseInfo.house_img);  
+      //           that.showTips=false;     
+      //         }else{
+      //           that.$toast(res.data.msg);
+      //           that.showTips=false;
+      //           if(res.data.msg == 'api_token错误或者不存在'){
+      //             that.$router.push({path : '/salesLogin'});
+      //           }
+      //         }
+      //       }else{
+      //         that.$toast('获取图片失败，请刷新重试！'); 
+      //         that.showTips=false;           
+      //         return;
+      //       }
+      //     });      
+      // }
     }
   }
 </script>
@@ -353,7 +399,14 @@
     font-size:0.4rem;
   }
   .remind{padding:0.2rem 0;}
-  .manyPic,.img_are{width:85%; margin:0.5rem auto; position:relative;}
+  .manyPic,.img_are{width:85%; margin:0.5rem auto; position:relative;display: block;
+    overflow: hidden;}
+  .manyPic::after{
+    content: "";
+    height:0;
+    clear:both;
+    visibility: hidden;
+  }
   .manyPic img,.img_are img{
     width:100%;
     margin-bottom:0.35rem;
@@ -367,5 +420,19 @@
     color:#fff;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
+  }
+  .manyImgBtn{
+      background:#f3f3f3;
+      width:2.5rem;
+      height:2.5rem;
+      align-items: center;
+      justify-content: center; 
+      font-size:2rem;
+      line-height:3rem;
+      float:left;
+      margin-left:0.2rem;
+      /deep/ .van-icon{
+        color:#ccc
+      }
   }
 </style>

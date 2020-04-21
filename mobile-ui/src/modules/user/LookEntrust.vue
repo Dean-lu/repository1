@@ -144,6 +144,11 @@
         console.log(this.$store.state.locale.houseId)
         //debugger
         // 获取房源详情
+         if(sessionStorage.getItem("locale_house")){
+            this.$store.state.locale.houseId=sessionStorage.getItem("locale_house");
+          }else{
+            this.$router.back(-1);
+          }
         let that = this;
         let param = {
           api_token: this.$store.state.global.api_token,

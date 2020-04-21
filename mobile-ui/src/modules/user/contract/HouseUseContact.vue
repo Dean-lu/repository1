@@ -256,6 +256,11 @@ export default {
         init(){
         //debugger
         let that = this;
+         if(sessionStorage.getItem("orderId")){
+          this.$store.state.locale.contractId=sessionStorage.getItem("orderId");
+        }else{
+          this.$router.back(-1);
+        }
         let param = {
           api_token: this.$store.state.global.api_token,
           order_id: this.$store.state.locale.contractId,

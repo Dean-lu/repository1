@@ -68,6 +68,7 @@
               that.$toast('登陆成功');
               that.$store.state.global.api_token = res.data.api_token;
               that.$store.state.global.loginStatus = true;
+              //localStorage.setItem("api_token",res.data.api_token);
               that.$router.push({path : '/home'});
             }else{
               that.$toast(res.data.msg);

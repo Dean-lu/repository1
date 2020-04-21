@@ -219,6 +219,7 @@
         
         this.$store.state.renting.id = id;
         console.log(this.$store.state.renting.id)
+        sessionStorage.setItem("houseId", id); 
         this.$router.push({path : '/houseDetail'});
       },
       resetSearch(){
