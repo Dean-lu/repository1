@@ -40,6 +40,7 @@ import updatePayPass from '@/modules/user/updatePayPass'
 import myInfo from '@/modules/user/MyInfo'
 import More from '@/modules/home/More'
 import contractImg from '@/modules/user/contract/ContractImg'
+import test from '@/modules/entrust/test'
 
 Vue.use(Router)
 
@@ -413,6 +414,15 @@ export default new Router({
             title: '租房提交审核确认页',
             showHeader: false
           }
-        }
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: test,
+            meta:{
+              title: '测试页面',
+              showHeader: false
+            }
+          }
     ]
 })

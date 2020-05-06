@@ -9,18 +9,30 @@
       </van-swipe>
     </div>
     <div class="house-info">
-      <van-col span="12">
-        <div class="text-align-left">位置:{{houseDetail.house_position}}</div>
-        <div class="text-align-left">房型:{{houseDetail.house_layout}}</div>
-        <div class="text-align-left">面积:{{houseDetail.house_position}}</div>
-        <div class="text-align-left">付款方式:{{houseDetail.pay_style}}</div>
-        <div class="text-align-left">租金:{{houseDetail.deposit}}</div>
-      </van-col>
-      <van-col span="12">
-        <div class="price-title">
-          ¥{{houseDetail.deposit}}
-        </div>
-      </van-col>
+      <div class="house-Main clearfix">
+        <div class="float-left house-price">{{houseDetail.deposit}}元/月</div>
+        <div class="float-right">{{houseDetail.pay_style_desc}}</div>
+      </div>
+      <div class="text-align-left black-text house-title">
+        {{houseDetail.house_position}}{{houseDetail.garden_name}}
+        {{houseDetail.building_number}}栋{{houseDetail.room_number}}号
+      </div>
+       <div class="house-introduce">
+        <van-col span="6">
+          <div>            
+              <span class="black-text">{{houseDetail.house_layout}}</span><br/>
+              房型    
+          </div>     
+        </van-col>
+        <van-col span="12">
+          <span class="black-text">{{houseDetail.area}}㎡</span><br/>
+          面积         
+        </van-col>
+        <van-col span="6">          
+          <span class="black-text">￥{{houseDetail.deposit}}</span><br/>
+          押金         
+        </van-col>
+      </div>      
     </div>
     <div class="division"></div>
     <div class="house-desc">
@@ -86,7 +98,8 @@
   }
 </script>
 
-<style scoped>
+<style scoped >
+ 
   .van-nav-bar__text{
     color: #FFB640;
   }
@@ -100,20 +113,45 @@
   .swipe{
     width: 100%;
     height: 7.875rem;
-    /* margin-top: 1.226667rem; */
   }
+  .van-swipe{
+    width: 100%;
+    height:7.875rem;
+  }
+  .van-swipe img{
+    width:100%;
+    }
+   
  .house-info{
-    width: 90%;
-    height: 3.75rem;
+    width: 85%;
+    height: 4.75rem;
     margin: 0 auto;
-    line-height: 0.625rem;
+    line-height: 0.75rem;
     color: lightgrey;
     display: block;
+    color: #777;
+    padding:0.3rem 0;
+    box-sizing:border-box;
+    font-size:0.38rem;
+    
   }
+  .house-price{
+      color:#f00;
+      font-weight:bold;
+      font-size:0.4rem;
+    }
+    .black-text{
+      font-weight:bold;      
+      color:#000;
+    }
+    .house-title{
+      padding:0.3rem 0;
+      font-size:0.4rem;
+    }
   .price-title{
     color: #FFB640;
     font-size: 0.5rem;
-    line-height: 3.75rem;
+    line-height: 4.75rem;
   }
   .division{
     width: 100%;
@@ -121,59 +159,31 @@
     background-color: #F5F5F5;
   }
   .house-desc{
-    width: 90%;
+    width: 85%;
     margin: 0 auto;
+    padding-top:0.2rem;
   }
   .house-desc .title{
     text-align:  left;
-    font-size: 0.5rem;
+    font-size: 0.4rem;
     line-height: 1rem;
-    color: #FFB640;
+    color: #000;
+    font-weight: bold;
   }
   .house-desc .desc-detail{
     width: 85%;
-    min-height: 3.0rem;
+    min-height: 2.0rem;
     margin: 0 auto;
     text-align: left;
-    color:lightgrey;
+    color:#777;
+    font-size:0.38rem;
     /* text-indent: 0.3rem; */
   }
-  .sign-btn{
-    width: 100%;
-    height: 1.0rem;
-  }
-  .sign-btn button{
-    width: 3.0rem;
-    font-size: 0.5rem;
-    margin: 0 auto;
-  }
-  .chooseRentItem{
-    width: 80%;
-    height: 2.5rem;
-    margin: 0 auto;
-  }
-  .van-cell__title{
-    text-align: right;
-    padding-right: 0.4rem;
-  }
-  .van-cell__value{
-    text-align: left;
-  }
-  .van-cell{
-    line-height: 0.5rem!important;
-    padding: 0.1rem 0;
-  }
-  .van-cell:not(:last-child)::after{
-    border-bottom: none!important;
-  }
-  .confirm-bottom{
-    width: 100%;
-    height: 1.25rem;
-    margin-top: 1.25rem;
-  }
-  .confirm-bottom button{
-    width: 3.125rem;
-    border-radius: 0.125rem;
-    font-size: 0.5rem;
+  .clearfix:after{
+    content: "." ;
+    display: block ;
+    height: 0 ;
+    clear: both ;
+    visibility: hidden ;
   }
 </style>

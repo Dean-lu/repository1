@@ -106,7 +106,7 @@
         <div class="manyImgBtn" @click="changeImg">
                   <van-icon name="plus" />
                 </div>
-      </div>
+      </div>     
       <div class="edit-btn">
         <van-button square type="info" size="small" color="#F8B729" @click="submitHouseInfo">确认修改</van-button>
       </div>
@@ -155,7 +155,11 @@
         }else{
           this.$store.state.locale.api_token = this.$cookies.get('salesApiToken');
         }
+        if(!this.$store.state.locale.editHouseInfo){
+          this.$router.push({path : '/entrustHouseInfo'});
+        }
         this.houseInfo = this.$store.state.locale.editHouseInfo;
+        this.valuetrimStatus=this.trimStatusDesc[this.houseInfo.trim_status-1];
       },
       submitHouseInfo(){
         //debugger
@@ -231,6 +235,14 @@
       },
       changeImg(){
          let that=this;
+         let len=that.houseInfo.house_img.length;
+         if(that.showTips){
+           len=len+1;
+         }
+         if(imgsrc=="img_4" && that.houseInfo.house_img && len>=8){
+          that.$toast('最多只能上传8张图！');
+           return ;
+        }
           wx.chooseImage({
             count: 1, //张数， 默认9
             sizeType: ["compressed"], //建议压缩图

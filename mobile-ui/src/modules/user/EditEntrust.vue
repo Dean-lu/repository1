@@ -13,43 +13,43 @@
         </van-popup>
         
         <van-field readonly v-model="houseInfo.garden_name" label="*小区名称:" placeholder="请输入小区名称" />
-        <van-field readonly v-model="houseInfo.building_number" label="*楼栋号:" placeholder="请输入楼栋号" />
+        <!-- <van-field readonly v-model="houseInfo.building_number" label="*楼栋号:" placeholder="请输入楼栋号" /> -->
         <van-field readonly v-model="houseInfo.room_number" label="*房号:" placeholder="请输入房号" />
-        <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" />
+        <!-- <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" /> -->
         <div class="editable">
           <van-field v-model="houseInfo.area" label="*面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
           <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="*户型:" placeholder="户型" @click="showHouseLayout = true"  />
         </div>
-        <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
+        <!-- <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
           <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
-        </van-popup>
+        </van-popup> -->
         <van-field readonly :value="valueExpireYear" label="*委托期限" placeholder="点击选择委托期限" />
         <van-popup v-model="showExpireYear" position="bottom">
           <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
         </van-popup>
-        <div class="editable">
+        <!-- <div class="editable">
           <van-field v-model="houseInfo.rent_price" label="*租金:" placeholder="请输入租金"  type="number"/>
           <van-field v-model="houseInfo.deposit" label="*押金:" placeholder="请输入押金"  type="number"/>
-        </div>
-        <van-field readonly :value="valueRentType" label="*类型" placeholder="点击出租类型" />
+        </div> -->
+        <!-- <van-field readonly :value="valueRentType" label="*类型" placeholder="点击出租类型" />
         <van-popup v-model="showRentType" position="bottom">
           <van-picker show-toolbar :columns="rentTypeDesc" @confirm="confirmRentType" @cancel="showRentType = false" />
-        </van-popup>
-         <div class="editable">
+        </van-popup> -->
+         <!-- <div class="editable">
         <van-field readonly clickable :value="valuetrimStatus" label="*装修状态" placeholder="点击选择装修状态" @click="showrtrimStatus = true" />
         </div>
           <van-popup v-model="showrtrimStatus" position="bottom">
             <van-picker show-toolbar :columns="trimStatusDesc" @confirm="trimStatusChoice" @cancel="showrtrimStatus = false" />
-          </van-popup>
+          </van-popup> -->
          
-        <div class="editable">
+        <!-- <div class="editable">
           <van-field readonly clickable :value="houseInfo.pay_style_name" label="*付款方式" placeholder="点击选择付款方式" @click="showPayStyle = true" />
         </div>
         <van-popup v-model="showPayStyle" position="bottom">
           <van-picker show-toolbar :columns="payStyleDesc" @confirm="confirmPayStyle" @cancel="showPayStyle = false" />
-        </van-popup>
+        </van-popup> -->
         
-        <div class="label">*房源描述:</div>
+        <div class="label">房源描述:</div>
         <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" 
          placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
       </div>
@@ -374,7 +374,15 @@ Vue.use(Dialog);
         this.showServerMain=true;
       },
       changeImg(imgsrc){
-         let that=this;
+          let that=this;
+          let len=that.houseInfo.house_img.length;
+          if(that.cardTips_4){
+            len=len+1;
+          }
+          if(imgsrc=="img_4" && len>=8){
+            that.$toast('最多只能上传8张图！');
+            return ;
+          }
           wx.chooseImage({
             count: 1, //张数， 默认9
             sizeType: ["compressed"], //建议压缩图
@@ -487,10 +495,10 @@ Vue.use(Dialog);
             this.$toast("请填写小区名称");
             return;
           }
-          if(!this.houseInfo.building_number){
-            this.$toast("请填写楼栋号");
-            return;
-          }
+          // if(!this.houseInfo.building_number){
+          //   this.$toast("请填写楼栋号");
+          //   return;
+          // }
           if(!this.houseInfo.room_number){
             this.$toast("请填写房间号");
             return;
@@ -507,41 +515,41 @@ Vue.use(Dialog);
             this.$toast("请选择户型");
             return;
           }
-          if(!this.houseInfo.rent_type){
-            this.$toast("必须选择类型");
-          }
-          if(!this.houseInfo.rent_price){
-            this.$toast("请输入租金");
-            return;
-          } 
-          if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.rent_price)){
-            this.$toast("租金只能是数字");
-            return;
-          }
-          if(!this.houseInfo.deposit){
-            this.$toast("请输入押金");
-            return;
-          }
-          if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.deposit)){
-            this.$toast("押金只能是数字");
-            return;
-          }
-          if(!this.houseInfo.pay_style){
-            this.$toast("请选择付款方式");
-            return;
-          }
-           if(!this.houseInfo.trim_status){
-          this.$toast("请选择装修状态");
-          return;
-        }
+        //   if(!this.houseInfo.rent_type){
+        //     this.$toast("必须选择类型");
+        //   }
+        //   if(!this.houseInfo.rent_price){
+        //     this.$toast("请输入租金");
+        //     return;
+        //   } 
+        //   if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.rent_price)){
+        //     this.$toast("租金只能是数字");
+        //     return;
+        //   }
+        //   if(!this.houseInfo.deposit){
+        //     this.$toast("请输入押金");
+        //     return;
+        //   }
+        //   if(!/^\d+(\.\d{0,2})?$/.test(this.houseInfo.deposit)){
+        //     this.$toast("押金只能是数字");
+        //     return;
+        //   }
+        //   if(!this.houseInfo.pay_style){
+        //     this.$toast("请选择付款方式");
+        //     return;
+        //   }
+        //    if(!this.houseInfo.trim_status){
+        //   this.$toast("请选择装修状态");
+        //   return;
+        // }
           if(!this.houseInfo.expire_year){
             this.$toast("请选择委托时间");
             return;
           }
-          if(!this.houseInfo.house_desc){
-            this.$toast("请输入房源描述");
-            return;
-          }
+          // if(!this.houseInfo.house_desc){
+          //   this.$toast("请输入房源描述");
+          //   return;
+          // }
           if(!this.houseInfo.certifi_info){
             this.$toast("请上传房产证或购房合同照片");
             return;

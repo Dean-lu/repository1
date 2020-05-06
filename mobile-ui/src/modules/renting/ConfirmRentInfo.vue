@@ -223,7 +223,7 @@
               <div class="text-align-left">电话：{{tenant.telphone}}</div>
             </van-col>
           </div>
-          <div class="text-align-right">签订时间：{{currDate.getFullYear()}}年{{currDate.getMonth()}}月{{currDate.getDate()}}日</div>
+          <div class="text-align-right">签订时间：{{currDate.getFullYear()}}年{{currDate.getMonth()+1}}月{{currDate.getDate()}}日</div>
         </div>
       </div>
       <div style="width: 100%;">

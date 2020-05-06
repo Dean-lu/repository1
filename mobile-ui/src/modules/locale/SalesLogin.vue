@@ -27,7 +27,7 @@
     },
     mounted(){
       document.title = '业务员登录';
-      this.share();
+      this.share();      
     },
     methods: {
       share(){

@@ -36,7 +36,7 @@
     height: 100%;
     background-image: url('../../assets/img/user/registersuc-b.png');
     background-repeat: no-repeat;
-    background-size: cover; 
+    background-size: 100% 100%; 
   }
   .button-container{
     position: absolute;

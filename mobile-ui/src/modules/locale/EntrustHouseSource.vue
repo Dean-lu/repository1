@@ -140,13 +140,25 @@
       },
       queryHouseSource(chenkType){
         // 查看cookie中是都有业务员登录的api_token
+        var that = this;
         if(!this.$cookies.get('salesApiToken')){
-          this.$toast("登录已失效，请重新登录！");
-          this.$router.push({path : '/salesLogin'});
+          // this.$toast("登录已失效，请重新登录！");
+
+          // this.$router.push({path : '/salesLogin'});
+            that.$dialog.confirm({
+              title: "登录业务员",
+              message: "您还没有登录，请先登录",
+              confirmButtonText: "确定", //改变确认按钮上显示的文字
+              cancelButtonText: "取消" //改变取消按钮上显示的文字
+            }).then(()=> {
+              that.$router.push({path:'/salesLogin'});
+            }).catch(() => {
+              that.$router.push({path:'/home'});
+            })
+            return;
         }else{
           this.$store.state.locale.api_token = this.$cookies.get('salesApiToken');
-        }
-        var that = this;
+        }        
         let param = {
           api_token: that.$store.state.locale.api_token,
           check_type: chenkType,
@@ -161,11 +173,23 @@
               // 加载状态结束
               that.loading = false;  
               that.finished = false;  
-            }else{
-              that.$toast(res.data.msg);
+            }else{              
               if(res.data.msg == 'api_token错误或者不存在'){
-                that.$router.push({path : '/salesLogin'});
+                that.$dialog.confirm({
+                  title: "登录业务员",
+                  message: "您还没有登录，请先登录",
+                  confirmButtonText: "确定", //改变确认按钮上显示的文字
+                  cancelButtonText: "取消" //改变取消按钮上显示的文字
+                }).then(()=> {
+                  that.$router.push({path:'/salesLogin'});
+                }).catch(() => {
+                  that.$router.push({path:'/home'});
+                })
+                return;
+              }else{
+                that.$toast(res.data.msg);
               }
+
             }
           }else{
             that.$toast('获取房源信息失败，请刷新重试！');

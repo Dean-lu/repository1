@@ -21,12 +21,12 @@
     <div class="data-form">
       <div class="title">房屋信息</div>
       <van-cell>
-        <van-col span="12">
+        <!-- <van-col span="12">
           <van-field readonly v-model="houseInfo.building_number" label="楼栋号:" label-width="2rem" label-align="left" />
-        </van-col>
-        <van-col span="12">
-          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" label-width="2rem" label-align="left" />
-        </van-col>
+        </van-col> -->
+        <!-- <van-col span="12">
+          <van-field readonly v-model="houseInfo.rentTypeDesc" label="类型" label-width="2rem" label-align="left" />
+        </van-col> -->
       </van-cell>
       <van-cell>
         <van-col span="12">
@@ -36,20 +36,21 @@
           <van-field readonly v-model="houseInfo.room_number" label="房号:" label-width="2rem" label-align="left" />
         </van-col>
       </van-cell>
-      <van-cell>
+      <!-- <van-cell>
         <van-col span="12">
           <van-field readonly v-model="houseInfo.deposit" label="押金:" label-width="2rem" label-align="left" />
         </van-col>
         <van-col span="12">
           <van-field readonly v-model="houseInfo.payStyleDesc" label="付款方式" label-width="2rem" label-align="left" />
         </van-col>
-      </van-cell>
+      </van-cell> -->
       <van-cell>
         <van-col span="12">
           <van-field readonly v-model="houseInfo.expireYearDesc" label="委托期限:" label-width="2rem" label-align="left" />
         </van-col>
+        
         <van-col span="12">
-          <van-field readonly v-model="houseInfo.rentTypeDesc" label="类型" label-width="2rem" label-align="left" />
+          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" label-width="2rem" label-align="left" />
         </van-col>
       </van-cell>
       <van-cell>
@@ -208,6 +209,7 @@
         // 提交房源信息后返回start
         house_id: 0,
         sum_price: 0,
+        issubmit:false,
         safe_package: [
           {
             "service_name": "init服务",
@@ -308,23 +310,23 @@
           api_token: this.$store.state.global.api_token,
           house_position:this.houseInfo.house_position,
           garden_name:this.houseInfo.garden_name,
-          building_number:this.houseInfo.building_number,
+          //building_number:this.houseInfo.building_number,
           expire_year:this.houseInfo.expire_year,
           room_number:this.houseInfo.room_number,
           area:this.houseInfo.area,
-          house_layout:this.houseInfo.house_layout,
-          rent_type:this.houseInfo.rent_type,
-          rent_price:this.houseInfo.rent_price,
-          deposit:this.houseInfo.deposit,
-          pay_style:this.houseInfo.pay_style,
-          trim_status:this.houseInfo.trim_status,
+          //house_layout:this.houseInfo.house_layout,
+          //rent_type:this.houseInfo.rent_type,
+          //rent_price:this.houseInfo.rent_price,
+          //deposit:this.houseInfo.deposit,
+          //pay_style:this.houseInfo.pay_style,
+          //trim_status:this.houseInfo.trim_status,
           house_desc:this.houseInfo.house_desc,
           house_img:JSON.stringify(this.houseInfo.house_img),
           certifi_info:this.houseInfo.certifi_info,
           cardimg1:this.houseInfo.cardimg1,
           cardimg2:this.houseInfo.cardimg2,
           added_service_id:JSON.stringify(this.houseInfo.added_service_id),
-          house_number:this.houseInfo.house_number
+          //house_number:this.houseInfo.house_number
         };
        
         this.$http.post(this.$store.state.global.baseUrl + 'entrust/submit_entrust', param).then(res => {

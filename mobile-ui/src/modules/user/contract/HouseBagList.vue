@@ -104,6 +104,14 @@ export default {
         });
         }, 
          changeImg(){
+          let len=that.house_img.length;
+         if(that.showTips){
+           len=len+1;
+         }
+         if(imgsrc=="img_4" && that.house_img && len>=8){
+          that.$toast('最多只能上传8张图！');
+           return ;
+        }
          let that=this;
           wx.chooseImage({
             count: 1, //张数， 默认9

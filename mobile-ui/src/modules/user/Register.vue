@@ -61,6 +61,7 @@
         // 定时器
         msgInterval:{},
         msgBtnLock: false,
+        isreg:false
       }
     },
     mounted(){
@@ -145,6 +146,8 @@
         if(!this.checkValid()){
           return;
         }
+        if(this.isreg){return}
+        this.isreg=true;
         let param = {};
         // param.truename = this.truename;
         // param.idcardcode = this.idcardcode;
@@ -162,11 +165,14 @@
               that.$store.state.global.loginStatus = true;
               that.$toast('注册成功!');
               that.$router.push({path : '/registerSuc'});
+              that.isreg=false;
             }else{
               that.$toast(res.data.msg);
+              that.isreg=false;
             }
           }else{
             that.$toast('注册失败，请刷新重试！');
+            that.isreg=false;
             return;
           }
         });

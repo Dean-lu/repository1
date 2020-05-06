@@ -79,7 +79,7 @@
         <van-image :src="houseInfo.certifi_info"></van-image>
       </div>
       <van-divider></van-divider>
-      <van-cell>
+      <van-cell  v-if="houseInfo.added_service">
         <van-col span="20" offset="3" class="text-align-left"><span style="font-weight: bolder;color: #595757;font-size: 16px;">增值服务</span></van-col>
       </van-cell>
       <div class="add-serv">
@@ -88,6 +88,12 @@
           <van-col class="float-right">￥{{item.price}}</van-col>
         </van-cell>
       </div>
+      <van-cell>
+        <!-- <van-col span="20" class="text-align-right label">
+          <a :href="'tel:'+houseInfo.telphone">联系房东</a>
+          </van-col> -->
+         <a :href="'tel:'+houseInfo.telphone"  class="btnOrange">联系房东</a>
+      </van-cell>
       <div class="edit-btn" v-if="houseInfo.check_status == 0">
         <van-button square type="info" size="small" color="#F8B729" @click="toEditHouseInfo">编辑</van-button>
         <van-button square type="info" size="small" color="#F8B729" @click="rejectConfirm = true">驳回</van-button>
@@ -182,8 +188,9 @@
             if(res.data.code == 200){
               that.houseInfo = res.data.data;
               that.$store.state.locale.editHouseInfo = res.data.data;
-              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];
+              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];              
             }else{
+             
               that.$toast(res.data.msg);
               if(res.data.msg == 'api_token错误或者不存在'){
                 that.$router.push({path : '/salesLogin'});
@@ -280,6 +287,7 @@
   .van-cell .label{
     color: #595757;
   }
+
   .van-cell .text{
     color: #9fa0a0;
   }
@@ -306,5 +314,16 @@
   .add-serv{
     width: 60%;
     margin: 0 auto;
+  }
+  .btnOrange{
+      width:60%;
+      margin:0 auto 0.8rem auto;
+      color:#fff;
+      border:0 none;
+      background: #f7b343;
+      line-height:0.8rem;
+      border-radius: 0.2rem;
+      display: block;
+      text-align:center;
   }
 </style>

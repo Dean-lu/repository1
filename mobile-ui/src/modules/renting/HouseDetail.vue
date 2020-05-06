@@ -32,9 +32,13 @@
               房型    
           </div>     
         </van-col>
-        <van-col span="12">
+        <van-col span="6">
           <span class="black-text">{{houseDetail.area}}㎡</span><br/>
           面积         
+        </van-col>
+        <van-col span="6">
+          <span class="black-text">{{valueRentType}}</span><br/>
+          类型         
         </van-col>
         <van-col span="6">          
           <span class="black-text">￥{{houseDetail.deposit}}</span><br/>
@@ -101,20 +105,23 @@
         title: '',
         houseDetail: {
           id: 1,
-          house_position: "长沙市岳麓区大学城",
-          garden_name: "麓谷明珠",
-          building_number: "2",
-          room_number: "1201",
-          area: "60.00",
-          house_layout: "两室一厅",
+          house_position: "",
+          garden_name: "",
+          building_number: "",
+          room_number: "",
+          area: "",
+          house_layout: "",
           rent_type: 1,
           pay_style: 3,
-          rent_price: "1500.00",
-          deposit: "1500.00",
-          house_desc: "临近地铁口，周边配套齐全",
+          rent_price: "",
+          deposit: "",
+          house_desc: "",
           house_img: "http:\\/\\/house.growingsale.cn\\/storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg",
-          mutet_ids: "[\"http:\\/\\/house.growingsale.cn\\/storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"]"
+          mutet_ids: "[\"http:\\/\\/house.growingsale.cn\\/storage\\/house\\/house\\/dIviIePV0PYTjsieH2KH7J3jRiFBAPK20jY9EfYf.jpeg\"]",
+         
         },
+         valueRentType: '',
+        rentTypeDesc: ['整租', '合租'],
         // 签约确认弹框
         showSignPopup: false,
         // 起租租期
@@ -189,6 +196,7 @@
               if(res.data.data.pay_style_desc=="年付"){
                 that.timeRnt=1;
               }
+              that.valueRentType=that.rentTypeDesc[res.data.data.rent_type-1]
             }else{
               that.$toast(res.data.msg);
             }

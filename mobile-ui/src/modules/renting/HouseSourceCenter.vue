@@ -115,7 +115,7 @@
         showHouseLayout: false,
         valueRentType: '',
         // 付款方式1年付 2半年付 3季付 4月付 租期 1一年 2半年  类型。 1整租 2合租 3转租
-        RentTypes:['整租','零租'],
+        RentTypes:['整租','合租'],
         showRentType: false,
         // 列表参数
         houseSource: [

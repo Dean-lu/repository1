@@ -4,7 +4,7 @@
     <div class="contact">
       <p>服务热线：400-167-0731<br/>
       周一到周日：07:00-24:00<br/>
-      联系邮箱：369208592@qq.com</p>
+      联系邮箱：fanggj2020@163.com</p>
     </div>
 </div>    
 </template>

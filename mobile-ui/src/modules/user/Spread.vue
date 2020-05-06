@@ -52,8 +52,8 @@
             <ul>
               <li class="border-1px flex" v-for="(item,index) in list" :key="index">
                 <div class="txt-content">
-                  <p class="float-left" v-if="item.type == 1">提现</p>
-                  <p class="float-left" v-if="item.type == 2">分佣</p>
+                  <p class="float-left">{{item.desc}}</p>
+                  <!-- <p class="float-left" v-if="item.type == 2">分佣</p> -->
                   <div class="count float-right" :class="{increase:item.type == 1}">{{item.type == 1 ? '-' : '+'}}{{item.money}}</div>
                   <span v-text="item.created_at"></span>
                 </div>
