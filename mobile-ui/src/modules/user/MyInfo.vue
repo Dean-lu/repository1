@@ -135,12 +135,39 @@
       getposition:function(){
         var that = this;
         if(that.loc.adcode > 0) {
+          let twocode = that.loc.adcode.toString().slice(0,2);
+          if(twocode != 43 || that.loc.district == ''){
+            this.$http.post(this.$store.state.global.baseUrl + 'base/get_default_address').then(res => {
+              if(res.status == 200){
+                  var res_data = res.data.data;
+                  that.adcode = res_data.district_id;
+                  that.position = res_data.province_name + res_data.city_name+res_data.district_name;
+                  that.province_name = res_data.province_name;
+                  that.city_name = res_data.city_name;
+                  that.district_name = res_data.district_name;
+                  that.getGardenInfo();
+              }
+            });
+          }else {
             that.adcode = that.loc.adcode;
             that.position = that.loc.province + that.loc.city + that.loc.district;
             that.province_name = that.loc.province;
             that.city_name = that.loc.city;
             that.district_name = that.loc.district;
             that.getGardenInfo();
+          }
+        }else{
+          this.$http.post(this.$store.state.global.baseUrl + 'base/get_default_address').then(res => {
+            if(res.status == 200){
+              var res_data = res.data.data;
+              that.adcode = res_data.district_id;
+              that.position = res_data.province_name + res_data.city_name+res_data.district_name;
+              that.province_name = res_data.province_name;
+              that.city_name = res_data.city_name;
+              that.district_name = res_data.district_name;
+              that.getGardenInfo();
+            }
+          });
         }
       },
       getGardenInfo: function () {
