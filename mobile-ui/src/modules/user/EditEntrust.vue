@@ -7,25 +7,42 @@
       <!-- <div style="color: red;">*温馨提示：请认真填写，房屋信息不全将延长租出时间</div> -->
       <div class="data-form">
         <div class="title">基本信息</div>
-        <van-field readonly :value="houseInfo.house_position" label="*所属区域:" placeholder="点击选择省市区" />
+        <van-field readonly :value="houseInfo.house_position" label-width="2rem"  label="*所属区域:" placeholder="点击选择省市区" />
         <van-popup v-model="showHousePosition" position="bottom">
           <van-area :area-list="areaList" title="选择省市区" @confirm="confirmArea" @cancel="showHousePosition = false" />
         </van-popup>
         
-        <van-field readonly v-model="houseInfo.garden_name" label="*小区名称:" placeholder="请输入小区名称" />
-        <!-- <van-field readonly v-model="houseInfo.building_number" label="*楼栋号:" placeholder="请输入楼栋号" /> -->
-        <van-field readonly v-model="houseInfo.room_number" label="*房号:" placeholder="请输入房号" />
+        <van-field readonly v-model="houseInfo.garden_name" label-width="2rem"  label="*小区名称:" placeholder="请输入小区名称" />
+        <van-cell>
+          <van-col span="12">
+            <van-field readonly v-model="houseInfo.building_number" label-width="2rem" label="*楼栋号:" placeholder="楼栋号" />
+          </van-col>
+          <van-col span="12">
+             <van-field readonly v-model="houseInfo.room_number" label="*房号:" label-width="1.2rem" placeholder="房号" />
+          </van-col>
+        </van-cell>
+         <van-cell>
+            <van-col span="12">
+              <van-field v-model="houseInfo.area" label="*面积(㎡):" label-width="2rem" placeholder="房间面积"  type="number" />
+            </van-col>
+            <van-col span="12">
+               <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="*户型:" placeholder="户型" @click="showHouseLayout = true"   label-width="1.2rem"/>
+               <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
+              <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
+            </van-popup>
+            </van-col>
+          </van-cell>
+       
         <!-- <van-field readonly v-model="houseInfo.house_number" label="房产编号:" placeholder="请输入房产编号" /> -->
-        <div class="editable">
-          <van-field v-model="houseInfo.area" label="*面积(㎡):" placeholder="请输房间面积(㎡)"  type="number" />
+        <!-- <div class="editable">         
           <van-field readonly clickable name="houseInfo.house_layout" :value="houseInfo.house_layout" label="*户型:" placeholder="户型" @click="showHouseLayout = true"  />
         </div>
-        <!-- <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
+        <van-popup class="popup-select" v-model="showHouseLayout" position="bottom" >
           <van-picker show-toolbar title="选择户型" :columns="houseLayouts" @cancel="showHouseLayout = false" @confirm="confirmHouseLayout" />
         </van-popup> -->
-        <van-field readonly :value="valueExpireYear" label="*委托期限" placeholder="点击选择委托期限" />
+        <van-field readonly :value="valueExpireYear" label="*委托期限：" placeholder="点击选择委托期限" />
         <van-popup v-model="showExpireYear" position="bottom">
-          <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false" />
+          <van-picker show-toolbar :columns="expireYearDesc" @confirm="confirmExpireYear" @cancel="showExpireYear = false"  label-width="2rem"/>
         </van-popup>
         <!-- <div class="editable">
           <van-field v-model="houseInfo.rent_price" label="*租金:" placeholder="请输入租金"  type="number"/>
@@ -495,10 +512,10 @@ Vue.use(Dialog);
             this.$toast("请填写小区名称");
             return;
           }
-          // if(!this.houseInfo.building_number){
-          //   this.$toast("请填写楼栋号");
-          //   return;
-          // }
+          if(!this.houseInfo.building_number){
+            this.$toast("请填写楼栋号");
+            return;
+          }
           if(!this.houseInfo.room_number){
             this.$toast("请填写房间号");
             return;
@@ -748,6 +765,9 @@ Vue.use(Dialog);
   }
   /deep/.van-cell{
     padding:0.166667rem 0.426667rem
+  }
+  /deep/.van-col .van-cell.van-field{
+    padding:0;
   }
   /deep/.van-cell:not(:last-child)::after{
     border-bottom: none;

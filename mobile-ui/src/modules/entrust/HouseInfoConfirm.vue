@@ -14,16 +14,19 @@
       <div class="title">{{houseInfo.garden_name}}</div>
       <div class="area">{{houseInfo.house_position}}</div>
       <div>
-        <div class="price">{{houseInfo.rent_price}}<span>元/月</span></div>
+        <!-- <div class="price">{{houseInfo.rent_price}}<span>元/月</span></div> -->
         <div class="add">增值服务：<span>{{houseInfo.totalAddPrice}}</span>元</div>
       </div>
     </div>
     <div class="data-form">
       <div class="title">房屋信息</div>
       <van-cell>
-        <!-- <van-col span="12">
+        <van-col span="12">
           <van-field readonly v-model="houseInfo.building_number" label="楼栋号:" label-width="2rem" label-align="left" />
-        </van-col> -->
+        </van-col>
+         <van-col span="12">
+          <van-field readonly v-model="houseInfo.room_number" label="房号:" label-width="2rem" label-align="left" />
+        </van-col>
         <!-- <van-col span="12">
           <van-field readonly v-model="houseInfo.rentTypeDesc" label="类型" label-width="2rem" label-align="left" />
         </van-col> -->
@@ -32,8 +35,8 @@
         <van-col span="12">
           <van-field readonly v-model="houseInfo.house_layout" label="户型:" label-width="2rem" label-align="left" />
         </van-col>
-        <van-col span="12">
-          <van-field readonly v-model="houseInfo.room_number" label="房号:" label-width="2rem" label-align="left" />
+       <van-col span="12">
+          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" label-width="2rem" label-align="left" />
         </van-col>
       </van-cell>
       <!-- <van-cell>
@@ -49,22 +52,22 @@
           <van-field readonly v-model="houseInfo.expireYearDesc" label="委托期限:" label-width="2rem" label-align="left" />
         </van-col>
         
-        <van-col span="12">
-          <van-field readonly v-model="houseInfo.area" label="面积(㎡):" label-width="2rem" label-align="left" />
-        </van-col>
+        
       </van-cell>
-      <van-cell>
+      <!-- <van-cell>
         <van-col span="12">
           <van-field readonly v-model="houseInfo.house_number" label="产权编号:" label-width="2rem" label-align="left" />
         </van-col>
         <van-col span="12">
           <van-field readonly v-model="houseInfo.trimStatusDesc" label="装修状态:" label-width="2rem" label-align="left" />
         </van-col>
-      </van-cell>
+      </van-cell> -->
       <!-- <van-field readonly v-model="houseInfo.rent_price" label="租金" /> -->
-      <div class="label">房源描述</div>
-      <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
+      <div v-if="houseInfo.house_desc">
+        <div class="label">房源描述</div>
+        <van-field v-model="houseInfo.house_desc" rows="6" autosize type="textarea" maxlength="200"
        placeholder="请在此处编辑您的描述(物业费、网络费、水电费、煤气费的支付方式等)" show-word-limit />
+      </div>
       <div class="title">证件信息</div>
       <div class="label">身份证正面照片：</div>
       <div class="img">
@@ -310,11 +313,11 @@
           api_token: this.$store.state.global.api_token,
           house_position:this.houseInfo.house_position,
           garden_name:this.houseInfo.garden_name,
-          //building_number:this.houseInfo.building_number,
+          building_number:this.houseInfo.building_number,
           expire_year:this.houseInfo.expire_year,
           room_number:this.houseInfo.room_number,
           area:this.houseInfo.area,
-          //house_layout:this.houseInfo.house_layout,
+          house_layout:this.houseInfo.house_layout,
           //rent_type:this.houseInfo.rent_type,
           //rent_price:this.houseInfo.rent_price,
           //deposit:this.houseInfo.deposit,
