@@ -40,11 +40,19 @@
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right label">付款方式：</van-col>
-        <van-col span="16" class="text">{{houseInfo.pay_style_name}}</van-col>
+        <van-col span="16" class="text">{{valuePayStyle}}</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right label">装修状态：</van-col>
         <van-col span="16" class="text">{{valuetrimStatus}}</van-col>
+      </van-cell>
+      <van-cell>
+        <van-col span="8" class="text-align-right label">出租类型：</van-col>
+        <van-col span="16" class="text">{{valueRentType}}</van-col>
+      </van-cell>
+      <van-cell>
+        <van-col span="8" class="text-align-right label">委托期限：</van-col>
+        <van-col span="16" class="text">{{valueExpireYear}}</van-col>
       </van-cell>
       <van-cell>
         <van-col span="8" class="text-align-right label label">房源描述：</van-col>
@@ -148,10 +156,23 @@
           expire_year: 3,
           house_number: null
         },
+        //装修状态
         rejectConfirm: false,
         rejectReason: '',
         valuetrimStatus: '',
-        trimStatusDesc: ['毛胚', '简装', '精装', '豪装']
+        trimStatusDesc: ['毛胚', '简装', '精装', '豪装'],
+         //出租类型
+        showRentType: false,
+        valueRentType: '',
+        rentTypeDesc: ['整租', '合租'],
+        // 委托时间
+        showExpireYear: false,
+        valueExpireYear: '',
+        expireYearDesc: ['三年', '四年', '五年'],
+          // 付款方式显示控制
+        showPayStyle :false,
+        valuePayStyle: '',
+        payStyleDesc: ['年付', '半年付', '季付', '月付'],
       }
     },
     mounted(){
@@ -188,7 +209,10 @@
             if(res.data.code == 200){
               that.houseInfo = res.data.data;
               that.$store.state.locale.editHouseInfo = res.data.data;
-              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1];              
+              that.valuetrimStatus= that.trimStatusDesc[res.data.data.trim_status-1]; 
+              that.valueRentType= that.rentTypeDesc[res.data.data.rent_type-1]; 
+              that.valueExpireYear= that.expireYearDesc[res.data.data.expire_year-3];
+              that.valuePayStyle=that.payStyleDesc[res.data.data.pay_style-1];              
             }else{
              
               that.$toast(res.data.msg);
