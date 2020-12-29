@@ -104,7 +104,7 @@ import shareApi from '../../common/until'
       look(houseId){
         this.$store.state.locale.houseId = houseId;
         console.log(this.$store.state.locale.houseId)
-         sessionStorage.setItem("locale_house",houseId);
+        sessionStorage.setItem("locale_house",houseId);
         this.$router.push({path : '/LookEntrust'});
       },
       sign(houseId){

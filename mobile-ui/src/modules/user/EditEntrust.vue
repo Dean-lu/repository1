@@ -154,7 +154,7 @@
           <p class="text-align-left" style="text-indent: 0.5rem;">1、<span style="font-weight:bold">1元维修巡查服务：</span><span style="color:#f00">“1元/天·（间）套”（合租房按间计）</span>，提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损及提出解决方案，但维修的人工费和材料费由甲方承担（人为损坏的，协助甲方要求损坏人赔偿）。</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">2、<span style="font-weight:bold">5元出租无忧服务：</span><span style="color:#f00">“5元/天·（间）套”（合租房按间计）</span>，提供出租带看、交房和收房服务；退租后保洁服务；各项费用代缴服务；提供每月不定期巡查巡检房屋1次，报修后上门勘察、定损、提出解决方案并承担维修人工费（但材料费和设施设备更换费用由甲方承担，人为损坏的，协助甲方要求损坏人赔偿）；购买该套房的房屋财产保险及租客人身意外伤害保险（受益人为甲方）；协调各方关系与问题处理；代为签署房屋使用过程中所有相关法律文件等。</p>
            <p class="text-align-left" style="text-indent: 0.5rem;">3、<span style="font-weight:bold">出租房安全包——无忧版：</span><span style="color:#f00">“1980元/套”</span>，一包解决出租房屋所有后顾之忧，规避所有隐藏风险。</p>
-         <p class="text-align-left" style="text-indent: 0.5rem;">4、<span style="font-weight:bold">出租房安全包——安心版：</span><span style="color:#f00">“1050元/套”</span>，包安装，为只想安装智能门锁的业主提供便捷服务。</p>
+         <p class="text-align-left" style="text-indent: 0.5rem;">4、<span style="font-weight:bold">出租房安全包——安心版：</span><span style="color:#f00">“1680元/套”</span>，包安装，为只想安装智能门锁的业主提供便捷服务。</p>
           <p class="text-align-left" style="text-indent: 0.5rem;">5、<span style="font-weight:bold">太平洋《租房全能险》：</span><span style="color:#f00">“15元/月·套”</span>，以甲方为受益人购买的房屋出租保险，最高可获得36万以上的理赔金。</p>
           <div class="order_list">
           

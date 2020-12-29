@@ -229,9 +229,8 @@
         if(!this.houseInfo.house_layout){
           this.$toast("请选择户型");
           return;
-        }
-        console.log(this.houseInfo.rentTypeDesc)
-        if(!this.houseInfo.rentTypeDesc){
+        }        
+        if(!this.houseInfo.rent_type){
           this.$toast("必须选择类型");
           return;
         }
@@ -268,10 +267,11 @@
           this.$toast("请上传房源照片");
           return;
         }
-        this.$store.state.entrust.houseInfo = this.houseInfo;
-        this.$router.push({path : '/houseInfoConfirm'});
+        // this.$store.state.entrust.houseInfo = this.houseInfo;
+        // this.$router.push({path : '/houseInfoConfirm'});
       },  
       submitHouseInfo(){
+        this.toConfirm();
         //debugger
         let that = this;
         let param = {
@@ -345,7 +345,7 @@
       },
       // 确认付款方式
       confirmPayStyle(value,index) {
-        this.houseInfo.valuePayStyle = value;
+        this.valuePayStyle = value;
         this.houseInfo.pay_style = index + 1;
         this.showPayStyle = false;
       },
@@ -369,7 +369,7 @@
          if(that.showTips){
            len=len+1;
          }
-         if(imgsrc=="img_4" && that.houseInfo.house_img && len>=8){
+         if(that.houseInfo.house_img && len>=8){
           that.$toast('最多只能上传8张图！');
            return ;
         }
